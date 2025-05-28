@@ -1,0 +1,181 @@
+﻿@using Gefco.CipQuai.Web.Models
+@model Gefco.CipQuai.Web.Models.TractionViewModel
+
+@{
+    ViewBag.Title = "Éditer Traction [" + Model.Name + "]";
+    Layout = "~/Views/Shared/_AuthLayout.cshtml";
+    ViewBag.ShowHeader = false;
+    var id = Tools.GenerateRandomString(8);
+}
+<style>
+    #chart {
+        display: none;
+    }
+</style>
+<div class="flex flex-row col-12 mb-3 mt-2">
+    <div class="flex flex-column flex-wrap flex-auto">
+        <div>
+            <div class="f-right">
+                <a class="px-3" data-toggle="tooltip" data-placement="bottom" title="Envoyer un lien par mail" id="@(id)mail" href="#"><i class='fa fa-lg fa-envelope'></i></a>
+                <a class="px-3" data-toggle="tooltip" data-placement="bottom" title="Imprimer la page" id="@(id)print" href="#"><i class='fa fa-lg fa-print'></i></a>
+                <a class="px-3" data-toggle="tooltip" data-placement="bottom" title="Télécharger en PDF" id="@(id)save" href="#"><i class='fa fa-lg fa-download'></i></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row dashboard" id="capture">
+    <div class="col-xl-12 col-md-12 px-1 px-sm-3">
+        <div class="card product-progress-card">
+            <div class="card-header main-header">
+                <h4>Infos Traction - @Model.Name</h4>
+            </div>
+            <div class="card-block p-2">
+                <div class="pp-main row m-0">
+                    <div class="col-3 px-0"></div>
+                    <div class="col-6 px-0">
+                        @using (Html.BeginForm())
+                        {
+                            @Html.AntiForgeryToken()
+
+                        <div class="form-horizontal">
+                            @Html.HiddenFor(model => model.Id)
+
+                            <div class="form-group row">
+                                <label class=" col-md-4" for="@nameof(Model.Name)">Nom</label>
+                                <div class="col-md-8">
+                                    @Html.EditorFor(model => model.Name, new
+                                    {
+                                        htmlAttributes = new
+                                        {
+                                            @class = "form-control"
+                                        }
+                                    })
+                                    @Html.ValidationMessageFor(model => model.Name, "", new
+                                    {
+                                        @class = "text-danger"
+                                    })
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class=" col-md-4" for="@nameof(Model.AgenceDepart_Id)">Agence de départ</label>
+                                <div class="col-md-8">
+                                    @Html.DropDownListFor(p => p.AgenceDepart_Id, null, htmlAttributes: new
+                                    {
+                                        @class = "form-control"
+                                    })
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class=" col-md-4" for="@nameof(Model.AgenceArrivee_Id)">Agence d'arrivée</label>
+                                <div class="col-md-8">
+                                    @Html.DropDownListFor(p => p.AgenceArrivee_Id, null, htmlAttributes: new
+                                    {
+                                        @class = "form-control"
+                                    })
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class=" col-md-4" for="@nameof(Model.DaysOfWeek)">Jours de la semaine</label>
+                                <div class="col-md-8">
+                                    @Html.EditorFor(model => model.DaysOfWeek, new
+                                    {
+                                        htmlAttributes = new
+                                        {
+                                            @class = "form-control"
+                                        }
+                                    })
+                                    @Html.ValidationMessageFor(model => model.DaysOfWeek, "", new
+                                    {
+                                        @class = "text-danger"
+                                    })
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col-md-4"></div>
+                                <div class="col-md-8">
+                                    <button type="button" class="e-btn e-danger" onclick="javascript:window.location = '@Url.Action("Index")'">Retour à la liste</button>
+                                    <input type="submit" value="Sauvegarder" class="e-btn e-primary" />
+                                </div>
+                            </div>
+                        </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="chart"></div>
+<script src="~/Content/assets/html2canvas.js"></script>
+<script src="~/Content/assets/amcharts/core.js"></script>
+<script src="~/Content/assets/amcharts/charts.js"></script>
+<script>
+    function savePDF(type) {
+        var chart = am4core.create(document.getElementById("chart"), am4charts.XYChart);
+        chart.logo.dispose();
+        $("#capture .e-btn").hide();
+        Promise.all([chart.exporting.pdfmake, chart.exporting.getImage("png"), html2canvas(document.querySelector("#capture"))]).then(function(res) {
+
+            const pdfMake = res[0];
+
+            // pdfmake is ready
+            // Create document template
+            const doc = {
+                pageSize: "A4",
+                pageOrientation: "landscape",
+                pageMargins: [30, 30, 30, 30],
+                content: []
+            };
+
+            doc.content.push({
+                text: "GEFCO CIP Quai",
+                fontSize: 20,
+                bold: true,
+                margin: [0, -10, 0, 0]
+            });
+            doc.content.push({
+                text: "Fiche Traction - @Model.Name",
+                fontSize: 16,
+                bold: false,
+                margin: [0, 10, 0, 30]
+            });
+            var canvas = res[2];
+            var img = canvas.toDataURL("image/png");
+
+            doc.content.push({
+                image: img,
+                width: 774
+            });
+
+            if (type === "print")
+                pdfMake.createPdf(doc).print();
+            else
+                pdfMake.createPdf(doc).download("@(DateTime.Now.ToString("yyyyMMdd-hhmmss")) - Traction - @(Model.Name).pdf");
+            $("#capture .e-btn").show();
+
+        });
+    }
+    function printPDF() {
+        savePDF("print");
+    }
+    $("#@(id)mail").click(function () { window.location.href = 'mailto:?body=' + encodeURIComponent(window.location); return false; });
+    $("#@(id)print").click(function () { printPDF(); return false; });
+    $("#@(id)save").click(function () { savePDF(); return false; });
+
+</script>
+
+@section scripts
+{
+    <script>
+        $("#menu-admin-motifsNC").addClass("active");
+        @*function toggleRole(e) {
+            let input = $(e);
+            $.post('@Url.Action("ToggleRole")', { roleId: input.val(), AgenceId: '@Model.Id', isInRole: input.prop('checked') }, () => { window.location = window.location });
+        }*@
+    </script>
+
+}

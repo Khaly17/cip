@@ -1,0 +1,110 @@
+﻿@using Gefco.CipQuai.Web.Models
+@model IEnumerable<Gefco.CipQuai.Web.Models.IdentityRoleViewModel>
+
+@{
+    ViewBag.PageIcon = "feather icon-shield";
+    ViewBag.Title = "Roles";
+    Layout = "~/Views/Shared/_AuthLayout.cshtml";
+    ViewBag.ShowHeader = false;
+    var id = Tools.GenerateRandomString(8);
+
+}
+<script id="template" type="text/x-template">
+    <a class="e-btn e-primary" href="/Roles/Edit/${RoleId}">Éditer</a>
+    <a class="e-btn e-danger mx-2" data_id="${RoleId}" href="/Roles/Delete/${RoleId}">Supprimer</a>
+</script>
+
+<div class="row dashboard" id="capture">
+    <div class="col-sm-12">
+        <div class="card product-progress-card">
+            <div class="card-header main-header">
+                <button type="button" class="f-right e-btn e-primary" onclick="addTraction()">Ajouter un rôle</button>
+                <h4>@ViewBag.Title</h4>
+            </div>
+            @(Html.EJS().Grid("Grid").DataSource(Model)
+                    .DataSource(ds => ds.Url(Url.Action("IndexData")).Adaptor("UrlAdaptor")).DataBound("postLoad")
+                        .AllowSorting().Columns(col =>
+                    {
+
+                        col.Field(nameof(IdentityRoleViewModel.Name)).Width(300).HeaderText("Role").Add();
+                        col.Field(nameof(IdentityRoleViewModel.Users)).Width(120).HeaderText("Utilisateurs").Add();
+                        col.AllowFiltering(false).AllowSorting(false).Width(120).HeaderText("Détails").Template("#template").Add();
+
+                    }).Toolbar(new List<string>()
+                    {
+                    "Search"
+                    }).AllowPaging().PageSettings(page => page.PageCount(3).PageSize(10)).SortSettings(sort => sort.AllowUnsort(false).Columns(new[]
+                    {
+                    new
+                    {
+                        field = nameof(IdentityRoleViewModel.Name),
+                        direction = "Ascending"
+                    }
+                    })).Render())
+
+        </div>
+    </div>
+</div>
+<script>
+
+    function postLoad() {
+        $("table a.e-danger").click(
+            function (e) {
+                e.preventDefault();
+                var id = this.attributes.data_id.value;
+                swal({
+                        title: "Êtes-vous sûr ?",
+                        text: "Vous ne pouvez pas annuler cette action !",
+                        type: "warning",
+                        showCancelButton: true,
+                        confirmButtonClass: "btn-danger",
+                        confirmButtonText: "Supprimer",
+                        closeOnConfirm: false
+                    },
+                    () => {
+                        $.post('@Url.Action("Delete")/' + id, null, function(result) {
+                            swal({ title: "Suppression confirmée", text: "Rôle supprimé", type:"success"
+                            }, () => {
+                                var grid = document.getElementById("Grid").ej2_instances[0];
+                                grid.refresh(); // refresh the Grid.
+                            });
+                        });
+                    });
+            });
+    }
+</script>
+
+@section scripts
+{
+    <script>
+        function addTraction() {
+            swal({
+                title: "Ajout Rôle",
+                text: "Saisissez le nom :",
+                type: "input",
+                showCancelButton: true,
+                closeOnConfirm: false,
+                inputPlaceholder: "Rôle..."
+            }, function(inputValue) {
+                if (inputValue === false)
+                    return false;
+                if (inputValue === "") {
+                    swal.showInputError("Saisie obligatoire !");
+                    return false;
+                }
+                $.post('@Url.Action("Create")', { Name: inputValue }, function (result) {
+                    swal({
+                        title: "Succès", text: "Élément ajouté avec succès", type: "success"
+                    }, () => {
+                        var grid = document.getElementById("Grid").ej2_instances[0];
+                        grid.refresh(); // refresh the Grid.
+                    });
+                });
+            });
+            return false;
+        }
+
+        $("#menu-admin-roles").addClass("active");
+    </script>
+
+}

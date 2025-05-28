@@ -1,0 +1,640 @@
+﻿@model List<Gefco.CipQuai.Web.Models.DataValue>
+
+@{
+    Layout = null;
+    var id = Tools.GenerateRandomString(8);
+}
+
+<div class="pp-cont">
+    <div class="w-100">
+        <div class="card sale-card" >
+            <div class="card-header">
+                @if (ViewBag.Size != "Medium")
+                {
+                    if (ViewBag.DeclarationType == "DP")
+                    {
+                        <span class="f-right" style="line-height: 30px;position: relative;right: 0px;">
+                            <a href="@ViewBag.DetailsUrl" target="_blank" class="details">Détail</a>
+                        </span>
+                    }
+                    <h4>@ViewBag.PieTitle</h4>
+                }
+            </div>
+            <div class="card-block">
+                <div id="@id" class="chart-shadow @(ViewBag.Size == "Medium" ? "g-pie-half" : "g-pie-quarter")"></div>
+                <div id="@(id)legenddiv" style="height: 40px;margin-top:40px" class="d-flex justify-content-around @(ViewBag.Size == "Medium" ? "" : "d-md-none")">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var @id, @(id)1, @(id)2, @(id)3, label_@id, label_@(id)1, label_@(id)2, label_@(id)3;
+    $(function() {
+
+        var container = am4core.create("@id", am4core.Container);
+        pies.push(container);
+        container.width = am4core.percent(100);
+        container.height = am4core.percent(100);
+        container.layout = "absolute";
+        container.logo.dispose();
+/**
+ * Label
+ */
+        var labelT1 = container.createChild(am4core.Label);
+        labelT1.isMeasured = false;
+        labelT1.fontSize = "@(ViewBag.Size)" == "Medium" ? 24 : $("body").width() < 468 ? 24 : 20;
+        labelT1.x = am4core.percent(0);
+        labelT1.y = am4core.percent(5);
+        labelT1.horizontalCenter = "left";
+        labelT1.verticalCenter = "top";
+        labelT1.text = "T1 : @(ViewBag.T1)%\r\nT2 : @(ViewBag.T2)%";
+
+        var label2 = container.createChild(am4core.Label);
+        label2.isMeasured = false;
+        label2.x = am4core.percent(50);
+        label2.y = am4core.percent(89);
+        label2.horizontalCenter = "middle";
+        label2.verticalCenter = "bottom";
+        label2.text = "@ViewBag.CenterLabel";
+        label2.fontSize = "@(ViewBag.Size)" == "Medium" ? 15 : $("body").width() < 468 ? 15 : 11;
+
+        container.events.on("maxsizechanged",
+            function() {
+                @(id).zIndex = 0;
+                @(id)1.zIndex = 1;
+            });
+
+        // Create chart instance
+        @id = container.createChild(am4charts.GaugeChart);
+        var chart = @id;
+        chart.preloader.disabled = true;
+        chart.width = am4core.percent(120);
+        chart.x = am4core.percent(-10);
+        chart.innerRadius = am4core.percent(82);
+        //chart.cursor = new am4charts.RadarCursor();
+
+        /**
+         * Normal axis
+         */
+        var axis = chart.xAxes.push(new am4charts.ValueAxis());
+        axis.min = 0;
+        axis.max = @Model.Sum(p => p.Value);
+        axis.strictMinMax = true;
+        axis.renderer.radius = am4core.percent(80);
+        axis.renderer.inside = true;
+        axis.renderer.line.strokeOpacity = 1;
+        axis.renderer.ticks.template.strokeOpacity = 1;
+        axis.renderer.ticks.template.length = 10;
+        axis.renderer.grid.template.disabled = true;
+        axis.renderer.labels.template.radius = 40;
+        axis.renderer.labels.template.fontSize = 13;
+
+        /**
+         * Axis for ranges
+         */
+
+        var axis2 = chart.xAxes.push(new am4charts.ValueAxis());
+        axis2.min = 0;
+        axis2.max = @Model.Sum(p => p.Value);
+        axis2.renderer.innerRadius = 10
+        axis2.strictMinMax = true;
+        axis2.renderer.labels.template.disabled = true;
+        axis2.renderer.ticks.template.disabled = true;
+        axis2.renderer.grid.template.disabled = true;
+
+        var data = @Html.Raw(Json.Encode(Model));
+        var d0 = data.find(p => p.Name === "A déclarer");
+        var d1 = data.find(p => p.Name === "Utilisées");
+        var d2 = data.find(p => p.Name === "Non utilisées");
+        var range0 = axis2.axisRanges.create();
+        range0.value = 0;
+        range0.endValue = d0.Value;
+        range0.axisFill.fillOpacity = 1;
+        range0.axisFill.fill = am4core.color("#0B2850");
+        range0.axisFill.tooltip = new am4core.Tooltip();
+        range0.axisFill.tooltipText = "A déclarer\n[bold]" + d0.Value + "[/]";
+        range0.axisFill.interactionsEnabled = true;
+        range0.axisFill.isMeasured = true;
+        range0.axisFill.tooltipPosition = "pointer";
+
+        var range1 = axis2.axisRanges.create();
+        range1.value = d0.Value;
+        range1.endValue = d0.Value + d1.Value;
+        range1.axisFill.fillOpacity = 1;
+        range1.axisFill.fill = am4core.color("#ffcc00");
+        range1.axisFill.strokeOpacity = 1;
+        range1.axisFill.stroke = am4core.color("#ffcc00");
+        range1.axisFill.tooltip = new am4core.Tooltip();
+        range1.axisFill.tooltipText = "Utilisées\n[bold]" + d1.Value + "[/]";
+        range1.axisFill.interactionsEnabled = true;
+        range1.axisFill.isMeasured = true;
+        range1.axisFill.tooltipPosition = "pointer";
+
+        var range2 = axis2.axisRanges.create();
+        range2.value = d0.Value + d1.Value;
+        range2.endValue = d0.Value + d1.Value + d2.Value;
+        range2.axisFill.fillOpacity = 1;
+        range2.axisFill.fill = am4core.color("#CCCCCC");
+        range2.axisFill.tooltip = new am4core.Tooltip();
+        range2.axisFill.tooltipText = "Non utilisées\n[bold]" + d2.Value + "[/]";
+        range2.axisFill.interactionsEnabled = true;
+        range2.axisFill.isMeasured = true;
+        range2.axisFill.tooltipPosition = "pointer";
+
+        // Add a legend
+        chart.legend = new am4charts.Legend();
+        var legendContainer = am4core.create("@(id)legenddiv", am4core.Container);
+        legendContainer.width = am4core.percent(100);
+        legendContainer.height = am4core.percent(100);
+        chart.legend.parent = legendContainer;
+        chart.legend.valueLabels.template.text = "";
+        chart.legend.data = [
+            {
+                "name": d0.Name,
+                "fill": range0.axisFill.fill
+            },
+            {
+                "name": d1.Name,
+                "fill": range1.axisFill.fill
+            },
+            {
+                "name": d2.Name,
+                "fill": range2.axisFill.fill
+            },
+        ];
+/**
+ * Label
+ */
+        label_@id = chart.radarContainer.createChild(am4core.Label);
+        var label = label_@id;
+        label.isMeasured = false;
+        label.fontSize = "@(ViewBag.Size)" == "Medium" ? 44 : $("body").width() < 468 ? 44 : 28;
+        label.x = am4core.percent(50);
+        label.y = am4core.percent(98);
+        label.horizontalCenter = "middle";
+        label.verticalCenter = "bottom";
+        label.text = "@ViewBag.CenterValue";
+
+        var label2 = container.createChild(am4core.Label);
+        label2.isMeasured = false;
+        label2.x = am4core.percent(50);
+        label2.y = am4core.percent(89);
+        label2.horizontalCenter = "middle";
+        label2.verticalCenter = "bottom";
+        label2.text = "@ViewBag.CenterLabel";
+        label2.fontSize = "@(ViewBag.Size)" == "Medium" ? 15 : $("body").width() < 468 ? 15 : 11;
+
+/**
+ * Hand
+ */
+
+        var hand = chart.hands.push(new am4charts.ClockHand());
+        hand.axis = axis2;
+        hand.innerRadius = am4core.percent(80);
+        hand.startWidth = 2;
+        hand.pin.disabled = true;
+        hand.value = d0.Value;
+
+        hand.events.on("propertychanged", function(ev) {
+            range0.endValue = ev.target.value;
+            range1.value = ev.target.value;
+            axis2.invalidate();
+        });
+
+
+        var hand2 = chart.hands.push(new am4charts.ClockHand());
+        hand2.axis = axis2;
+        hand2.innerRadius = am4core.percent(80);
+        hand2.startWidth = 2;
+        hand2.pin.disabled = true;
+        hand2.value = d0.Value + d1.Value;
+
+        hand2.events.on("propertychanged", function(ev) {
+            range1.endValue = ev.target.value;
+            range2.value = ev.target.value;
+            axis2.invalidate();
+        });
+
+        // Create chart instance
+        @(id)1 = container.createChild(am4charts.PieChart);
+        var chart = @(id)1;
+        chart.preloader.disabled = true;
+        chart.radius = am4core.percent(70);
+        chart.width = "@(ViewBag.Size)" == "Medium" ? am4core.percent(30) : am4core.percent(20);
+        chart.x = "@(ViewBag.Size)" == "Medium" ? am4core.percent(70) : am4core.percent(80);;
+        chart.y = "@(ViewBag.Size)" == "Medium" ? am4core.percent(-30) : am4core.percent(-35);;
+
+        // Add and configure Series
+        pieSeries = chart.series.push(new am4charts.PieSeries());
+        pieSeries.dataFields.value = "Value";
+        pieSeries.dataFields.category = "Name";
+
+        pieSeries.tooltip.disabled = true;
+
+        // Put a thick white border around each Slice
+        pieSeries.slices.template.stroke = am4core.color("#fff");
+        pieSeries.slices.template.strokeWidth = 2;
+        pieSeries.slices.template.strokeOpacity = 1;
+        pieSeries.slices.template
+            // change the cursor on hover to make it apparent the object can be interacted with
+            .cursorOverStyle = [
+                {
+                    "property": "cursor",
+                    "value": "pointer"
+                }
+            ];
+
+        pieSeries.alignLabels = false;
+        pieSeries.labels.template.radius = 3;
+        pieSeries.labels.template.padding(0, 0, 0, 0);
+        pieSeries.labels.template.text = "";
+
+        pieSeries.ticks.template.disabled = true;
+        pieSeries.colors.list = [
+            am4core.color("#ffcc00"),
+        ];
+        var slice = pieSeries.slices.template;
+        slice.states.getKey("hover").properties.scale = 1;
+        slice.states.getKey("active").properties.shiftRadius = 0;
+        slice.events.on("hit", function (ev) {
+            window.open("@Html.Raw(ViewBag.BPDetailsUrl)", "_blank");
+        }, this);
+
+        // Create a base filter effect (as if it's not there) for the hover to return to
+        shadow = pieSeries.slices.template.filters.push(new am4core.DropShadowFilter);
+        shadow.opacity = 0;
+
+        chart.data = [{Value: 1}];
+        @(id)1Url = "@Html.Raw(ViewBag.BPDataUrl)";
+        label_@(id)1 = chart.createChild(am4core.Label);
+        var label = label_@(id)1;
+        label.isMeasured = false;
+        label.x = am4core.percent(50);
+        label.align = "center";
+        label.horizontalCenter = "middle";
+        label.verticalCenter = "middle";
+        label.text = "@ViewBag.BPCenterValue";
+        label.fontSize = 30;
+        label.events.on("hit", function (ev) {
+            window.open("@Html.Raw(ViewBag.BPDetailsUrl)", "_blank");
+        }, this);
+        label.cursorOverStyle = [
+            {
+                "property": "cursor",
+                "value": "pointer"
+            }
+        ];
+        @if (ViewBag.Size == "Medium")
+        {
+            <text>
+                label.y = am4core.percent(47);
+                var label2 = chart.createChild(am4core.Label);
+                label2.isMeasured = false;
+                label2.x = am4core.percent(50);
+                label2.align = "center";
+                label2.horizontalCenter = "middle";
+                label2.verticalCenter = "middle";
+                label2.text = "BONNES\r\nPRATIQUES";
+                label2.textAlign = "middle";
+                label2.y = am4core.percent(54);
+                label2.fontSize = 11;
+                label2.events.on("hit", function (ev) {
+                    window.open("@Html.Raw(ViewBag.BPDetailsUrl)", "_blank");
+                }, this);
+                label2.cursorOverStyle = [
+                    {
+                        "property": "cursor",
+                        "value": "pointer"
+                    }
+                ];
+
+            </text>
+        }
+        else
+        {
+            <text>
+                label.y = am4core.percent(50);
+            </text>
+        }
+
+        // Create chart instance
+        @(id)2 = container.createChild(am4charts.PieChart);
+        var chart = @(id)2;
+        chart.preloader.disabled = true;
+        chart.radius = am4core.percent(60);
+        chart.width = "@(ViewBag.Size)" == "Medium" ? am4core.percent(20) : am4core.percent(15);
+        chart.x = "@(ViewBag.Size)" == "Medium" ? am4core.percent(80) : am4core.percent(85);;
+        chart.y = "@(ViewBag.Size)" == "Medium" ? am4core.percent(-5) : am4core.percent(-15);;
+
+        // Add and configure Series
+        pieSeries = chart.series.push(new am4charts.PieSeries());
+        pieSeries.dataFields.value = "Value";
+        pieSeries.dataFields.category = "Name";
+
+        pieSeries.tooltip.disabled = true;
+
+        // Put a thick white border around each Slice
+        pieSeries.slices.template.stroke = am4core.color("#fff");
+        pieSeries.slices.template.strokeWidth = 2;
+        pieSeries.slices.template.strokeOpacity = 1;
+        pieSeries.slices.template
+            // change the cursor on hover to make it apparent the object can be interacted with
+            .cursorOverStyle = [
+                {
+                    "property": "cursor",
+                    "value": "pointer"
+                }
+            ];
+
+        pieSeries.alignLabels = false;
+        pieSeries.labels.template.radius = 3;
+        pieSeries.labels.template.padding(0, 0, 0, 0);
+        pieSeries.labels.template.text = "";
+
+        pieSeries.ticks.template.disabled = true;
+        pieSeries.colors.list = [
+            am4core.color("#ffcc00"),
+        ];
+        var slice = pieSeries.slices.template;
+        slice.states.getKey("hover").properties.scale = 1;
+        slice.states.getKey("active").properties.shiftRadius = 0;
+        slice.events.on("hit", function (ev) {
+            window.open("@Html.Raw(ViewBag.SPDetailsUrl)", "_blank");
+        }, this);
+
+        // Create a base filter effect (as if it's not there) for the hover to return to
+        shadow = pieSeries.slices.template.filters.push(new am4core.DropShadowFilter);
+        shadow.opacity = 0;
+
+        chart.data = [{Value: 1}];
+        @(id)2Url = "@Html.Raw(ViewBag.SPDataUrl)";
+        label_@(id)2 = chart.createChild(am4core.Label);
+        var label = label_@(id)2;
+        label.isMeasured = false;
+        label.x = am4core.percent(50);
+        label.align = "center";
+        label.horizontalCenter = "middle";
+        label.verticalCenter = "middle";
+        label.text = "@ViewBag.SPCenterValue";
+        label.fontSize = 26;
+        label.events.on("hit", function (ev) {
+            window.open("@Html.Raw(ViewBag.SPDetailsUrl)", "_blank");
+        }, this);
+        label.cursorOverStyle = [
+            {
+                "property": "cursor",
+                "value": "pointer"
+            }
+        ];
+        @if (ViewBag.Size == "Medium")
+        {
+            <text>
+                label.y = am4core.percent(48);
+                var label2 = chart.createChild(am4core.Label);
+                label2.isMeasured = false;
+                label2.x = am4core.percent(50);
+                label2.align = "center";
+                label2.horizontalCenter = "middle";
+                label2.verticalCenter = "middle";
+                label2.text = "SIMPLES\r\nPLANCHERS";
+                label2.textAlign = "middle";
+                label2.y = am4core.percent(54);
+                label2.fontSize = 10;
+                label2.events.on("hit", function (ev) {
+                    window.open("@Html.Raw(ViewBag.SPDetailsUrl)", "_blank");
+                }, this);
+                label2.cursorOverStyle = [
+                    {
+                        "property": "cursor",
+                        "value": "pointer"
+                    }
+                ];
+
+            </text>
+        }
+        else
+        {
+            <text>
+                label.y = am4core.percent(50);
+                label.fontSize = 22;
+            </text>
+        }
+
+        // Create chart instance
+        @(id)3 = container.createChild(am4charts.PieChart);
+        var chart = @(id)3;
+        chart.preloader.disabled = true;
+        chart.radius = am4core.percent(50);
+        chart.width = "@(ViewBag.Size)" == "Medium" ? am4core.percent(20) : am4core.percent(15);
+        chart.x = "@(ViewBag.Size)" == "Medium" ? am4core.percent(82.5) : am4core.percent(86.5);;
+        chart.y = "@(ViewBag.Size)" == "Medium" ? am4core.percent(12.5) : am4core.percent(1);;
+
+        // Add and configure Series
+        pieSeries = chart.series.push(new am4charts.PieSeries());
+        pieSeries.dataFields.value = "Value";
+        pieSeries.dataFields.category = "Name";
+
+        pieSeries.tooltip.disabled = true;
+
+        // Put a thick white border around each Slice
+        pieSeries.slices.template.stroke = am4core.color("#fff");
+        pieSeries.slices.template.strokeWidth = 2;
+        pieSeries.slices.template.strokeOpacity = 1;
+        pieSeries.slices.template
+            // change the cursor on hover to make it apparent the object can be interacted with
+            .cursorOverStyle = [
+                {
+                    "property": "cursor",
+                    "value": "pointer"
+                }
+            ];
+
+        pieSeries.alignLabels = false;
+        pieSeries.labels.template.radius = 3;
+        pieSeries.labels.template.padding(0, 0, 0, 0);
+        pieSeries.labels.template.text = "";
+
+        pieSeries.ticks.template.disabled = true;
+        pieSeries.colors.list = [
+            am4core.color("#ffcc00"),
+        ];
+        var slice = pieSeries.slices.template;
+        slice.states.getKey("hover").properties.scale = 1;
+        slice.states.getKey("active").properties.shiftRadius = 0;
+        slice.events.on("hit", function (ev) {
+            window.open("@Html.Raw(ViewBag.CRDetailsUrl)", "_blank");
+        }, this);
+
+        // Create a base filter effect (as if it's not there) for the hover to return to
+        shadow = pieSeries.slices.template.filters.push(new am4core.DropShadowFilter);
+        shadow.opacity = 0;
+
+        chart.data = [{Value: 1}];
+        @(id)3Url = "@Html.Raw(ViewBag.CRDataUrl)";
+        label_@(id)3 = chart.createChild(am4core.Label);
+        var label = label_@(id)3;
+        label.isMeasured = false;
+        label.x = am4core.percent(50);
+        label.align = "center";
+        label.horizontalCenter = "middle";
+        label.verticalCenter = "middle";
+        label.text = "@ViewBag.CRCenterValue";
+        label.fontSize = 22;
+        label.events.on("hit", function (ev) {
+            window.open("@Html.Raw(ViewBag.CRDetailsUrl)", "_blank");
+        }, this);
+        label.cursorOverStyle = [
+            {
+                "property": "cursor",
+                "value": "pointer"
+            }
+        ];
+        @if (ViewBag.Size == "Medium")
+        {
+            <text>
+                label.y = am4core.percent(48);
+                var label3 = chart.createChild(am4core.Label);
+                label3.isMeasured = false;
+                label3.x = am4core.percent(50);
+                label3.align = "center";
+                label3.horizontalCenter = "middle";
+                label3.verticalCenter = "middle";
+                label3.text = "CONTROLES A\r\nRECEPTION";
+                label3.textAlign = "middle";
+                label3.y = am4core.percent(54);
+                label3.fontSize = 9;
+                label3.events.on("hit", function (ev) {
+                    window.open("@Html.Raw(ViewBag.CRDetailsUrl)", "_blank");
+                }, this);
+                label3.cursorOverStyle = [
+                    {
+                        "property": "cursor",
+                        "value": "pointer"
+                    }
+                ];
+
+            </text>
+        }
+        else
+        {
+            <text>
+                label.y = am4core.percent(50);
+                label.x = am4core.percent(55);
+                label.fontSize = 20;
+            </text>
+        }
+
+        $.connection.EventBroker.on("DeclarationUpdateAsync",
+            function(/* string */ declarationType, /* string */ eventType, /* string */ id) {
+                if (declarationType == "DP" && eventType == "@ViewBag.EventType") {
+                    @if (ViewBag.EventType == "National")
+                    {
+                        <text>
+                            console.log(`EventBroker: OnDeclarationUpdate[@id](declarationType: ${declarationType}, eventType: ${eventType})`);
+                            $.get(@(id).dataSource.url,
+                                null,
+                                function(res) {
+                                    @(id).data = res.Data;
+                                    @(id).invalidateRawData();
+                                    label_@(id).text = res.PercentData;
+                                });
+                        </text>
+                    }
+                    else
+                    {
+                        <text>
+                            if (id == "@ViewBag.EventId") {
+                                console.log(`EventBroker : OnDeclarationUpdate[@id](declarationType: ${declarationType}, eventType: ${eventType}, id: ${id})`);
+                                $.get(@(id).dataSource.url,
+                                    null,
+                                    function(res) {
+                                        @(id).data = res.Data;
+                                        @(id).invalidateRawData();
+                                        label_@(id).text = res.PercentData;
+                                    });
+                            }
+                        </text>
+                    }
+                }
+                if (declarationType == "BP" && eventType == "@ViewBag.EventType") {
+                    @if (ViewBag.EventType == "National")
+                    {
+                        <text>
+                            console.log(`EventBroker: OnDeclarationUpdate[@id](declarationType: ${declarationType}, eventType: ${eventType})`);
+                            $.get(@(id)1Url,
+                                null,
+                                function (res) {
+                                    label_@(id)1.text = `${res.Value}`;
+                                });
+                        </text>
+                    }
+                    else
+                    {
+                        <text>
+                            if (id == "@ViewBag.EventId") {
+                                console.log(`EventBroker : OnDeclarationUpdate[@id](declarationType: ${declarationType}, eventType: ${eventType}, id: ${id})`);
+                                $.get(@(id)1Url,
+                                    null,
+                                    function(res) {
+                                        label_@(id)1.text = `${res.Value}`;
+                                    });
+                            }
+                        </text>
+                    }
+                }
+                if (declarationType == "SP" && eventType == "@ViewBag.EventType") {
+                    @if (ViewBag.EventType == "National")
+                    {
+                        <text>
+                            console.log(`EventBroker: OnDeclarationUpdate[@id](declarationType: ${declarationType}, eventType: ${eventType})`);
+                            $.get(@(id)2Url,
+                                null,
+                                function (res) {
+                                    label_@(id)2.text = `${res.Value}`;
+                                });
+                        </text>
+                    }
+                    else
+                    {
+                        <text>
+                            if (id == "@ViewBag.EventId") {
+                                console.log(`EventBroker : OnDeclarationUpdate[@id](declarationType: ${declarationType}, eventType: ${eventType}, id: ${id})`);
+                                $.get(@(id)2Url,
+                                    null,
+                                    function(res) {
+                                        label_@(id)2.text = `${res.Value}`;
+                                    });
+                            }
+                        </text>
+                    }
+                }
+                if (declarationType == "CR" && eventType == "@ViewBag.EventType") {
+                    @if (ViewBag.EventType == "National")
+                    {
+                        <text>
+                            console.log(`EventBroker: OnDeclarationUpdate[@id](declarationType: ${declarationType}, eventType: ${eventType})`);
+                            $.get(@(id)3Url,
+                                null,
+                                function (res) {
+                                    label_@(id)3.text = `${res.Value}`;
+                                });
+                        </text>
+                    }
+                    else
+                    {
+                        <text>
+                            if (id == "@ViewBag.EventId") {
+                                console.log(`EventBroker : OnDeclarationUpdate[@id](declarationType: ${declarationType}, eventType: ${eventType}, id: ${id})`);
+                                $.get(@(id)3Url,
+                                    null,
+                                    function(res) {
+                                        label_@(id)3.text = `${res.Value}`;
+                                    });
+                            }
+                        </text>
+                    }
+                }
+            });
+    });
+</script>

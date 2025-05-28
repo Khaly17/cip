@@ -1,0 +1,74 @@
+﻿@using Gefco.CipQuai.Web.Models
+@model Gefco.CipQuai.Web.Models.Section
+
+@{
+    ViewBag.PageIcon = "feather icon-layers";
+    ViewBag.Title = "Edit section [" + Model.Name + "]";
+    ViewBag.PageStory = "Here you can edit your section";
+    Layout = "~/Views/Shared/_AuthLayout.cshtml";
+
+}
+
+@section breadcrumb
+{
+    <li class="breadcrumb-item"><a href="@Url.Action("Index")">Sections</a> </li>
+    <li class="breadcrumb-item"><a href="#!">@ViewBag.Title</a> </li>
+}
+<div class="row">
+    <div class="col-md-12 col-xl-9">
+        <div class="card">
+            <div class="card-header">
+                <h5>Section info</h5>
+            </div>
+            <div class="card-block">
+
+
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+
+                <div class="form-horizontal">
+                    @Html.HiddenFor(model => model.Id)
+
+                    <div class="form-group row">
+                        <label class="control-label col-md-2" for="@nameof(Model.Name)">Title</label>
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="control-label col-md-2" for="@nameof(Model.SortOrder)">Display order</label>
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.SortOrder, new { htmlAttributes = new { @class = "form-control col-1" } })
+                            @Html.ValidationMessageFor(model => model.SortOrder, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-2"></div>
+                        <div class="col-md-10">
+                            <button type="button" class="btn btn-danger" onclick="javascript:window.location = '@Url.Action("Index")'">Return to list</button>
+                            <input type="submit" value="Save" class="btn btn-primary" />
+                        </div>
+                    </div>
+                </div>
+                }
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts
+{
+    <script>
+        $("#menu-admin-pages").addClass("active");
+        function toggleRole(e) {
+            let input = $(e);
+            $.post('@Url.Action("ToggleRole")', { roleId: input.val(), pageId: '@Model.Id', isInRole: input.prop('checked')});
+        }
+    </script>
+
+}

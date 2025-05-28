@@ -1,0 +1,360 @@
+﻿@using Gefco.CipQuai.Web.Extensions
+@using Gefco.CipQuai.Web.Models
+@model Gefco.CipQuai.Web.Views.NCStatListViewModel
+@{
+    ViewBag.PageIcon = "feather icon-home";
+    ViewBag.Title = "Rapport Régional - Non conformités";
+    ViewBag.ShowHeader = false;
+    Layout = "~/Views/Shared/_AuthLayout.cshtml";
+
+    var nc1 = Tools.GenerateRandomString(8);
+    var nc2 = Tools.GenerateRandomString(8);
+    var nc3 = Tools.GenerateRandomString(8);
+
+    var days = (Model.EndDate.Date - Model.StartDate.Date).TotalDays + 1;
+    var weeked = new Dictionary<string, List<DeclarationNonConformite>>();
+    var monthed = new Dictionary<string, List<DeclarationNonConformite>>();
+
+    var months = (Model.EndDate.Date.AddDays(-1) - Model.StartDate.Date).TotalMonths();
+
+    if (months >= 3)
+    {
+        for (var i = 0; i < days - 1; i++)
+        {
+            var day = Model.StartDate.AddDays(i);
+            var week = "S" + Tools.GetIso8601WeekOfYear(day.Date);
+            var month = new DateTime(DateTime.Now.Year, day.Month, 1).ToString("MMMM");
+            var ncs = Model.Data.Where(p => p.CreationDate.Date == day.Date).ToList();
+            if (weeked.ContainsKey(week))
+            {
+                weeked[week].AddRange(ncs);
+            }
+            else
+            {
+                weeked.Add(week, ncs);
+            }
+            if (monthed.ContainsKey(month))
+            {
+                monthed[month].AddRange(ncs);
+            }
+            else
+            {
+                monthed.Add(month, ncs);
+            }
+        }
+    }
+    else
+    {
+        for (var i = 0; i < days; i++)
+        {
+            var day = Model.StartDate.AddDays(i);
+            var week = "S"+Tools.GetIso8601WeekOfYear(day.Date);
+            var month = "S"+Tools.GetIso8601WeekOfYear(day.Date);
+            var ncs = Model.Data.Where(p => p.CreationDate.Date == day.Date).ToList();
+            if (weeked.ContainsKey(week))
+            {
+                weeked[week].AddRange(ncs);
+            }
+            else
+            {
+                weeked.Add(week, ncs);
+            }
+            if (monthed.ContainsKey(month))
+            {
+                monthed[month].AddRange(ncs);
+            }
+            else
+            {
+                monthed.Add(month, ncs);
+            }
+        }
+    }
+
+    var ncsCats = Model.Data.SelectMany(p => p.MotifNCs).Select(p => new
+    {
+        p.Name,
+        p.Id, p.Color
+    }).ToList();
+    var cats = ncsCats.GroupBy(p => p).Select(p => p.Key).ToList();
+
+    var cats2 = Model.Data.Select(p => p.AgenceConcernée).GroupBy(p => p).ToList();
+}
+
+<script src="~/Content/assets/amcharts/core.js"></script>
+<script src="~/Content/assets/amcharts/charts.js"></script>
+<script src="~/Content/assets/amcharts/animated.js"></script>
+
+<script>
+    am4core.useTheme(am4themes_animated);
+</script>
+
+<div class="row dashboard">
+    @{
+        Html.RenderPartial("Filters", Model, new ViewDataDictionary
+        {
+            {"Title", ViewBag.Title}
+        });
+    }
+    <div class="col-xl-12 col-md-12 px-1 px-sm-3">
+        <div class="card product-progress-card">
+            <div class="card-block p-0">
+                <div class="pp-main row m-0">
+                    <div class="col-sm-12 col-md-6 px-0">
+                        <div class="pp-cont">
+                            <div class="w-100">
+                                <div class="card sale-card">
+                                    <div class="card-header">
+                                        <h4>Évolution du nombre de NC / semaine / type</h4>
+                                    </div>
+                                    <div class="card-block">
+                                        <div id="@nc1" style="height: 65vh"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6 px-0">
+                        <div class="pp-cont">
+                            <div class="w-100">
+                                <div class="card sale-card">
+                                    <div class="card-header">
+                                        <h4>Évolution des NC CIP QUAI</h4>
+                                    </div>
+                                    <div class="card-block">
+                                        <div id="@nc2" style="height: 65vh"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts
+{
+
+    <script>
+        $(function() {
+            $("#menu-rapport-regional").addClass("pcoded-trigger active").find(".pcoded-submenu.main").show()
+                .find("#menu-rapport-regional-@Model.Id").addClass("pcoded-trigger active").find(".pcoded-submenu")
+                .show().find("#menu-rapport-regional-nc-evolution-@Model.Id").addClass("active");
+        });
+
+        function savePDF(type) {
+            Promise.all([
+                @(nc1).exporting.pdfmake,
+                @(nc1).exporting.getImage("png"),
+                @(nc2).exporting.getImage("png")
+            ]).then(function(res) {
+
+                const pdfMake = res[0];
+
+                // pdfmake is ready
+                // Create document template
+                const doc = {
+                    pageSize: "A4",
+                    pageOrientation: "landscape",
+                    pageMargins: [30, 30, 30, 30],
+                    content: []
+                };
+
+                doc.content.push({
+                    text: "GEFCO CIP Quai",
+                    fontSize: 20,
+                    bold: true,
+                    margin: [0, -10, 0, 0]
+                });
+                doc.content.push({
+                    text: "Région @ViewBag.Region.Name",
+                    fontSize: 18,
+                    bold: false,
+                    margin: [0, 10, 0, 0]
+                });
+                doc.content.push({
+                    text: "Évolution des NC du @(ViewBag.StartDate.ToString("dd/MM/yyyy")) au @(ViewBag.EndDate.ToString("dd/MM/yyyy"))",
+                    fontSize: 16,
+                    bold: false,
+                    margin: [0, 10, 0, 30]
+                });
+
+                doc.content.push({
+                    columns: [{
+                        stack: [
+                            {
+                                text: "Évolution du nombre de NC / semaine / type",
+                                fontSize: 14,
+                                bold: true,
+                                margin: [0, 5, 0, 5]
+                            }, {
+                                image: res[1],
+                                width: 380
+                            }
+                        ],
+                        width: "*"
+                    }, {
+                            stack: [
+                                {
+                                    text: "Évolution des NC CIP QUAI",
+                                    fontSize: 14,
+                                    bold: true,
+                                    margin: [0, 5, 0, 5]
+                                }, {
+                                    image: res[2],
+                                    width: 380
+                                }
+                            ],
+                            width: "*"
+                        }],
+                    columnGap: 30
+                });
+
+                if (type === "print")
+                    pdfMake.createPdf(doc).print();
+                else
+                    pdfMake.createPdf(doc).download("@(DateTime.Now.ToString("yyyyMMdd-hhmmss")) - NC Régional Évolution - @(ViewBag.Region.Name).pdf");
+
+            });
+        }
+        function printPDF() {
+            savePDF("print");
+        }
+
+        var @nc1, @nc2;
+        am4core.ready(function() {
+            @nc1 = am4core.create("@nc1", am4charts.XYChart);
+            var chart = @nc1;
+            chart.logo.dispose();
+            // Add data
+            chart.data = [
+                @foreach (var group in weeked)
+                {
+                    <text>{
+                    "week": "@(Html.Raw(group.Key))",</text>
+                    foreach (var value in cats)
+                    {
+                        var ncs = group.Value.SelectMany(p => p.MotifNCs).Where(p => p.Id == value.Id).Select(p => p.Name).ToList();
+
+                        <text> "@(Html.Raw(value.Name))": @(ncs.Count()),</text>
+                    }
+                    <text>},</text>
+                }
+            ];
+
+            //Create category axis
+            var categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
+            categoryAxis.dataFields.category = "week";
+
+            // Create value axis
+            var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+            valueAxis.renderer.minLabelPosition = 0.01;
+            valueAxis.min = 0;
+            valueAxis.maxPrecision = 0;
+
+            // Add legend
+            chart.legend = new am4charts.Legend();
+
+            // Create series
+            function createSeries(name, color) {
+                const series = chart.series.push(new am4charts.LineSeries());
+                series.dataFields.valueY = name;
+                series.fill = am4core.color(color);
+                series.stroke = am4core.color(color);
+                series.dataFields.categoryX = "week";
+                series.name = name;
+                series.strokeWidth = 3;
+                const circleBullet = series.bullets.push(new am4charts.CircleBullet());
+                series.tooltipText = "{name} : {valueY}";
+            }
+
+            @foreach (var cat in cats)
+            {
+                <text> createSeries("@(Html.Raw(cat.Name))", "@(Html.Raw(cat.Color))"); </text>
+            }
+
+            @nc2 = am4core.create("@nc2", am4charts.XYChart);
+            chart = @nc2;
+            chart.logo.dispose();
+            // Add data
+            chart.data = [
+                @foreach (var group in monthed)
+                {
+                    <text>{
+                    "month": "@(Html.Raw(group.Key))",</text>
+                    foreach (var value in cats2)
+                    {
+                        var ncs = group.Value.Where(p => p.AgenceConcernée_Id == value.Key.Id).SelectMany(p => p.MotifNCs).Count();
+                        <text> "@(Html.Raw(value.Key.Name))": @(ncs),</text>
+                    }
+                    <text>},</text>
+                }
+            ];
+            @if (cats2.Count() <= 2)
+            {
+                <text>
+                    chart.colors.list = [
+                        am4core.color("#0B2850"),
+                        am4core.color("#ffcc00"),
+                    ];
+                </text>
+            }
+            else
+            {
+                <text>
+                    chart.colors.list = [
+                        am4core.color("#00538b"),
+                        am4core.color("#ffcf79"),
+                        am4core.color("#ee9800"),
+                        am4core.color("#95d7e9"),
+                        am4core.color("#0099d4"),
+                        am4core.color("#c2ddb0"),
+                        am4core.color("#007d4a"),
+                        am4core.color("#f28f9a"),
+                        am4core.color("#ae1022"),
+                        am4core.color("#7b67a8"),
+                    ];
+                </text>
+
+            }
+
+// Create axes
+            categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
+            categoryAxis.dataFields.category = "month";
+            categoryAxis.numberFormatter.numberFormat = "#";
+            //categoryAxis.renderer.inversed = true;
+            categoryAxis.renderer.grid.template.location = 0;
+            categoryAxis.renderer.cellStartLocation = 0.1;
+            categoryAxis.renderer.cellEndLocation = 0.9;
+
+            valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+            valueAxis.min = 0;
+            valueAxis.maxPrecision = 0;
+
+// Create series
+            function createSeries2(field, name, color) {
+                const series = chart.series.push(new am4charts.LineSeries());
+                series.dataFields.valueY = field;
+                series.dataFields.categoryX = "month";
+                series.name = name;
+                series.strokeWidth = 3;
+                series.bullets.push(new am4charts.CircleBullet());
+                series.tooltipText = "{name} : {valueY}";
+                series.sequencedInterpolation = true;
+            }
+
+            @foreach (var value in cats2)
+            {
+                <text> createSeries2("@(Html.Raw(value.Key.Name))", "@(Html.Raw(value.Key.Name))"); </text>
+            }
+            chart.legend = new am4charts.Legend();
+            // Add chart cursor
+            chart.cursor = new am4charts.XYCursor();
+            chart.cursor.behavior = "zoomX";
+
+        }); // end am4core.ready()
+
+    </script>
+
+}

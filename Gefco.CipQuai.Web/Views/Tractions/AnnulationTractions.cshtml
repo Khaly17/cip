@@ -1,0 +1,156 @@
+﻿@using Gefco.CipQuai.Web.Models
+@using Syncfusion.EJ2.Lists
+@model JoursFeriesViewModel
+
+@{
+    ViewBag.Title = "Annulation de tractions";
+    Layout = "~/Views/Shared/_AuthLayout.cshtml";
+    ViewBag.ShowHeader = false;
+    var id = Tools.GenerateRandomString(8);
+    var btn3 = Tools.GenerateRandomString(8);
+    var btn2 = Tools.GenerateRandomString(8);
+    var btn4 = Tools.GenerateRandomString(8);
+}
+<style>
+    #capture .slide {
+        -webkit-transition: left .3s ease-out;
+        transition: left .3s ease-out;
+    }
+
+</style>
+<form id="searchForm" method="post">
+    <input type="hidden" name="selection" id="selection" />
+    <input type="hidden" name="type" id="type" value="Cancel" />
+    <div class="row dashboard" id="capture">
+        <div class="col-xl-12 col-md-12 px-1 px-sm-3">
+            <div class="card product-progress-card">
+                <div class="card-header main-header">
+                    <h4>@ViewBag.Title</h4>
+                </div>
+                <div class="card-block p-0">
+                    <div class="pp-main row m-0">
+                        <div class="col-12 px-0 slide">
+                            <div class="d-sm-block d-md-inline-block ml-2">
+                                <label style="width: 30px">Du </label><input ejs-for="true" id="StartDate" name="StartDate" type="text" value="@Model.StartDate.ToString("dd/MM/yyyy")" />
+                            </div>
+                            <div class="d-sm-block d-md-inline-block mt-2 mt-md-0">
+                                <label style="width: 30px">Au </label><input ejs-for="true" id="EndDate" name="EndDate" type="text" value="@Model.EndDate.ToString("dd/MM/yyyy")" />
+                            </div>
+                            <div class="d-sm-block d-md-inline-block my-2 mr-2">
+                                <button id="@btn2"></button>
+                            </div>
+                            <div class="d-sm-block d-md-inline-block my-2 f-right mr-2">
+                                <button id="@btn4"></button>
+                            </div>
+                            <div class="d-sm-block d-md-inline-block my-2 f-right mr-2">
+                                <button id="@btn3"></button>
+                            </div>
+                        </div>
+                        <div class="col-12 px-0 slide mt-2">
+                            @Html.EJS().Grid("CheckboxSelection").DataSource(Model.Tractions).SelectionSettings(sel => { sel.PersistSelection(true); }).Columns(col =>
+                            {
+                                col.Type("checkbox").Width("50").Add();
+                                col.Field(nameof(TractionViewModel.Id)).IsPrimaryKey(true).HeaderText(null).Width("0").Visible(false).Add();
+                                col.Field(nameof(TractionViewModel.Name)).HeaderText("Traction").Width("180").Add();
+                                col.Field(nameof(TractionViewModel.CheckCancelled)).HeaderText("Annulé").Width("60").Add();
+                            }).AllowPaging().PageSettings(page => page.PageCount(8).PageSize(10)).Toolbar(new List<string>()
+                            {
+                                "Search"
+                            }).Render()
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section scripts
+{
+    <script>
+        var start = $("#@nameof(Model.StartDate)");
+        var end = $("#@nameof(Model.EndDate)");
+
+        $("#menu-admin-jf").addClass("active");
+        var StartDatePicker=new ejs.calendars.DatePicker({
+            "htmlAttributes": {
+                "ejs-for": "true",
+                "id": "StartDate"
+            },
+            "format": "dd/MM/yyyy",
+            "showClearButton": false,
+            "value": "@Model.StartDate.ToString("O")",
+            "width": "120px"
+        });
+        StartDatePicker.appendTo("#StartDate");
+        let _function = function(e) {
+            if (e.keyCode === 13) {
+                $("#searchForm").submit();
+                return false;
+            }
+        };
+        $("#StartDate").keydown(_function);
+        $("#EndDate").keydown(_function);
+        var EndDatePicker=new ejs.calendars.DatePicker({
+            "htmlAttributes": {
+                "ejs-for": "true",
+                "id": "EndDate"
+            },
+            "format": "dd/MM/yyyy",
+            "showClearButton": false,
+            "value": "@Model.EndDate.ToString("O")",
+            "width": "120px"
+        });
+        EndDatePicker.appendTo("#EndDate"); 
+
+        var Button@(btn3)=new ejs.buttons.Button({
+            "content": "Annuler les tractions sélectionnées",
+            "cssClass": "e-danger"
+        });
+        Button@(btn3).appendTo("#@(btn3)");
+        var Button@(btn4)=new ejs.buttons.Button({
+            "content": "Rétablir les tractions sélectionnées",
+            "cssClass": "e-default"
+        });
+        Button@(btn4).appendTo("#@(btn4)");
+        var Button@(btn2)=new ejs.buttons.Button({
+            "content": "Filtrer",
+            "cssClass": "e-primary"
+        });
+        Button@(btn2).appendTo("#@(btn2)");
+        $("#@(btn3)").on("click", function(e) {
+            var gridObj = document.getElementById('CheckboxSelection').ej2_instances[0];
+            if (gridObj.checkAllRows === "Uncheck")
+                return false;
+            var selection = gridObj.getSelectedRecords().map(a => a.Id).join();
+            $("#selection").val(selection);
+            $("#type").val("Cancel");
+        });
+        $("#@(btn4)").on("click", function(e) {
+            var gridObj = document.getElementById('CheckboxSelection').ej2_instances[0];
+            if (gridObj.checkAllRows === "Uncheck")
+                return false;
+            var selection = gridObj.getSelectedRecords().map(a => a.Id).join();
+            $("#selection").val(selection);
+            $("#type").val("Restore");
+        });
+        $("#@(btn2)").on("click", function (e) {
+            window.location = window.location.protocol +
+                "//" +
+                window.location.host +
+                window.location.pathname +
+                "?startDate=" +
+                encodeURIComponent(start.val()) +
+                "&endDate=" +
+                encodeURIComponent(end.val());
+            return false;
+        });
+
+        @*function toggleRole(e) {
+            let input = $(e);
+            $.post('@Url.Action("ToggleRole")', { roleId: input.val(), AgenceId: '@Model.Id', isInRole: input.prop('checked') }, () => { window.location = window.location });
+        }*@
+    </script>
+
+}
+@Html.EJS().ScriptManager()

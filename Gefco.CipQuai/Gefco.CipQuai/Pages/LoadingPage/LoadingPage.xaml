@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<controls:ExtContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:Gefco.CipQuai.Controls;assembly=Gefco.CipQuai"
+             xmlns:progressBar="clr-namespace:Syncfusion.XForms.ProgressBar;assembly=Syncfusion.SfProgressBar.XForms"
+             x:Class="Gefco.CipQuai.LoadingPage.LoadingPage" PageTitle="Chargement" PageIcon="" ControlTemplate="{StaticResource GefcoPage}" NavigationPage.HasNavigationBar="False">
+    <ContentPage.Content>
+        <Grid Padding="20">
+            <Grid.RowDefinitions>
+            </Grid.RowDefinitions>
+
+            <Label Text="{Binding LoadingMessage}" Grid.Row="0"
+                   Style="{StaticResource TitleLabelStyle}" />
+
+            <progressBar:SfCircularProgressBar x:Name="TrackInsideProgressBar"
+                                               AnimationDuration="50" ProgressColor="{StaticResource MediumBlueColor}"
+                                               HorizontalOptions="Center" VerticalOptions="Center"
+                                               HeightRequest="200" WidthRequest="200"
+                                               Progress="{Binding Progress}"
+            >
+
+                <progressBar:SfCircularProgressBar.Content>
+                    <StackLayout>
+                        <Label x:Name="TrackInsideProgressBarProgressLabel" TextColor="{StaticResource MediumBlueColor}"
+                               HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"
+                               HeightRequest="60" WidthRequest="60" Text="{Binding ProgressText}"
+                               HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontSize="20">
+                        </Label>
+                    </StackLayout>
+                </progressBar:SfCircularProgressBar.Content>
+            </progressBar:SfCircularProgressBar>
+
+        </Grid>
+    </ContentPage.Content>
+</controls:ExtContentPage>

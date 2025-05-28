@@ -1,0 +1,100 @@
+﻿@using Microsoft.Ajax.Utilities
+@using Gefco.CipQuai.Web.Models
+@model Gefco.CipQuai.Web.Models.IdentityRoleViewModel
+
+@{
+    ViewBag.PageIcon = "feather icon-shield";
+    ViewBag.Title = "Editer role [" + Model.Name + "]";
+    ViewBag.ShowHeader = false;
+    var id = Tools.GenerateRandomString(8);
+}
+
+<div class="row dashboard" id="capture">
+    <div class="col-12 px-1 px-sm-3">
+        <div class="card product-progress-card">
+            <div class="card-header main-header">
+                <h4>Infos role - @Model.Name</h4>
+            </div>
+            <div class="card-block p-2">
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+
+                    @Html.HiddenFor(model => model.RoleId)
+
+                    <div class="form-group row">
+                        @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "col-sm-2 col-form-label" })
+                        <div class="col-sm-12 col-md-4 col-xl-3">
+                            @Html.EJS().TextBoxFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } }).Render()
+                            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-md-2"></div>
+                        <div class="col-md-10">
+                            <button type="button" class="e-btn e-danger" onclick="javascript:window.location = '@Url.Action("Index", "Roles")'">Retour à la liste</button>
+                            <input type="submit" value="Enregistrer" class="e-btn e-primary" />
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    @*<div class="col-12 col-md-3">
+        <div class="card product-progress-card">
+            <div class="card-header main-header">
+                <h4>Role pages</h4>
+            </div>
+            <div class="card-block accordion-block p-2">
+                <div id="single-open" role="tablist">
+                    @using (var db = new ApplicationDbContext())
+                    {
+                        var pages = db.Pages.OrderBy(p => p.Section.SortOrder).ThenBy(p => p.SortOrder).ThenBy(p => p.SortOrder).ToList();
+                        var sections = pages.Select(p => p.Section).DistinctBy(p => p.Id);
+                        foreach (var section in sections)
+                        {
+                            var sectionPages = pages.Where(p => p.Section != null && p.Section.Id == section.Id);
+
+                            <a class="accordion-msg waves-effect" id="ui-id-1" aria-controls="ui-id-2" tabindex="0"><span class="ui-accordion-header-icon"></span>@(section.Name + " (" + sectionPages.Count() + ")")</a>
+                            <div class="accordion-desc py-3" id="ui-id-2" aria-labelledby="ui-id-1" role="tabpanel" aria-hidden="false" style="">
+                                @foreach (var page in sectionPages)
+                                {
+                                    var isInRole = page.Roles.Any(p => p.Role.Id == Model.RoleId);
+                                    <div class="col-12 py-1">
+                                        <div class="checkbox-fade fade-in-primary">
+                                            <label>
+                                                <input type="checkbox" value="@page.Id" @(isInRole ? "checked" : "") onchange="togglePageRole(this)">
+                                                <span class="cr"><i class="cr-icon icofont icofont-verification-check txt-primary"></i></span>
+                                                @page.Name
+                                            </label>
+                                        </div>
+
+                                    </div>
+                                }
+                            </div>
+
+
+
+                        }
+
+                    }
+                </div>
+            </div>
+        </div>
+    </div>*@
+</div>
+
+
+@section scripts
+{
+        <script>
+        $("#menu-admin-roles").addClass("active");
+        function togglePageRole(e) {
+            let input = $(e);
+            $.post('@Url.Action("ToggleRole", "Pages")', { roleId: '@Model.RoleId', pageId: input.val(), isInRole: input.prop('checked') }, () => { window.location = window.location });
+        }
+        $( "#single-open" ).accordion();
+        </script>
+
+    }

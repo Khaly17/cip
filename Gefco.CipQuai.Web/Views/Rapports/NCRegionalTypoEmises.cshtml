@@ -1,0 +1,272 @@
+﻿@using Gefco.CipQuai.Web.Models
+@using Gefco.CipQuai.Web.Views
+@using Microsoft.Ajax.Utilities
+@using Syncfusion.EJ2.DropDowns
+@using Syncfusion.EJ2.PivotView
+@using FilterType = Syncfusion.EJ2.PivotView.FilterType
+@model Gefco.CipQuai.Web.Views.NCStatListViewModel
+@{
+    ViewBag.PageIcon = "feather icon-home";
+    ViewBag.Title = "Rapport Régional - Non conformités émises";
+    ViewBag.ShowHeader = false;
+    Layout = "~/Views/Shared/_AuthLayout.cshtml";
+
+    var nc1 = Tools.GenerateRandomString(8);
+
+    List<NCPivotData> data2 = new List<NCPivotData>();
+    foreach (var nc in Model.Data.SelectMany(p => p.MotifNCs))
+    {
+        data2.Add(new NCPivotData(){ Motif = nc.Name, Count = 1, Color = nc.Color });
+    }
+
+    var data = data2.GroupBy(p => p).Select(p => new DataValue(p.Key.Motif, p.Count(), p.Key.Color)).ToList().GroupBy(p => p.Name).Select(p => new DataValue(p.Key, p.Sum(q => q.Value), p.First().Color)).ToList();
+    data.Sort((d1, d2) => d1.Value < d2.Value ? 1 : -1);
+
+}
+
+<script src="~/Content/assets/amcharts/core.js"></script>
+<script src="~/Content/assets/amcharts/charts.js"></script>
+<script src="~/Content/assets/amcharts/animated.js"></script>
+
+<script>
+    am4core.useTheme(am4themes_animated);
+</script>
+<style>
+    .e-frozencontent table, .e-headercontent table {
+        width: 300px !important;
+    }
+    .e-movablecontent {
+        overflow-y: hidden !important;
+    }
+    .e-movablecontent table {
+        width: auto !important;
+    }
+    
+</style>
+<div class="row dashboard">
+    @{
+        Html.RenderPartial("Filters", Model, new ViewDataDictionary
+                {
+                    {"Title", @ViewBag.Title}
+                });
+    }    <div class="col-xl-12 col-md-12 px-1 px-sm-3">
+        <div class="card product-progress-card">
+            <div class="card-header main-header">
+
+            </div>
+            <div class="card-block p-0">
+                <div class="pp-main row m-0">
+                    <div class="col-12 px-0">
+                        <div class="pp-cont">
+                            <div class="w-100">
+                                <div class="card sale-card">
+                                    <div class="card-header">
+                                        <span class="f-right" style="line-height: 30px;">
+                                            <a class="details" href="#grid">Accès à la grille</a>
+                                            <a class="details" href="#chart" style="display:none">Accès au graphique</a>
+                                        </span>
+                                        <h4>NC émises par type de NC</h4>
+                                    </div>
+                                    <div class="card-block">
+                                        <div id="@nc1" style="height:55vh"></div>
+                                        @(Html.EJS().PivotView("pivotview").Height("400").Width("100%").HtmlAttributes(new Dictionary<string, object>() { { "style", "display:none" } }).AllowConditionalFormatting().EnableValueSorting()
+                                              .DataSource(dataSource => dataSource.Data(data).ExpandAll(false).EnableSorting(false)
+                                                                      //.FormatSettings(formatsettings => { formatsettings.Name("Amount").Format("C0").MaximumSignificantDigits(10).MinimumSignificantDigits(1).UseGrouping(true).Add(); })
+                                                                      .Rows(rows => { rows.Name("Name").Add(); })
+                                                                      .Values(values => { values.Name("Value").Caption("Nb Type NC").Add(); })
+                                                                      .ConditionalFormatSettings(format =>
+                                                                      {
+                                                                          format.Conditions(Condition.LessThan).Measure("Value").Value1(1).Style(style => { style.Color("#00000000"); }).Add();
+                                                                      }))
+                                                                      .Render())
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    #pivotview {
+        width: 100%;
+        height: 100%;
+    }
+    @@media only screen and (max-width: 400px) {
+        #pivot-grid-section {
+            overflow: auto;
+        }
+    }
+</style>
+
+@section scripts
+                    {
+
+<script>
+    $(function() {
+        $("#menu-rapport-regional").addClass("pcoded-trigger active").find(".pcoded-submenu.main").show()
+            .find("#menu-rapport-regional-@Model.Id").addClass("pcoded-trigger active").find(".pcoded-submenu")
+            .show().find("#menu-rapport-regional-nc-typoemises-@Model.Id").addClass("active");
+
+        const grid_button = $("a[href='#grid']");
+        const chart_button = $("a[href='#chart']");
+        grid_button.click((e) => {
+            chart_button.show();
+            grid_button.hide();
+            $("#@nc1").hide();
+            $("#pivotview").show();
+        });
+        chart_button.click((e) => {
+            chart_button.hide();
+            grid_button.show();
+            $("#@nc1").show();
+            $("#pivotview").hide();
+        });
+
+    });
+
+        function savePDF(type) {
+        
+            Promise.all([
+                @(nc1).exporting.pdfmake,
+                @(nc1).exporting.getImage("png")
+            ]).then(function(res) {
+
+                const pdfMake = res[0];
+
+                // pdfmake is ready
+                // Create document template
+                const doc = {
+                    pageSize: "A4",
+                    pageOrientation: "landscape",
+                    pageMargins: [30, 30, 30, 30],
+                    content: []
+                };
+
+                doc.content.push({
+                    text: "GEFCO CIP Quai",
+                    fontSize: 20,
+                    bold: true,
+                    margin: [0, -10, 0, 0]
+                });
+                doc.content.push({
+                    text: "Région @ViewBag.Region.Name",
+                    fontSize: 18,
+                    bold: false,
+                    margin: [0, 10, 0, 0]
+                });
+                doc.content.push({
+                    text: "NC reçues du @(ViewBag.StartDate.ToString("dd/MM/yyyy")) au @(ViewBag.EndDate.ToString("dd/MM/yyyy"))",
+                    fontSize: 16,
+                    bold: false,
+                    margin: [0, 10, 0, 30]
+                });
+
+                doc.content.push({
+                    stack: [
+                        {
+                            text: "NC reçues par type de NC",
+                            fontSize: 14,
+                            bold: true,
+                            margin: [0, 5, 0, 5]
+                        }, {
+                            image: res[1],
+                            width: 770,
+                            pageOrientation: 'portrait', pageBreak: 'after'
+                        }
+                    ],
+                    width: "*"
+                });
+
+                if (type === "print")
+                    pdfMake.createPdf(doc).print();
+                else
+                    pdfMake.createPdf(doc).download("@(DateTime.Now.ToString("yyyyMMdd-hhmmss")) - NC Régional Typo Émises - @(ViewBag.Region.Name).pdf");
+
+            });
+        }
+        function printPDF() {
+            savePDF("print");
+        }
+
+        var @nc1;
+        am4core.ready(function () {
+            @* NC / Agence *@
+            // Create chart instance
+            @nc1 = am4core.create("@nc1", am4charts.XYChart);
+            var chart = @nc1;
+            chart.logo.dispose();
+            chart.preloader.disabled = true;
+            chart.marginLeft = 0;
+            chart.marginRight = 0;
+
+            chart.data = @Html.Raw(Json.Encode(data));
+            chart.colors.list = [
+                @foreach (var dataValue in data)
+                {
+                <text>am4core.color("@dataValue.Color"),</text>
+                }
+            ];
+
+            // Create axes
+        var categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
+        categoryAxis.dataFields.category = "Name";
+        //categoryAxis.renderer.grid.template.location = 0;
+        //categoryAxis.renderer.minGridDistance = 0;
+        //categoryAxis.tooltip.disabled = true;
+        categoryAxis.renderer.disabled = true;
+        //categoryAxis.renderer.labels.template.rotation = -60;
+
+        categoryAxis.renderer.grid.template.location = 0;
+        categoryAxis.renderer.minGridDistance = 30;
+        //categoryAxis.renderer.labels.template.horizontalCenter = "right";
+        //categoryAxis.renderer.labels.template.verticalCenter = "middle";
+        //categoryAxis.renderer.labels.template.rotation = -90;
+        //categoryAxis.renderer.inside = true;
+        //categoryAxis.tooltip.disabled = true;
+        //categoryAxis.renderer.minHeight = 110;
+
+            var legend = new am4charts.Legend();
+            legend.marginTop = 20;
+            legend.parent = chart.chartContainer;
+            legend.data = @Html.Raw(Json.Encode(data.Select(p => new { name = p.Name, fill = p.Color })));
+        
+        var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+        valueAxis.renderer.minWidth = 40;
+        valueAxis.min = 0;
+        valueAxis.maxPrecision = 0;
+        valueAxis.cursorTooltipEnabled = false;
+
+        // Create series
+        var series = chart.series.push(new am4charts.ColumnSeries());
+        series.sequencedInterpolation = true;
+        series.dataFields.valueY = "Value";
+        series.dataFields.categoryX = "Name";
+        series.tooltipText = "[{categoryX}: bold]{categoryX} : {valueY}[/]";
+        series.columns.template.strokeWidth = 0;
+
+        series.tooltip.pointerOrientation = "vertical";
+
+        series.columns.template.column.cornerRadiusTopLeft = 10;
+        series.columns.template.column.cornerRadiusTopRight = 10;
+        series.columns.template.column.fillOpacity = 1;
+
+        // on hover, make corner radiuses bigger
+        var hoverState = series.columns.template.column.states.create("hover");
+        hoverState.properties.cornerRadiusTopLeft = 0;
+        hoverState.properties.cornerRadiusTopRight = 0;
+        hoverState.properties.fillOpacity = 1;
+
+        series.columns.template.adapter.add("fill", (fill, target) => {
+            return chart.colors.getIndex(target.dataItem.index);
+        })
+
+        // Cursor
+        chart.cursor = new am4charts.XYCursor();
+        }); // end am4core.ready()
+
+</script>
+
+}

@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<controls:ExtContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:doubleDeckPage="clr-namespace:Gefco.CipQuai.DoubleDeckPage;assembly=Gefco.CipQuai"
+             xmlns:buttons="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms"
+             xmlns:controls="clr-namespace:Gefco.CipQuai.Controls;assembly=Gefco.CipQuai" 
+             x:Class="Gefco.CipQuai.DoubleDeckPage.SaisieNbBarresDPCasseesPage" NavBarMainCommand="{Binding GoBackCommand}" PageIcon="ic_arrow_backy.svg" PageTitle="{Binding PageTitle}" ControlTemplate="{StaticResource GefcoPage}" NavigationPage.HasNavigationBar="False" ShowHome="True" Appearing="OnAppearing" IsLoading="{Binding IsLoading}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <Label Text="{Binding SaisieNbBarresDPCasseesInvite}" Grid.Row="0" Margin="20" FontSize="18" Style="{StaticResource TitleLabelStyle}" />
+
+        <StackLayout Grid.Row="1" Spacing="0">
+            <controls:ExtEntry Focused="MyEntry_OnFocused" HorizontalTextAlignment="Center" FontSize="36" HorizontalOptions="Center" WidthRequest="75" Keyboard="Numeric" Text="{Binding NbDPCassées, Mode=TwoWay}" x:Name="MyEntry" TextColor="{Binding IsValidNbDPCassées, Converter={StaticResource BooleanValidConverter}}"/>
+            <ContentView HorizontalOptions="Center" WidthRequest="75" HeightRequest="1" BackgroundColor="{Binding IsValidNbDPCassées, Converter={StaticResource BooleanValidConverter}}" />
+            <controls:FloatingActionButtonView Command="{Binding ValidateNbDPCasséesCommand}" IsEnabled="{Binding IsValidNbDPCassées}" Margin="20" />
+
+        </StackLayout>
+
+
+    </Grid>
+</controls:ExtContentPage>

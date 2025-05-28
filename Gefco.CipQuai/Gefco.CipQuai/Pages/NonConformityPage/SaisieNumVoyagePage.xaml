@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<controls:ExtContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:Gefco.CipQuai.Controls;assembly=Gefco.CipQuai"
+             xmlns:buttons="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms"
+             x:Class="Gefco.CipQuai.NonConformityPage.SaisieNumVoyagePage" NavBarMainCommand="{Binding GoBackCommand}" PageIcon="ic_arrow_backy.svg" PageTitle="{Binding PageTitle}" ControlTemplate="{StaticResource GefcoPage}" NavigationPage.HasNavigationBar="False" Appearing="OnAppearing" ShowHome="True" IsLoading="{Binding IsLoading}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <Label Text="{Binding SaisieNumVoyageInvite}" Grid.Row="0" Margin="20" FontSize="18" Style="{StaticResource TitleLabelStyle}" />
+
+        <StackLayout Grid.Row="1" Spacing="0" >
+            <controls:ExtEntry Margin="20,0" HorizontalOptions="FillAndExpand" Text="{Binding NumVoyage, Mode=TwoWay}" x:Name="MyEntry" Placeholder="{Binding SaisieNumVoyagePlaceholder}" TextColor="{Binding IsInvalidNumVoyage, Converter={StaticResource BooleanInvalidConverter}}"  />
+            <ContentView Margin="20,0" HeightRequest="1" BackgroundColor="{Binding IsInvalidNumVoyage, Converter={StaticResource BooleanInvalidConverter}}" />
+            <Label Style="{StaticResource InvalidLabelStyle}" Text="{Binding NumVoyageErrorMessage}" Margin="20,0" />
+            <controls:FloatingActionButtonView Command="{Binding ValidateNumVoyageCommand}" IsEnabled="{Binding IsValidNumVoyage}" Margin="20" />
+
+        </StackLayout>
+
+        <!-- Bottom Menus -->
+        <ContentView Grid.Row="0" Grid.RowSpan="3" x:Name="BusyIndicator" BackgroundColor="{StaticResource BottomMenuOverlayColor}" Opacity="0" IsVisible="False">
+        </ContentView>
+
+        <StackLayout Grid.Row="1" Grid.RowSpan="2" VerticalOptions="End" Margin="5" x:Name="CancelButtonsFrame" TranslationY="250">
+            <Frame BackgroundColor="{StaticResource ColorFrameBackground}" HasShadow="True" CornerRadius="5" Padding="0">
+                <StackLayout Spacing="0">
+                    <Label Style="{StaticResource FrameTitleLabelStyle}" Text="{Binding CancelDeclarationInvite}" Margin="5,10"></Label>
+                    <ContentView HeightRequest="2" BackgroundColor="{StaticResource BottomMenuSeparatorColor}" Margin="0" />
+                    <buttons:SfButton Clicked="StopAndFreeDeclaration" Text="{Binding ContinueButtonInvite}" CornerRadius="0" BorderWidth="0"
+                            Style="{StaticResource SecondaryActionButtonStyle}" FontAttributes="None">
+                    </buttons:SfButton>
+                    <!--<buttons:SfButton Command="{Binding DeletePictureCommand}" Text="{Binding DeclarationImpossibleChoosePictureButtonLabel}"
+                                   Style="{StaticResource SecondaryActionButtonStyle}">
+                </buttons:SfButton>-->
+
+                </StackLayout>
+            </Frame>
+            <Frame BackgroundColor="{StaticResource ColorFrameBackground}" HasShadow="True" Padding="5,0" CornerRadius="5">
+                <StackLayout Spacing="0">
+                    <buttons:SfButton Clicked="CancelBottomMenu" Text="{Binding CancelInvite}" CornerRadius="0" BorderWidth="0"
+                            Style="{StaticResource SecondaryActionButtonStyle}">
+                    </buttons:SfButton>
+                </StackLayout>
+            </Frame>
+        </StackLayout>
+
+    </Grid>
+</controls:ExtContentPage>

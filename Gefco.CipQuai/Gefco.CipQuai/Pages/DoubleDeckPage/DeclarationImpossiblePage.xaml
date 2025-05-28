@@ -1,0 +1,144 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<controls:ExtTakePicturePage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:doubleDeckPage="clr-namespace:Gefco.CipQuai.DoubleDeckPage;assembly=Gefco.CipQuai"
+             xmlns:buttons="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms"
+             xmlns:controls="clr-namespace:Gefco.CipQuai.Controls;assembly=Gefco.CipQuai"
+             xmlns:xForms="clr-namespace:Syncfusion.SfBusyIndicator.XForms;assembly=Syncfusion.SfBusyIndicator.XForms"
+             x:Name="rootElement" 
+             x:Class="Gefco.CipQuai.DoubleDeckPage.DeclarationImpossiblePage" NavBarMainCommand="{Binding GoBackCommand}" PageIcon="ic_arrow_backy.svg" PageTitle="{Binding ViewModel.PageTitle}" ControlTemplate="{StaticResource GefcoPage}" NavigationPage.HasNavigationBar="False" IsLoading="{Binding IsLoading}" ShowHome="True">
+  <controls:ExtTakePicturePage.BindingContext>
+    <doubleDeckPage:DeclarationImpossiblePageViewModel />
+  </controls:ExtTakePicturePage.BindingContext>
+  <controls:ExtTakePicturePage.Resources>
+    <ResourceDictionary>
+      <doubleDeckPage:MotifDPTemplateSelector x:Key="MotifDPTemplateSelector">
+        <doubleDeckPage:MotifDPTemplateSelector.OtherItemTemplate>
+          <DataTemplate>
+            <StackLayout>
+              <buttons:SfCheckBox Text="{Binding MotifDP.Name}" IsChecked="{Binding IsChecked, Mode=TwoWay}" />
+              <controls:ExtEntry Placeholder="{Binding SaisieAutreMotifDPPlaceholder}" Text="{Binding BindingContext.ViewModel.AutreMotifDP, Mode=TwoWay, Source={x:Reference rootElement}}" IsVisible="{Binding IsChecked, Mode=TwoWay}" />
+              <ContentView HeightRequest="1" BackgroundColor="Black" IsVisible="{Binding IsChecked, Mode=TwoWay}" />
+            </StackLayout>
+          </DataTemplate>
+
+        </doubleDeckPage:MotifDPTemplateSelector.OtherItemTemplate>
+        <doubleDeckPage:MotifDPTemplateSelector.DPCasseeItemTemplate>
+          <DataTemplate>
+            <Grid>
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="Auto" />
+              </Grid.ColumnDefinitions>
+              <buttons:SfCheckBox Text="{Binding MotifDP.Name}" IsChecked="{Binding IsChecked, Mode=TwoWay}" />
+              <controls:ExtEntry Grid.Column="1" WidthRequest="50" HorizontalTextAlignment="Center" HorizontalOptions="CenterAndExpand" IsVisible="{Binding IsChecked, Mode=TwoWay}" Text="{Binding BindingContext.ViewModel.NbDPCassées, Mode=TwoWay, Source={x:Reference rootElement}}" Keyboard="Numeric"></controls:ExtEntry>
+              <ContentView Grid.Column="1" IsVisible="{Binding IsChecked, Mode=TwoWay}" VerticalOptions="End" HeightRequest="1" BackgroundColor="Black" />
+            </Grid>
+          </DataTemplate>
+        </doubleDeckPage:MotifDPTemplateSelector.DPCasseeItemTemplate>
+        <doubleDeckPage:MotifDPTemplateSelector.RegularItemTemplate>
+          <DataTemplate>
+            <StackLayout Orientation="Horizontal">
+              <buttons:SfCheckBox Text="{Binding MotifDP.Name}" IsChecked="{Binding IsChecked, Mode=TwoWay}"></buttons:SfCheckBox>
+            </StackLayout>
+          </DataTemplate>
+        </doubleDeckPage:MotifDPTemplateSelector.RegularItemTemplate>
+      </doubleDeckPage:MotifDPTemplateSelector>
+    </ResourceDictionary>
+  </controls:ExtTakePicturePage.Resources>
+
+    <ContentPage.Content>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <Label Text="{Binding ViewModel.DeclarationImpossibleInvite}" Grid.Row="0" Margin="20" FontSize="18" Style="{StaticResource TitleLabelStyle}" />
+
+            <StackLayout Grid.Row="1" Spacing="0" Padding="20">
+                <Grid RowSpacing="20">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <StackLayout Grid.Row="0" BindableLayout.ItemsSource="{Binding ViewModel.MotifsDP}" BindableLayout.ItemTemplateSelector="{StaticResource MotifDPTemplateSelector}" />
+                    <buttons:SfButton  Grid.Row="1" Grid.Column="0" Clicked="ShowPictureMenu"
+                           Style="{StaticResource SecondaryActionButtonStyle}">
+                        <Grid HorizontalOptions="FillAndExpand">
+                            <Label Text="{Binding ViewModel.TakePictureButtonLabel}" Style="{StaticResource SecondaryActionButtonLabelStyle}"></Label>
+                            <controls:ExtImage HeightRequest="30" Source="Camera.svg" HorizontalOptions="End" Margin="10,0" />
+                        </Grid>
+                    </buttons:SfButton>
+                </Grid>
+            </StackLayout>
+
+            <Grid Grid.Row="2" VerticalOptions="End" ColumnSpacing="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+
+                <buttons:SfButton Grid.Column="1" Text="{Binding ViewModel.NextButtonLabel}" CornerRadius="0" Clicked="GotoNextStep" Style="{StaticResource ActionButtonStyle}" />
+            </Grid>
+
+            <!-- Bottom Menus -->
+            <ContentView Grid.Row="0" Grid.RowSpan="3" x:Name="BusyIndicator" BackgroundColor="{StaticResource BottomMenuOverlayColor}" Opacity="0" IsVisible="False">
+            </ContentView>
+
+            <StackLayout Grid.Row="1" Grid.RowSpan="2" VerticalOptions="End" Margin="5" x:Name="BottomButtonsFrame" TranslationY="250">
+                <Frame BackgroundColor="{StaticResource ColorFrameBackground}" HasShadow="True" Padding="5,0" CornerRadius="5">
+                    <StackLayout Spacing="0">
+                        <buttons:SfButton Clicked="TakePicture" Text="{Binding ViewModel.TakePictureButtonLabel}" CornerRadius="0" BorderWidth="0"
+                            Style="{StaticResource SecondaryActionButtonStyle}" FontAttributes="None">
+                        </buttons:SfButton>
+                        <ContentView HeightRequest="1" BackgroundColor="{StaticResource BottomMenuSeparatorColor}" />
+                        <buttons:SfButton Clicked="ChoosePicture" Text="{Binding ViewModel.ChoosePictureButtonLabel}" CornerRadius="0" BorderWidth="0"
+                            Style="{StaticResource SecondaryActionButtonStyle}" FontAttributes="None">
+                        </buttons:SfButton>
+                        <!--<buttons:SfButton Command="{Binding DeletePictureCommand}" Text="{Binding DeclarationImpossibleChoosePictureButtonLabel}"
+                                   Style="{StaticResource SecondaryActionButtonStyle}">
+                </buttons:SfButton>-->
+
+                    </StackLayout>
+                </Frame>
+                <Frame BackgroundColor="{StaticResource ColorFrameBackground}" HasShadow="True" Padding="5,0" CornerRadius="5">
+                    <StackLayout Spacing="0">
+                        <buttons:SfButton Clicked="CancelPictureMenu" Text="{Binding ViewModel.CancelInvite}" CornerRadius="0" BorderWidth="0"
+                            Style="{StaticResource SecondaryActionButtonStyle}">
+                        </buttons:SfButton>
+                    </StackLayout>
+                </Frame>
+            </StackLayout>
+            <StackLayout Grid.Row="1" Grid.RowSpan="2" VerticalOptions="End" Margin="5" x:Name="CancelButtonsFrame" TranslationY="250">
+                <Frame BackgroundColor="{StaticResource ColorFrameBackground}" HasShadow="True" CornerRadius="5" Padding="0">
+                    <StackLayout Spacing="0">
+                        <Label Style="{StaticResource FrameTitleLabelStyle}" Text="{Binding ViewModel.CancelDeclarationInvite}" Margin="5,10"></Label>
+                        <ContentView HeightRequest="2" BackgroundColor="{StaticResource BottomMenuSeparatorColor}" Margin="0" />
+                        <buttons:SfButton Clicked="SuspendDeclaration" Text="{Binding ViewModel.SuspendButtonInvite}" CornerRadius="0" BorderWidth="0"
+                            Style="{StaticResource SecondaryActionButtonStyle}" FontAttributes="None">
+                        </buttons:SfButton>
+                        <ContentView HeightRequest="1" BackgroundColor="{StaticResource BottomMenuSeparatorColor}" Margin="5,0" />
+                        <buttons:SfButton Clicked="StopAndFreeDeclaration" Text="{Binding ViewModel.ColleagueButtonInvite}" CornerRadius="0" BorderWidth="0"
+                            Style="{StaticResource SecondaryActionButtonStyle}" FontAttributes="None">
+                        </buttons:SfButton>
+                        <!--<buttons:SfButton Command="{Binding DeletePictureCommand}" Text="{Binding DeclarationImpossibleChoosePictureButtonLabel}"
+                                   Style="{StaticResource SecondaryActionButtonStyle}">
+                </buttons:SfButton>-->
+
+                    </StackLayout>
+                </Frame>
+                <Frame BackgroundColor="{StaticResource ColorFrameBackground}" HasShadow="True" Padding="5,0" CornerRadius="5">
+                    <StackLayout Spacing="0">
+                        <buttons:SfButton Clicked="CancelBottomMenu" Text="{Binding ViewModel.CancelInvite}" CornerRadius="0" BorderWidth="0"
+                            Style="{StaticResource SecondaryActionButtonStyle}">
+                        </buttons:SfButton>
+                    </StackLayout>
+                </Frame>
+            </StackLayout>
+
+        </Grid>
+
+    </ContentPage.Content>
+</controls:ExtTakePicturePage>

@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<controls:ExtContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:buttons="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms"
+             xmlns:local="clr-namespace:Gefco.CipQuai.SimpleDeckPage;assembly=Gefco.CipQuai"
+             xmlns:xForms="clr-namespace:Syncfusion.SfBusyIndicator.XForms;assembly=Syncfusion.SfBusyIndicator.XForms"
+             xmlns:controls="clr-namespace:Gefco.CipQuai.Controls;assembly=Gefco.CipQuai"
+             xmlns:xForms1="clr-namespace:Syncfusion.SfAutoComplete.XForms;assembly=Syncfusion.SfAutoComplete.XForms"
+                         NavBarMainCommand="{Binding GoBackCommand}" PageIcon="ic_arrow_backy.svg" PageTitle="{Binding PageTitle}" ControlTemplate="{StaticResource GefcoPage}" NavigationPage.HasNavigationBar="False" ShowHome="True" NavBarHomeCommand="{Binding GoBackCommand}" IsLoading="{Binding IsLoading}"
+                         x:Class="Gefco.CipQuai.SimpleDeckPage.StartPage">
+    <controls:ExtContentPage.BindingContext>
+        <local:SPViewModel />
+    </controls:ExtContentPage.BindingContext>
+    <ContentPage.Content>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <Label Text="{Binding StartPageInvite}" Grid.Row="0" 
+                   Style="{StaticResource TitleLabelStyle}" />
+            <StackLayout Grid.Row="1" Spacing="0" Padding="20">
+                <xForms1:SfAutoComplete x:Name="AutoComplete" DataSource="{Binding Destinations}" Margin="20,0" 
+                                       AutoCompleteMode="Suggest" SuggestionMode="Contains" Watermark="{Binding DestinationInviteLabel}" Completed="AutoComplete_OnCompleted" MaximumDropDownHeight="160"
+                                       BorderColor="{Binding IsInvalid, Converter={StaticResource BooleanInvalidConverter}}" TextColor="{Binding IsInvalid, Converter={StaticResource BooleanInvalidConverter}}" 
+                                       SelectedItem="{Binding SelectedDestination, Mode=TwoWay}" SelectedValuePath="Id" DisplayMemberPath="Name" />
+                <Label Style="{StaticResource InvalidLabelStyle}" Text="{Binding ErrorMessage}" Margin="20,0" />
+                <controls:FloatingActionButtonView Command="{Binding ValidateDestinationCommand}" Margin="20" />
+            </StackLayout>
+            <Grid Grid.Row="2" VerticalOptions="End" ColumnSpacing="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+
+            </Grid>
+            <xForms:SfBusyIndicator Grid.Row="0" Grid.RowSpan="3" x:Name="BusyIndicator" AnimationType="SingleCircle"
+                                     IsVisible="{Binding IsLoading}"
+                                     IsBusy="{Binding IsLoading}">
+            </xForms:SfBusyIndicator>
+        </Grid>
+    </ContentPage.Content>
+</controls:ExtContentPage>

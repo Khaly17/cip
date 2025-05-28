@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:Gefco.CipQuai.LoginPage"
+             xmlns:controls="clr-namespace:Gefco.CipQuai.Controls;assembly=Gefco.CipQuai"
+             xmlns:buttons="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms"
+             xmlns:xForms="clr-namespace:Syncfusion.SfBusyIndicator.XForms;assembly=Syncfusion.SfBusyIndicator.XForms"
+             x:Class="Gefco.CipQuai.LoginPage.Views.LoginView" Padding="20">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <Grid Margin="10,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Label Text="{Binding LoginInvite}" Grid.Row="0"
+                           Style="{StaticResource TitleLabelStyle}" />
+
+            <controls:ExtEntry Text="{Binding Username, Mode=TwoWay}" Grid.Row="1"
+                                           Placeholder="Numéro F, G ou U"
+                                           Style="{StaticResource LoginEntryStyle}" Completed="UserEntry_OnCompleted" />
+
+            <controls:ExtEntry Text="{Binding Password, Mode=TwoWay}" Grid.Row="2" x:Name="PassEntry"
+                                           IsPassword="True" 
+                                           Placeholder="Code PIN" Keyboard="Numeric"
+                                           Style="{StaticResource LoginEntryStyle}" />
+
+            <buttons:SfButton Text="Connexion" Grid.Row="3"
+                                            Command="{Binding LoginCommand}"
+                                            CommandParameter="{x:Static local:LoginType.Normal}"
+                                            Style="{StaticResource ActionButtonStyle}" />
+
+            <controls:ExtHyperLink Text="oublié" Grid.Row="2" HorizontalOptions="End"
+                                           Command="{Binding GoToViewCommand}"
+                                           CommandParameter="{x:Static local:ViewType.PasswordResetView}" />
+
+
+        </Grid>
+        <xForms:SfBusyIndicator Grid.Row="0" Grid.RowSpan="2" x:Name="BusyIndicator" AnimationType="SingleCircle" ViewBoxHeight="100" ViewBoxWidth="100"
+                                     IsVisible="{Binding IsLoading}"
+                                     IsBusy="{Binding IsLoading}">
+        </xForms:SfBusyIndicator>
+    </Grid>
+</ContentView>

@@ -1,0 +1,304 @@
+﻿@using Gefco.CipQuai.Web.Extensions
+@using Gefco.CipQuai.Web.Models
+@using Gefco.CipQuai.Web.Views
+@using Microsoft.AspNet.Identity
+@using Syncfusion.EJ2
+@model FilterViewModel
+@{
+    ViewBag.PageIcon = "feather icon-home";
+    ViewBag.Title = "Dashboard " + ViewBag.Agence.Name;
+    ViewBag.ShowHeader = false;
+    Layout = "~/Views/Shared/_AuthLayout.cshtml";
+    Model.Id = ViewBag.Agence.Id;
+
+}
+<script src="~/Content/assets/amcharts/core.js"></script>
+<script src="~/Content/assets/amcharts/charts.js"></script>
+<script src="~/Content/assets/amcharts/animated.js"></script>
+
+<script>
+    am4core.useTheme(am4themes_animated);
+    var pies = [];
+    var bars = [];
+</script>
+
+<div class="row dashboard">
+    @{
+        Html.RenderPartial("Filters", Model, new ViewDataDictionary()
+    {
+        {"Title", "National"}
+    });
+    }
+    <div class="col-xl-12 col-md-12 px-1 px-sm-3">
+        <div class="card product-progress-card">
+            <div class="card-block p-0">
+                <div class="pp-main row m-0">
+                    <div class="col-sm-12 col-md-6 px-0">
+                        <div class="card sale-card col-sm-12">
+                            <div class="card-header">
+                                <span class="f-right" style="line-height: 30px;">
+                                    <a class="details" href="@Url.Action("GrilleDP", new { Model.FilterType, Model.Id, startDate = Model.StartDate.ToString("dd/MM/yyyy"), endDate = Model.EndDate.ToString("dd/MM/yyyy") })" target="_blank">Détail</a>
+                                </span>
+                                <h5 class="f-20 f-w-400">@ViewBag.Agence.Name</h5>
+                                <h4>Utilisation des remorques DP</h4>
+                                <span class="details">Données du @Model.StartDate.ToString("dd/MM/yyyy") au @Model.EndDate.ToString("dd/MM/yyyy")</span>
+                            </div>
+                            <div class="card-block">
+                                @Html.Action("UtilisationDoublePlancher", new { size = "Medium", viewModel = Model })
+                                <span class="details" style="font-size:16px">T1 = Taux de déclarations conformes</span>
+                                <span class="details ml-5" style="font-size:16px">T2 = Taux d’utilisation des remorques DP</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-3 px-0">
+                        <div class="pp-cont flex-wrap">
+                            <div class="card sale-card w-100">
+                                <div class="card-header">
+                                    <span class="f-right" style="line-height: 30px;">
+                                        <a class="details" href="@Url.Action("ListeNCRecues", new { Model.Id, startDate = Model.StartDate.ToString("dd/MM/yyyy"), endDate = Model.EndDate.ToString("dd/MM/yyyy"), filterType = Model.FilterType })" target="_blank">Détail</a>
+                                    </span>
+                                    <h5>NC reçues du réseau</h5>
+                                </div>
+                                <div class="card-block text-center">
+                                    @Html.Action("NCRecues", new { viewModel = Model })
+                                </div>
+                            </div>
+                            <div class="card sale-card w-100">
+                                <div class="card-header">
+                                    <span class="f-right" style="line-height: 30px;">
+                                        <a class="details" href="@Url.Action("ListeNCEmises", new { Model.Id, startDate = Model.StartDate.ToString("dd/MM/yyyy"), endDate = Model.EndDate.ToString("dd/MM/yyyy"), filterType = Model.FilterType })" target="_blank">Détail</a>
+                                    </span>
+                                    <h5>NC émises au réseau</h5>
+                                </div>
+                                <div class="card-block text-center">
+                                    @Html.Action("NCEmises", new { viewModel = Model })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-3 px-0">
+                        <div class="pp-cont flex-wrap">
+                            <div class="card sale-card w-100">
+                                <div class="card-header">
+                                    <span class="f-right" style="line-height: 30px;">
+                                        <a class="details" href="@Url.Action("ListeNCTypoRecues", new { Model.Id, startDate = Model.StartDate.ToString("dd/MM/yyyy"), endDate = Model.EndDate.ToString("dd/MM/yyyy"), filterType = Model.FilterType })" target="_blank">Détail</a>
+                                    </span>
+                                    <h5>Typologie NC reçues</h5>
+                                </div>
+                                <div class="card-block text-center">
+                                    @Html.Action("NCTypoRecues", new { viewModel = Model })
+                                </div>
+                            </div>
+                            <div class="card sale-card w-100">
+                                <div class="card-header">
+                                    <span class="f-right" style="line-height: 30px;">
+                                        <a class="details" href="@Url.Action("ListeNCTypoEmises", new { Model.Id, startDate = Model.StartDate.ToString("dd/MM/yyyy"), endDate = Model.EndDate.ToString("dd/MM/yyyy"), filterType = Model.FilterType })" target="_blank">Détail</a>
+                                    </span>
+                                    <h5>Typologie NC émises</h5>
+                                </div>
+                                <div class="card-block text-center">
+                                    @Html.Action("NCTypoEmises", new { viewModel = Model })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts
+{
+
+    @*<script src="~/Content/assets/pages/widget/amchart/amcharts.js"></script>
+        <script src="~/Content/assets/pages/widget/amchart/plugins/dataloader/dataloader.min.js"></script>
+        <script src="~/Content/assets/pages/widget/amchart/plugins/animate/animate.min.js"></script>
+        <script src="~/Content/assets/pages/widget/amchart/serial.js"></script>
+        <script src="~/Content/assets/pages/widget/amchart/light.js"></script>
+        <script src="~/Content/assets/pages/widget/amchart/pie.min.js"></script>*@
+    <script type="text/javascript" src="~/Content/assets/pages/dashboard/national-dashboard.js"></script>
+
+    <script>
+        console.log("EventBroker : Connecting");
+        var isReconnecting = false;
+        var isWrong = false;
+        dtsInit();
+
+        function savePDF(type) {
+            var barImages = [];
+            barImages.push(pies[0].exporting.pdfmake);
+            for (var i = 0; i < pies.length; i++) {
+                barImages.push(pies[i].exporting.getImage("png"));
+            }
+            for (var i = 0; i < bars.length; i++) {
+                barImages.push(bars[i].exporting.getImage("png"));
+            }
+            Promise.all(barImages).then(function(res) {
+
+                const pdfMake = res[0];
+
+                // pdfmake is ready
+                // Create document template
+                const doc = {
+                    pageSize: "A4",
+                    pageOrientation: "landscape",
+                    pageMargins: [30, 30, 30, 30],
+                    content: []
+                };
+
+
+                doc.content.push({
+                    text: "GEFCO CIP Quai",
+                    fontSize: 20,
+                    bold: true,
+                    margin: [0, -10, 0, 0]
+                });
+                doc.content.push({
+                    text: "Dashboard @ViewBag.Agence.Name du @(ViewBag.StartDate.ToString("dd/MM/yyyy")) au @(ViewBag.EndDate.ToString("dd/MM/yyyy"))",
+                    fontSize: 16,
+                    bold: false,
+                    margin: [0, 10, 0, 30]
+                });
+                doc.content.push({
+                    columns: [{
+                        stack: [
+                            {
+                                text: "Utilisation des remorques DP",
+                                fontSize: 20,
+                                bold: true,
+                                margin: [0, 5, 0, 5]
+                            }, {
+                                image: res[1],
+                                width: 350
+                            }
+                        ],
+                        width: "*"
+                    }, {
+                        stack: [
+                            {
+                                columns: [{
+                                        stack: [
+                                            {
+                                                text: "NC Reçues du réseau",
+                                                fontSize: 14,
+                                                bold: true,
+                                                margin: [0, 5, 0, 5]
+                                            }, {
+                                                image: res[2],
+                                                width: 165
+                                            }
+                                        ],
+                                        width: "*"
+                                    }, {
+                                    stack: [
+                                        {
+                                            text: "Typologie NC reçues",
+                                            fontSize: 14,
+                                            bold: true,
+                                            margin: [0, 5, 0, 5]
+                                        }, {
+                                            image: res[3],
+                                            width: 165
+                                        }
+                                    ],
+                                    width: "*"
+                                }
+                                ],
+                                columnGap: 15
+                            }, {
+                                columns: [{
+                                    stack: [
+                                        {
+                                            text: "NC émises au réseau",
+                                            fontSize: 14,
+                                            bold: true,
+                                            margin: [0, 5, 0, 5]
+                                        }, {
+                                            image: res[4],
+                                            width: 165
+                                        }
+                                    ],
+                                    width: "*"
+                                }, {
+                                        stack: [
+                                            {
+                                                text: "Typologie NC émises",
+                                                fontSize: 14,
+                                                bold: true,
+                                                margin: [0, 5, 0, 5]
+                                            }, {
+                                                image: res[5],
+                                                width: 165
+                                            }
+                                        ],
+                                        width: "*"
+                                    }
+                                ],
+                                columnGap: 15
+                            }
+                        ],
+                        width: "*"
+                    }
+                    ],
+                    columnGap: 15
+                });
+
+                if (type === "print")
+                    pdfMake.createPdf(doc).print();
+                else
+                    pdfMake.createPdf(doc).download("@(DateTime.Now.ToString("yyyyMMdd-hhmmss")) - Dashboard Agence - @(ViewBag.Agence.Name).pdf");
+
+            });
+        }
+        function printPDF() {
+            savePDF("print");
+        }
+
+
+        
+        $(function() {
+            $("#menu-dash-agences").addClass("pcoded-trigger active");
+            $("#menu-dash-agences").find(".pcoded-submenu.main").show();
+            $("#menu-dash-agences-@ViewBag.Agence.Region_Id").addClass("pcoded-trigger active");
+            $("#submenu-dash-agences-@ViewBag.Agence.Region_Id").show();
+            $("#menu-dash-agences-@ViewBag.Agence.Id").addClass("active");
+            
+        });
+
+        function dtsInit() {
+            const token = "@(HttpContext.Current.User.Identity.GetUserId())";
+            $.connection.hub.logging = true;
+            $.connection.hub
+                .stateChanged(function (data) {
+                    if (data.newState === $.connection.connectionState.reconnecting)
+                        isReconnecting = true;
+                    else if (data.oldState === $.connection.connectionState.reconnecting && data.newState === $.connection.connectionState.connected) {
+                        console.log(`EventBroker : Reconnecting with token {${token}}`);
+                        $.connection.EventBroker.server.clientLoggedInAsync(token);
+                        isReconnecting = false;
+                    }
+                    else if (data.newState === $.connection.connectionState.disconnected && !isReconnecting) {
+                        $.connection.hub.stop();
+                        $.connection.hub.start();
+                    }
+                });
+            $.connection.hub
+                .start()
+                .done(function () {
+                    console.log("EventBroker : Connected");
+                    console.log(`EventBroker : Registering with token {${token}}`);
+                    $.connection.EventBroker.server.clientLoggedInAsync(token);
+                    isReconnecting = false;
+                })
+                .fail(function (e) {
+                    isWrong = true;
+                    console.error("EventBroker : Could not connect !");
+                });
+
+        }
+
+    </script>
+
+
+}

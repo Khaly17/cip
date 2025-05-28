@@ -1,0 +1,261 @@
+﻿@using Gefco.CipQuai.Web.Controllers
+@using Gefco.CipQuai.Web.Models
+@using InputType = Gefco.CipQuai.Web.Controllers.InputType
+@model Gefco.CipQuai.Web.Views.DetailNCViewModel
+
+@{
+    ViewBag.Title = "Non conformité";
+    ViewBag.ShowHeader = false;
+    var id = Tools.GenerateRandomString(8);
+}
+<style>
+    #chart {
+        display: none;
+    }
+</style>
+<div class="flex flex-row col-12 mb-3 mt-2">
+    <div class="flex flex-column flex-wrap flex-auto">
+        <div>
+            <div class="f-right">
+                <a class="px-3" data-toggle="tooltip" data-placement="bottom" title="Envoyer un lien par mail" id="@(id)mail" href="#"><i class='fa fa-lg fa-envelope'></i></a>
+                <a class="px-3" data-toggle="tooltip" data-placement="bottom" title="Imprimer la page" id="@(id)print" href="#"><i class='fa fa-lg fa-print'></i></a>
+                <a class="px-3" data-toggle="tooltip" data-placement="bottom" title="Télécharger en PDF" id="@(id)save" href="#"><i class='fa fa-lg fa-download'></i></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row dashboard">
+    <div class="col-xl-12 col-md-12 px-1 px-sm-3">
+        <div class="card product-progress-card">
+            <div class="card-header main-header">
+                <div class="flex flex-column flex-wrap flex-auto">
+                    <h2 class="flex-auto d-none d-md-flex">Non conformité</h2>
+                </div>
+            </div>
+            <div class="card-block">
+                <div class="row" id="capture">
+                    <div class="col-sm-12 col-md-6">
+                        <dl class="dl-horizontal">
+                            <dt>
+                                Date :
+                            </dt>
+
+                            <dd>
+                                @(Model.CompletionDate?.ToLocalTime().ToString("dd MMMM yyyy"))
+                            </dd>
+
+                            <dt>
+                                Heure :
+                            </dt>
+
+                            <dd>
+                                @(Model.CompletionDate?.ToLocalTime().ToString("HH:mm"))
+                            </dd>
+
+                            <dt>
+                                Agence émettrice :
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.Origine)
+                            </dd>
+
+                            <dt>
+                                N° Bordereau / Voyage:
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.NumVoyage)
+                            </dd>
+
+                            <dt>
+                                Agence à l'origine de la NC :
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.Destination)
+                            </dd>
+
+                            <dt>
+                                Déclarée par :
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.CreatedBy)
+                            </dd>
+                        </dl>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                        <dl class="dl-horizontal">
+                            <dt>
+                                Motifs de non-conformité :
+                            </dt>
+
+                            <dd>
+                                @foreach (var motif in Model.Motifs)
+                                {
+                                    if (motif.IsOther && !Model.AutreMotifNC.IsNullOrWhiteSpace())
+                                    {
+                                        <span>Autre motif : @Model.AutreMotifNC</span>
+                                    }
+                                    else
+                                    {
+                                        @motif.Name
+                                    }
+                                    <br />
+                                }
+                            </dd>
+                            <dt>
+                                Statut :
+                            </dt>
+
+                            <dd>
+                                @Model.Status
+                            </dd>
+                        </dl>
+                    </div>
+                    @{
+                        var attr = new MyAuthorizeAttribute() { Roles = "Super Admin,Admin", RegionRoles = "RQCO", InputType = InputType.NCParam, UniqueModelId = Model.Id };
+                        if (attr.Authorize(new HttpContextWrapper(HttpContext.Current)))
+                        {
+                            <div class="col-12 d-flex">
+                                @if (Model.Status != "Supprimée")
+                                {
+                                    <form method="get" action="@Url.Action("Reaffect", new { id = Model.Id })" class="d-flex">
+                                        @Html.DropDownListFor(p => p.AgenceConcernee_Id, null, htmlAttributes: new
+                                        {
+                                            @class = "form-control"
+                                        })
+                                        @Html.EJS().Button("btn-justify").CssClass("ml-2").IsPrimary().Content("Réaffecter").Render()
+                                    </form>
+                                    if (Model.Status != DeclarationNcStatus.Validated)
+                                    {
+                                        <form method="get" action="@Url.Action("Validate", new { id = Model.Id })" class="d-flex ml-2">
+                                            @Html.EJS().Button("btn-validate").IsPrimary().Content("Valider").Render()
+                                        </form>
+                                    }
+                                    <form method="get" action="@Url.Action("Delete", new { id = Model.Id })" class="d-flex ml-2">
+                                        @Html.EJS().Button("btn-delete").CssClass("e-danger").IsPrimary().Content("Supprimer").Render()
+                                    </form>
+                                }
+                                else
+                                {
+                                    <form method="get" action="@Url.Action("Delete", new { id = Model.Id })" class="d-flex ml-2">
+                                        @Html.EJS().Button("btn-delete2").CssClass("e-danger").IsPrimary().Content("Annuler suppression").Render()
+                                    </form>
+                                }
+                            </div>
+                        }
+                    }
+                </div>
+                @{
+                    <div class="row" id="capture1">
+                        @{
+                            if (!Model.Picture1.IsNullOrWhiteSpace())
+                            {
+                                <div class="col-sm-12 col-md-6">
+                                    <img class="img-fluid img-thumbnail" src="@Model.Picture1" />
+                                </div>
+                            }
+                            if (!Model.Picture2.IsNullOrWhiteSpace())
+                            {
+                                <div class="col-sm-12 col-md-6">
+                                    <img class="img-fluid img-thumbnail" src="@Model.Picture2" />
+                                </div>
+                            }
+                        }
+                    </div>
+                    <div class="row" id="capture2">
+                        @{
+                            if (!Model.Picture3.IsNullOrWhiteSpace())
+                            {
+                                <div class="col-sm-12 col-md-6">
+                                    <img class="img-fluid img-thumbnail" src="@Model.Picture3" />
+                                </div>
+                            }
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<div id="chart"></div>
+<script src="~/Content/assets/html2canvas.js"></script>
+<script src="~/Content/assets/amcharts/core.js"></script>
+<script src="~/Content/assets/amcharts/charts.js"></script>
+<script>
+    $("#btn-delete").on("click", () => { window.location.href = 'mailto:?body=' + encodeURIComponent(window.location); });
+    var opened = false;
+    function savePDF(type) {
+        var chart = am4core.create(document.getElementById("chart"), am4charts.XYChart);
+        chart.logo.dispose();
+        Promise.all([chart.exporting.pdfmake, chart.exporting.getImage("png"), html2canvas(document.querySelector("#capture")), html2canvas(document.querySelector("#capture1"))
+        @if (!Model.Picture3.IsNullOrWhiteSpace())
+        {
+            @: , html2canvas(document.querySelector("#capture2"))
+        }
+        ]).then(function(res) {
+
+            const pdfMake = res[0];
+
+            // pdfmake is ready
+            // Create document template
+            const doc = {
+                pageSize: "A4",
+                pageOrientation: "landscape",
+                pageMargins: [30, 30, 30, 30],
+                content: []
+            };
+
+            doc.content.push({
+                text: "Déclaration NC @Model.Origine - @Model.Destination du @(Model.CompletionDate.Value.ToString("dd/MM/yyyy"))",
+                fontSize: 16,
+                bold: false,
+                margin: [0, 0, 0, 30]
+            });
+            var canvas = res[2];
+            var img = canvas.toDataURL("image/png");
+
+            doc.content.push({
+                image: img,
+                width: 774
+            });
+
+            canvas = res[3];
+            img = canvas.toDataURL("image/png");
+
+            doc.content.push({
+                image: img,
+                width: 774
+            });
+
+            @if (!Model.Picture3.IsNullOrWhiteSpace())
+            {
+                @: canvas = res[4];
+                @: img = canvas.toDataURL("image/png");
+                @: 
+                @: doc.content.push({
+                @:     image: img,
+                @: width: 774,
+                @: pageBreak: 'before'
+                @: });
+            }
+
+
+            if (type === "print")
+                pdfMake.createPdf(doc).print();
+            else
+                pdfMake.createPdf(doc).download("@(DateTime.Now.ToString("yyyyMMdd-hhmmss")) - Déclaration NC - @Model.Origine-@Model.Destination - @(Model.CompletionDate.Value.ToString("yyyyMMdd")).pdf");
+
+        });
+}
+    function printPDF() {
+        savePDF("print");
+    }
+    $("#@(id)mail").click(function () { window.location.href = 'mailto:?body=' + encodeURIComponent(window.location); return false; });
+    $("#@(id)print").click(function () { printPDF(); return false; });
+    $("#@(id)save").click(function () { savePDF(); return false; });
+
+</script>

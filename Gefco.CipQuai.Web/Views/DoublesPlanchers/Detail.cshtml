@@ -1,0 +1,986 @@
+﻿@using Gefco.CipQuai.Web.Controllers
+@using Gefco.CipQuai.Web.Models
+@using Microsoft.AspNet.Identity
+@using Syncfusion.EJ2.Popups
+@using InputType = Gefco.CipQuai.Web.Controllers.InputType
+@model Gefco.CipQuai.Web.Views.DetailDPViewModel
+
+@{
+    ViewBag.Title = Model.TractionName;
+    ViewBag.ShowHeader = false;
+    var id = Tools.GenerateRandomString(8);
+    List<object> items = new List<object>();
+    if (Model.IsDPUsed)
+    {
+        items.Add(new
+        {
+            text = "Moitié de chargement"
+        });
+        items.Add(new
+        {
+            text = "Fin de chargement"
+        });
+    }
+    else
+    {
+        items.Add(new
+        {
+            text = "Justificatif 1"
+        });
+        items.Add(new
+        {
+            text = "Justificatif 2"
+        });
+        items.Add(new
+        {
+            text = "Justificatif 3"
+        });
+    }
+}
+<style>
+    #chart {
+        display: none;
+    }
+</style>
+<div class="flex flex-row col-12 mb-3 mt-2">
+    <div class="flex flex-column flex-wrap flex-auto">
+        <div>
+            <div class="f-right">
+                <a class="px-3" data-toggle="tooltip" data-placement="bottom" title="Envoyer un lien par mail" id="@(id)mail" href="#"><i class='fa fa-lg fa-envelope'></i></a>
+                <a class="px-3" data-toggle="tooltip" data-placement="bottom" title="Imprimer la page" id="@(id)print" href="#"><i class='fa fa-lg fa-print'></i></a>
+                <a class="px-3" data-toggle="tooltip" data-placement="bottom" title="Télécharger en PDF" id="@(id)save" href="#"><i class='fa fa-lg fa-download'></i></a>
+            </div>
+        </div>
+    </div>
+</div>
+@helper Suspendre()
+{
+    <form method="get" action="@Url.Action("ChangeStatus", new
+                               {
+                                   id = Model.Id
+                               })" class="mt-2">
+        <input type="hidden" name="rUrl" value="@ViewBag.rUrl" />
+        <input type="hidden" name="status" value="Suspend" />
+        @Html.EJS().Button("btn-suspend").Content("Suspendre").Render()
+    </form>
+}
+@helper Libérer()
+{
+    <form method="get" action="@Url.Action("ChangeStatus", new
+                               {
+                                   id = Model.Id,
+                                   status = "Free"
+                               })" class="mt-2">
+        <input type="hidden" name="rUrl" value="@ViewBag.rUrl" />
+        <input type="hidden" name="status" value="Free" />
+        @Html.EJS().Button("btn-free").Content("Libérer").Render()
+    </form>
+}
+@helper DemanderPhotos()
+{
+    <form method="get" action="@Url.Action("ChangeStatus", new
+                               {
+                                   id = Model.Id,
+                                   status = "AskPics"
+                               })" class="mt-2 mr-1">
+        <input type="hidden" name="rUrl" value="@ViewBag.rUrl" />
+        <input type="hidden" name="status" value="AskPics" />
+        @Html.EJS().Button("btn-ask-pics").Content("Demander photos").Render()
+    </form>
+}
+@helper AjouterPhoto(List<object> items)
+{
+    @Html.EJS().DropDownButton("textbtn").Content("Ajouter photos").CssClass("mt-2").Select("onAddPic").Items(items).Render()
+}
+@helper TerminerDéclaration()
+{
+    <form method="get" action="@Url.Action("ChangeStatus", new
+                               {
+                                   id = Model.Id,
+                                   status = "Close"
+                               })" class="mt-2 mx-0">
+        <input type="hidden" name="rUrl" value="@ViewBag.rUrl" />
+        <input type="hidden" name="status" value="Close" />
+        @Html.EJS().Button("btn-close").Content("Terminer Déclaration").Render()
+    </form>
+}
+@helper JustificatifSupplémentaire()
+{
+    <form method="get" action="@Url.Action("ToJustify", new
+                               {
+                                   id = Model.Id
+                               })">
+        <input type="hidden" name="rUrl" value="@ViewBag.rUrl" />
+        @Html.EJS().Button("btn-justify").CssClass("mt-2").Content("Justificatif supplémentaire").Render()
+    </form>
+}
+@helper Invalider()
+{
+    <form method="get" action="@Url.Action("Invalidate", new
+                               {
+                                   id = Model.Id
+                               })">
+        <input type="hidden" name="rUrl" value="@ViewBag.rUrl" />
+        @Html.EJS().Button("btn-invalidate").IsPrimary().Content("Invalider").Render()
+    </form>
+}
+@helper Valider()
+{
+    <form method="get" action="@Url.Action("Validate", new
+                               {
+                                   id = Model.Id
+                               })">
+        <input type="hidden" name="rUrl" value="@ViewBag.rUrl" />
+        @Html.EJS().Button("btn-validate").IsPrimary().Content("Valider").Render()
+    </form>
+}
+@helper Supprimer()
+{
+    <form method="get" action="@Url.Action("ChangeStatus", new
+                               {
+                                   id = Model.Id,
+                                   status = "Delete"
+                               })" style="padding-left: 5px">
+        <input type="hidden" name="rUrl" value="@ViewBag.rUrl" />
+        <input type="hidden" name="status" value="Delete" />
+        @Html.EJS().Button("btn-delete").Content("Supprimer").IsPrimary().CssClass("e-danger").Render()
+    </form>
+}
+@helper AnnulerSuppression()
+{
+    <form method="get" action="@Url.Action("ChangeStatus", new
+                               {
+                                   id = Model.Id,
+                                   status = "Delete"
+                               })" style="padding-left: 5px">
+        <input type="hidden" name="rUrl" value="@ViewBag.rUrl" />
+        <input type="hidden" name="status" value="Delete" />
+        @Html.EJS().Button("btn-delete").Content("Annuler suppression").IsPrimary().CssClass("e-primary").Render()
+    </form>
+}
+<div class="row dashboard" id="capture">
+    <div class="col-xl-12 col-md-12 px-1 px-sm-3">
+        <div class="card product-progress-card">
+            <div class="card-header main-header">
+                <div class="flex flex-column flex-wrap flex-auto">
+                    <h2 class="flex-auto d-none d-md-flex">Double plancher</h2>
+                </div>
+            </div>
+            <div class="card-block">
+                <div class="row">
+                    <div class="col-sm-6 col-md-6">
+                        <dl class="dl-horizontal">
+                            <dt>
+                                Date traction :
+                            </dt>
+
+                            <dd>
+                                @(Model.DueDate?.ToLocalTime().ToString("dd MMMM yyyy"))&nbsp;
+                            </dd>
+
+                            <dt>
+                                Date déclaration :
+                            </dt>
+
+                            <dd>
+                                @(Model.CompletionDate?.ToLocalTime().ToString("dd MMMM yyyy HH:mm"))&nbsp;
+                            </dd>
+
+                            @if (User.IsInRole("Super Admin"))
+                            {
+                                <dt>
+                                    Statut :
+                                </dt>
+
+                                <dd>
+                                    @(Model.DP.IsDeleted ? "Supprimée" : Model.DP.CurrentStatus?.Description)&nbsp;
+                                </dd>
+
+                                <dt>
+                                    Workflow step :
+                                </dt>
+
+                                <dd>
+                                    @(Model.DP.CurrentWorkflowStep)&nbsp;
+                                </dd>
+
+                            }
+                            <dt>
+                                Traction :
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.TractionName)
+                            </dd>
+
+                            <dt>
+                                Déclarée par :
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.CreatedBy)
+                            </dd>
+                            @if (!Model.IsDPUsed)
+                            {
+                                <dt>
+                                    Motifs de non-utilisation :
+                                </dt>
+
+                                <dd>
+                                    @{
+                                        var joins = Model.Motifs.Where(p => (p.IsOther && !Model.AutreMotifDP.IsNullOrWhiteSpace()) || !p.IsOther).Select(p => p.IsOther ? "<span>Autre motif : " + Model.AutreMotifDP.Trim() + "</span>" : $"<span>{p.Name}</span>").ToList();
+                                    }
+                                    @Html.Raw(string.Join(", ", joins))
+                                </dd>
+                            }
+
+                        </dl>
+                    </div>
+                    @{
+                        var attr = new MyAuthorizeAttribute() { Roles = "Super Admin,Admin", RegionRoles = "AQHSE,Alternant QHSE,RQHSE", InputType = InputType.DPParam, UniqueModelId = Model.Id };
+                        if (attr.Authorize(new HttpContextWrapper(HttpContext.Current)))
+                        {
+                            <style>
+                                form + form, form + button, button + form {
+                                    padding-left: 5px;
+                                }
+
+                                #dropArea {
+                                    min-height: 50px;
+                                    padding-top: 15px;
+                                    position: relative;
+                                }
+
+                                #drop {
+                                    padding: 3% 30% 3%;
+                                    display: inherit;
+                                    border: 1px dashed #c3c3cc
+                                }
+
+                                .droparea {
+                                    font-size: 13px;
+                                }
+
+                                .e-file-select-wrap {
+                                    display: none;
+                                }
+
+                                .e-upload {
+                                    float: none;
+                                    border: none;
+                                }
+
+                                .ul-element {
+                                    list-style: none;
+                                    width: 100%;
+                                    padding-left: 0;
+                                }
+
+                                .file-name {
+                                    padding: 8px 6px 8px 0;
+                                    font-size: 13px;
+                                    width: 46%;
+                                    display: inline-block;
+                                    position: relative;
+                                    top: 4px;
+                                }
+
+                                .file-size {
+                                    padding: 4px;
+                                    font-size: 13px;
+                                    width: 13%;
+                                    display: inline-block;
+                                    position: relative;
+                                }
+
+                                .file-lists {
+                                    border: 1px solid lightgray;
+                                    padding: 0 6px 0 14px;
+                                    margin-top: 15px;
+                                    position: relative;
+                                    background: rgba(0, 0, 0, 0.04);
+                                }
+
+                                .file-size, .file-name {
+                                    font-family: "Helvetica Neue", "Helvetica", "Arial", "sans-serif";
+                                    text-overflow: ellipsis;
+                                    overflow: hidden;
+                                    white-space: nowrap;
+                                }
+
+                                span.progress-bar-container {
+                                    display: block;
+                                    float: right;
+                                    height: 20px;
+                                    right: 10%;
+                                    top: 14px;
+                                    position: relative;
+                                    width: 18%;
+                                }
+
+                                .progress {
+                                    width: 100%;
+                                    height: 15px;
+                                    -webkit-appearance: none;
+                                }
+
+                                .close-icon-container {
+                                    cursor: pointer;
+                                    font-size: 11px;
+                                    height: 24px;
+                                    margin: 0 12px 0 22px;
+                                    padding: 0;
+                                    position: absolute;
+                                    right: 0;
+                                    width: 24px;
+                                    top: 6px;
+                                }
+
+                                    .close-icon-container.e-icons::before {
+                                        left: 7px;
+                                        position: inherit;
+                                        top: 7px;
+                                        content: '\e932';
+                                    }
+
+                                    .close-icon-container.delete-icon::before {
+                                        content: '\e94a';
+                                    }
+
+                                    .close-icon-container:hover {
+                                        background-color: rgba(0, 0, 0, 0.12);
+                                        border-color: transparent;
+                                        border-radius: 50%;
+                                        box-shadow: 0 0 0 transparent;
+                                    }
+
+                                .highcontrast .close-icon-container:hover {
+                                    background-color: #ffd939;
+                                    color: black;
+                                }
+
+                                .highcontrast .close-icon-container {
+                                    color: #ffffff;
+                                }
+
+                                .upload-success {
+                                    color: #2bc700;
+                                }
+
+                                .upload-fails {
+                                    color: #f44336;
+                                }
+
+                                progress::-webkit-progress-bar {
+                                    border: 1px solid lightgrey;
+                                    background-color: #ffffff;
+                                    border-radius: 2px;
+                                }
+
+                                #dropArea progress {
+                                    border: 1px solid lightgrey;
+                                    background-color: #ffffff;
+                                    border-radius: 2px;
+                                }
+
+                                progress::-webkit-progress-value {
+                                    border-radius: 2px;
+                                    background-color: #ff4081;
+                                }
+
+                                progress::-moz-progress-bar {
+                                    border-radius: 2px;
+                                    background-color: #ff4081;
+                                }
+
+                                #dropArea span a {
+                                    color: #ff4081;
+                                }
+
+                                .thumb-fluid {
+                                    max-width: 50px;
+                                    max-height: 50px;
+                                    height: auto;
+                                    vertical-align: baseline;
+                                }
+
+                                #textbtn {
+                                    box-shadow: 0 0 5px 0 rgba(43, 43, 43, .1), 3px 3px 10px 0px rgba(43, 43, 43, .1) !important;
+                                }
+                            </style>
+                            <div class="col-sm-12 col-md-6">
+                                <div class="d-flex flex-wrap flex-row-reverse" style="margin-right: 5px;">
+                                    @{
+                                        if (!Model.DP.IsDeleted)
+                                        {
+                                            @Html.EJS().Dialog("modal_dialog").Width("30%").OverlayClick("hideDialog").IsModal(true).ContentTemplate(@<form method="get" action="@Url.Action("Detail", new
+                                                                                                                                                                                 {
+                                                                                                                                                                                     id = Model.Id
+                                                                                                                                                                                 })" class="mt-2">
+                                                <input type="hidden" name="rUrl" value="@ViewBag.rUrl" />
+                                                <span id='dropArea' class="droparea"> Drop files here or <a href="" id='browse'><u>Browse</u></a> </span>
+                                                @Html.EJS().Uploader("UploadFiles").DropArea("#dropArea").AutoUpload(false).AllowedExtensions("image/*").Multiple(false).Selected("onFileSelect").Progress("onFileUpload").Success("onUploadSuccess").Removing("onFileRemove").Failure("onUploadFailed").AsyncSettings(new Syncfusion.EJ2.Inputs.UploaderAsyncSettings
+                                                {
+                                                    SaveUrl = Url.Action("Save", new
+                                                    {
+                                                        id = Model.Id
+                                                    }),
+                                                    RemoveUrl = Url.Action("Remove"),
+                                                    ChunkSize = 102400
+                                                }).Render()
+                                                @Html.EJS().Button("btn-upload").Content("Ajouter photos").IsPrimary().CssClass("mt-2").Render()
+                                                @Html.EJS().Button("btn-close-upload").Content("Terminer").IsPrimary().CssClass("mt-2 d-none e-danger").Render()
+                                            </form>).AnimationSettings(new DialogAnimationSettings()
+                                        {
+                                            Effect = DialogEffect.None
+                                        }).CloseOnEscape(true).Visible(false).Render()
+                                        }
+                                        if (Model.DP.IsDeleted)
+                                        {
+                                            //@Suspendre()
+                                            //@Libérer()
+                                            //@DemanderPhotos()
+                                            //@AjouterPhoto(items)
+                                            //@TerminerDéclaration()
+                                            //@JustificatifSupplémentaire()
+                                        }
+                                        else if (Model.DP.CurrentStatus?.Name == "InProgress")
+                                        {
+                                            if (!Model.IsDPUsed)
+                                            {
+                                                @JustificatifSupplémentaire()
+                                            }
+                                            @TerminerDéclaration()
+                                            @AjouterPhoto(items)
+                                            @DemanderPhotos()
+                                            @Suspendre()
+                                        }
+                                        else if (Model.DP.CurrentStatus?.Name == "PausedAndLocked")
+                                        {
+                                            @Libérer();
+                                        }
+                                        else if (Model.DP.CurrentStatus?.Name == "PausedAndFree")
+                                        {
+                                            if (!Model.IsDPUsed)
+                                            {
+                                                @JustificatifSupplémentaire()
+                                            }
+                                            @TerminerDéclaration()
+                                            @AjouterPhoto(items)
+                                            @DemanderPhotos()
+                                        }
+                                        else if (Model.DP.CurrentStatus?.Name == "ToBeValidated")
+                                        {
+                                            if (!Model.IsDPUsed)
+                                            {
+                                                @JustificatifSupplémentaire()
+                                            }
+                                            @AjouterPhoto(items)
+                                            @DemanderPhotos()
+                                        }
+                                        else if (Model.DP.CurrentStatus?.Name == "ToJustify" && !Model.IsDPUsed)
+                                        {
+                                            @TerminerDéclaration()
+                                            @AjouterPhoto(items)
+                                            @DemanderPhotos()
+                                        }
+                                        else if (Model.DP.CurrentStatus?.Name == "Valid")
+                                        {
+                                            //@Suspendre()
+                                            //@Libérer()
+                                            //@DemanderPhotos()
+                                            //@AjouterPhoto(items)
+                                            //@TerminerDéclaration()
+                                            //@JustificatifSupplémentaire()
+                                        }
+                                        else if (Model.DP.CurrentStatus?.Name == "NotValid")
+                                        {
+                                            if (!Model.IsDPUsed)
+                                            {
+                                                @JustificatifSupplémentaire()
+                                            }
+                                            @AjouterPhoto(items)
+                                            @DemanderPhotos()
+                                        }
+                                    }
+
+                                </div>
+                                <div class="d-flex mt-2 flex-row-reverse" style="margin-right: 5px;">
+                                    @{
+                                        if (Model.DP.IsDeleted)
+                                        {
+                                            @AnnulerSuppression()
+                                        }
+                                        else if (Model.DP.CurrentStatus?.Name == "InProgress")
+                                        {
+                                            @Supprimer()
+                                        }
+                                        else if (Model.DP.CurrentStatus?.Name == "PausedAndLocked")
+                                        {
+                                            //@Invalider()
+                                            //@Valider()
+                                            //@Supprimer()
+                                            //@AnnulerSuppression()
+                                        }
+                                        else if (Model.DP.CurrentStatus?.Name == "PausedAndFree")
+                                        {
+                                            @Supprimer()
+                                        }
+                                        else if (Model.DP.CurrentStatus?.Name == "ToBeValidated")
+                                        {
+                                            @Supprimer()
+                                            @Valider()
+                                            @Invalider()
+                                        }
+                                        else if (Model.DP.CurrentStatus?.Name == "ToJustify" && !Model.IsDPUsed)
+                                        {
+                                            @Supprimer()
+                                            @Valider()
+                                            @Invalider()
+                                        }
+                                        else if (Model.DP.CurrentStatus?.Name == "Valid")
+                                        {
+                                            @Supprimer()
+                                            @Invalider()
+                                        }
+                                        else if (Model.DP.CurrentStatus?.Name == "NotValid")
+                                        {
+                                            @Supprimer()
+                                            @Valider()
+                                        }
+                                    }
+                                </div>
+                            </div>
+                            <script>
+                                $("#btn-ask-pics").on("click", () => {
+                                    window.open('mailto:?body=' + encodeURIComponent(window.location));
+                                                    return true;
+                                                });
+                                                $("#btn-add-pics").on("click", showDialog);
+                                                $("#btn-upload").on("click",
+                                                    function() {
+                                                        for (var i = 0; i < uploader.myFiles.length; i++) {
+                                                            uploadObj.upload(uploader.myFiles[i], true);
+                                                        }
+                                                        return false;
+                                                    });
+                                                $("#btn-close-upload").on("click",
+                                                    function() {
+                                                        hideDialog();
+                                                        for (var i = 0; i < uploader.filesData.length; i++) {
+                                                            uploader.remove(uploader.filesData[i], true);
+                                                        }
+                                                    });
+
+                                                var pictureType = 0;
+
+                                                function onAddPic(parameters) {
+                                                    var text = parameters.item.text;
+                                                    switch (text) {
+                                                    case "Moitié de chargement":
+                                                        pictureType = @((int) PictureType.HalfLoadPicture);
+                                                        break;
+                                                    case "Fin de chargement":
+                                                        pictureType = @((int) PictureType.FullLoadPicture);
+                                                        break;
+                                                    case "Justificatif 1":
+                                                        pictureType = @((int) PictureType.ErrorPicture1);
+                                                        break;
+                                                    case "Justificatif 2":
+                                                        pictureType = @((int) PictureType.ErrorPicture2);
+                                                        break;
+                                                    case "Justificatif 3":
+                                                        pictureType = @((int) PictureType.ErrorPicture3);
+                                                        break;
+                                                    }
+                                                    showDialog();
+                                                }
+
+                                                function showDialog() {
+                                                    var dialogObj = document.getElementById('modal_dialog')
+                                                        .ej2_instances[0];
+                                                    dialogObj.show();
+                                                }
+
+                                                function hideDialog() {
+                                                    var dialogObj = document.getElementById('modal_dialog')
+                                                        .ej2_instances[0];
+                                                    dialogObj.hide();
+                                                }
+
+                                                var uploadObj;
+                                                window.onload = function() {
+                                                    uploadObj = document.getElementById("UploadFiles").ej2_instances[0];
+                                                }
+                                                document.getElementById('browse').onclick = function() {
+                                                    document.getElementsByClassName('e-file-select-wrap')[0]
+                                                        .querySelector('button').click();
+                                                    return false;
+                                                };
+                                                var parentElement;
+                                                var proxy;
+                                                var progressbarContainer;
+                                                var uploader;
+                                                var saveUrl = "@Url.Action("Save", new
+                                                               {
+                                                                   Model.Id
+                                                               })";
+
+                                                function onFileSelect(args) {
+                                                    uploader = this;
+                                                    uploader.asyncSettings.saveUrl =
+                                                        saveUrl + "?pictureType=" + pictureType;
+                                                    uploader.asyncSettings.properties.saveUrl =
+                                                        saveUrl + "?pictureType=" + pictureType;
+                                                    args.cancel = true;
+                                                    if (ej.base.isNullOrUndefined(document.getElementById('dropArea')
+                                                        .querySelector('.upload-list-root'))) {
+                                                        parentElement =
+                                                            ej.base.createElement('div',
+                                                                { className: 'upload-list-root' });
+                                                        parentElement.appendChild(
+                                                            ej.base.createElement('ul', { className: 'ul-element' }));
+                                                        document.getElementById('dropArea').appendChild(parentElement);
+                                                    }
+                                                    this.filesData = this.filesData.concat(args.filesData);
+                                                    for (var i = 0; i < args.filesData.length; i++) {
+                                                        let data = args.filesData[i];
+                                                        formSelectedData(data,
+                                                            this); // create the LI element for each file Data
+                                                        let file = data.rawFile;
+                                                        let width;
+                                                        let height;
+                                                        let img = document.createElement("img");
+                                                        img.classList.add("thumb-fluid");
+                                                        img.data = data;
+                                                        img.isOpti = false;
+                                                        let reader = new FileReader();
+                                                        reader.onload = function(e) { img.src = e.target.result; };
+                                                        reader.readAsDataURL(file);
+                                                        var imgs = new Image();
+                                                        img.onload = function() {
+                                                            var t = i;
+                                                            width = this.width;
+                                                            height = this.height;
+                                                            if (!this.isOpti) {
+                                                                var newImg = onNewImg(height, width, this, this.data);
+                                                                this.src = newImg;
+                                                                this.isOpti = true;
+                                                                $("#modal_dialog li[data-file-name='" +
+                                                                    this.data.name +
+                                                                    "'] span.my-file").append(this);
+
+                                                            }
+                                                        };
+                                                        imgs.src = img.src;
+                                                    }
+                                                }
+
+                                                // to create canvas and update our custom dimensions
+                                                function onNewImg(height, width, img, file) {
+                                                    var canvas = document.createElement("canvas");
+                                                    var ctx = canvas.getContext("2d");
+                                                    ctx.drawImage(img, 0, 0);
+                                                    var MAX_WIDTH = 1000;
+                                                    var MAX_HEIGHT = 600;
+                                                    if (width > height) {
+                                                        if (width > MAX_WIDTH) {
+                                                            height *= MAX_WIDTH / width;
+                                                            width = MAX_WIDTH;
+                                                        }
+                                                    } else {
+                                                        if (height > MAX_HEIGHT) {
+                                                            width *= MAX_HEIGHT / height;
+                                                            height = MAX_HEIGHT;
+                                                        }
+                                                    }
+                                                    canvas.width = width;
+                                                    canvas.height = height;
+                                                    var ctx1 = canvas.getContext("2d");
+                                                    ctx1.drawImage(img, 0, 0, width, height);
+                                                    newImage = canvas.toDataURL("image/png");
+                                                    var blobBin = atob(newImage.split(',')[1]);
+                                                    var array = [];
+                                                    for (var i = 0; i < blobBin.length; i++) {
+                                                        array.push(blobBin.charCodeAt(i));
+                                                    }
+                                                    var newBlob = new Blob([new Uint8Array(array)],
+                                                        { type: 'image/png' });
+                                                    var newFile = createFile(newBlob, file);
+                                                    if (uploader.myFiles === undefined)
+                                                        uploader.myFiles = [];
+                                                    uploader.myFiles.push(newFile);
+                                                    return newImage;
+                                                }
+
+                                                // To create File object to upload
+                                                function createFile(image, file) {
+                                                    var newFile = {
+                                                        name: file.name,
+                                                        rawFile: image,
+                                                        size: image.size,
+                                                        type: file.type,
+                                                        validationMessage: '',
+                                                        statusCode: '1',
+                                                        status: 'Ready to Upload'
+                                                    };
+                                                    return newFile;
+                                                }
+
+                                                function formSelectedData(selectedFiles, proxy) {
+                                                    var liEle = ej.base.createElement('li',
+                                                        {
+                                                            className: 'file-lists',
+                                                            attrs: { 'data-file-name': selectedFiles.name }
+                                                        });
+                                                    liEle.appendChild(ej.base.createElement('span',
+                                                        { className: 'file-name ', innerHTML: selectedFiles.name }));
+                                                    liEle.appendChild(ej.base.createElement('span',
+                                                        {
+                                                            className: 'file-size ',
+                                                            innerHTML: proxy.bytesToSize(selectedFiles.size)
+                                                        }));
+                                                    liEle.appendChild(ej.base.createElement('span',
+                                                        { className: 'my-file' }));
+                                                    liEle.appendChild(ej.base.createElement('span',
+                                                        { className: 'e-file-container' }));
+                                                    if (selectedFiles.status ===
+                                                        proxy.localizedTexts('readyToUploadMessage')) {
+                                                        progressbarContainer = ej.base.createElement('span',
+                                                            { className: 'progress-bar-container' });
+                                                        progressbarContainer.appendChild(ej.base.createElement(
+                                                            'progress',
+                                                            {
+                                                                className: 'progress',
+                                                                attrs: { value: '0', max: '100' }
+                                                            }));
+                                                        liEle.appendChild(progressbarContainer);
+                                                    } else {
+                                                        liEle.querySelector('.file-name').classList.add('upload-fails');
+                                                    }
+                                                    var closeIconContainer = ej.base.createElement('span',
+                                                        { className: 'e-icons close-icon-container e-file-abort-btn' });
+                                                    ej.base.EventHandler.add(closeIconContainer,
+                                                        'click',
+                                                        removeFiles,
+                                                        proxy);
+                                                    liEle.appendChild(closeIconContainer);
+                                                    liEle.appendChild(ej.base.createElement('span',
+                                                        { className: 'e-file-status d-block' }));
+                                                    document.querySelector('.ul-element').appendChild(liEle);
+                                                    proxy.fileList.push(liEle);
+                                                }
+
+                                                function onFileUpload(args) {
+                                                    var li = document.getElementById('dropArea')
+                                                        .querySelector('[data-file-name="' + args.file.name + '"]');
+                                                    ej.base.EventHandler.remove(
+                                                        li.querySelector('.close-icon-container'),
+                                                        'click',
+                                                        removeFiles);
+                                                    var progressValue =
+                                                        Math.round((args.e.loaded / args.e.total) * 100);
+                                                    if (!isNaN(progressValue)) {
+                                                        li.getElementsByTagName('progress')[0].value =
+                                                            progressValue; // Updating the progress bar value
+                                                    }
+                                                }
+
+                                                function onUploadSuccess(args) {
+                                                    var _this = this;
+                                                    var spinnerElement = document.getElementById('dropArea');
+                                                    var li = document.getElementById('dropArea')
+                                                        .querySelector('[data-file-name="' + args.file.name + '"]');
+                                                    if (!ej.base.isNullOrUndefined(
+                                                        li.querySelector('.progress-bar-container'))
+                                                    ) {
+                                                        ej.base.detach(li.querySelector('.progress-bar-container'));
+                                                    }
+
+                                                    if (args.operation === 'upload') {
+                                                        li.querySelector('.file-name').classList.add('upload-success');
+                                                        li.querySelector('.close-icon-container').classList
+                                                            .add('delete-icon');
+                                                        (li.querySelector('.close-icon-container')).onclick =
+                                                            function() {
+                                                                generateSpinner(_this.uploadWrapper);
+                                                            };
+                                                        li.querySelector('.close-icon-container').onkeydown =
+                                                            function(e) {
+                                                                if (e.keyCode === 13) {
+                                                                    generateSpinner(e.target.closest('.e-upload'));
+                                                                }
+                                                            };
+                                                    }
+                                                    if (args.operation === 'remove') {
+                                                        this.filesData.splice(this.fileList.indexOf(li), 1);
+                                                        this.fileList.splice(this.fileList.indexOf(li), 1);
+                                                        ej.base.detach(li);
+                                                        ej.popups.hideSpinner(spinnerElement);
+                                                        ej.base.detach(spinnerElement.querySelector('.e-spinner-pane'));
+                                                    }
+                                                    ej.base.EventHandler.add(li.querySelector('.close-icon-container'),
+                                                        'click',
+                                                        removeFiles,
+                                                        this);
+                                                    console.log("The selected file resized and uploaded successfully");
+                                                    if ($("#modal_dialog .file-name").length ===
+                                                        $("#modal_dialog .file-name.upload-success").length) {
+                                                        $("#btn-close-upload, #btn-upload").toggleClass("d-none");
+                                                    }
+                                                }
+
+                                                function generateSpinner(targetElement) {
+                                                    ej.popups.createSpinner({ target: targetElement, width: '25px' });
+                                                    ej.popups.showSpinner(targetElement);
+                                                }
+
+                                                function onUploadFailed(args) {
+                                                    var li = document.getElementById('dropArea')
+                                                        .querySelector('[data-file-name="' + args.file.name + '"]');
+                                                    ej.base.EventHandler.add(li.querySelector('.close-icon-container'),
+                                                        'click',
+                                                        removeFiles,
+                                                        this);
+                                                    li.querySelector('.file-name ').classList.add('upload-fails');
+                                                    if (args.operation === 'upload') {
+                                                        ej.base.detach(li.querySelector('.progress-bar-container'));
+                                                    }
+                                                }
+
+                                                function removeFiles(args) {
+                                                    var status =
+                                                        this.filesData[this.fileList.indexOf(args.currentTarget
+                                                                .parentElement)]
+                                                            .status;
+                                                    if (status === this.localizedTexts('uploadSuccessMessage')) {
+                                                        this.remove(
+                                                            this.filesData[this.fileList.indexOf(args.currentTarget
+                                                                .parentElement)],
+                                                            true);
+                                                    } else {
+                                                        ej.base.detach(args.currentTarget.parentElement);
+                                                    }
+                                                }
+
+                                                function onFileRemove(args) {
+                                                    args.postRawFile = false;
+                                                }
+                            </script>
+                        }
+                    }
+                </div>
+                @{
+                    if (Model.IsDPUsed)
+                    {
+                        <div class="row">
+                            @{
+                                if (!Model.Picture1.IsNullOrWhiteSpace())
+                                {
+                                    <div class="col-sm-12 col-md-6">
+                                        <img class="img-fluid img-thumbnail" src="@Model.Picture1" />
+                                    </div>
+                                }
+                                if (!Model.Picture2.IsNullOrWhiteSpace())
+                                {
+                                    <div class="col-sm-12 col-md-6">
+                                        <img class="img-fluid img-thumbnail" src="@Model.Picture2" />
+                                    </div>
+                                }
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="row">
+                            @{
+                                if (!Model.ErrorPicture1.IsNullOrWhiteSpace())
+                                {
+                                    <div class="col-sm-12 col-md-6">
+                                        <img class="img-fluid img-thumbnail" src="@Model.ErrorPicture1" />
+                                    </div>
+                                }
+                                if (!Model.ErrorPicture2.IsNullOrWhiteSpace())
+                                {
+                                    <div class="col-sm-12 col-md-6">
+                                        <img class="img-fluid img-thumbnail" src="@Model.ErrorPicture2" />
+                                    </div>
+                                }
+                                if (!Model.ErrorPicture3.IsNullOrWhiteSpace())
+                                {
+                                    <div class="col-sm-12 col-md-6">
+                                        <img class="img-fluid img-thumbnail" src="@Model.ErrorPicture3" />
+                                    </div>
+                                }
+                            }
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<div id="chart"></div>
+<script src="~/Content/assets/html2canvas.js"></script>
+<script src="~/Content/assets/amcharts/core.js"></script>
+<script src="~/Content/assets/amcharts/charts.js"></script>
+<script>
+    var opened = false;
+    $("#btn-justify").click(function () {
+        window.location.href = 'mailto:?body=' + encodeURIComponent(window.location) + '&subject=Cip Quai : traction @(Model.TractionName) @(Model.CompletionDate?.ToLocalTime().ToString("dd/MM")) – Demande de justificatifs supplémentaires';
+        var _this = $(this);
+        setTimeout(function () { _this.parent("form").submit() });
+        //this.click();
+        return false;
+    });
+    function savePDF(type) {
+        var chart = am4core.create(document.getElementById("chart"), am4charts.XYChart);
+        chart.logo.dispose();
+        Promise.all([chart.exporting.pdfmake, chart.exporting.getImage("png"), html2canvas(document.querySelector("#capture"))]).then(function(res) {
+
+            const pdfMake = res[0];
+
+            // pdfmake is ready
+            // Create document template
+            const doc = {
+                pageSize: "A4",
+                pageOrientation: "landscape",
+                pageMargins: [30, 30, 30, 30],
+                content: []
+            };
+
+            doc.content.push({
+                text: "GEFCO CIP Quai",
+                fontSize: 20,
+                bold: true,
+                margin: [0, -10, 0, 0]
+            });
+            doc.content.push({
+                text: "Déclaration DP @Model.TractionName du @(Model.CompletionDate?.ToString("dd/MM/yyyy"))",
+                fontSize: 16,
+                bold: false,
+                margin: [0, 10, 0, 30]
+            });
+            var canvas = res[2];
+            var img = canvas.toDataURL("image/png");
+
+            doc.content.push({
+                image: img,
+                width: 774
+            });
+
+            if (type === "print")
+                pdfMake.createPdf(doc).print();
+            else
+                pdfMake.createPdf(doc).download("@(DateTime.Now.ToString("yyyyMMdd-hhmmss")) - Déclaration DP - @Model.TractionName - @(Model.CompletionDate?.ToString("yyyyMMdd")).pdf");
+
+        });
+    }
+    function printPDF() {
+        savePDF("print");
+    }
+    $("#@(id)mail").click(function () { window.location.href = 'mailto:?body=' + encodeURIComponent(window.location); return false; });
+    $("#@(id)print").click(function () { printPDF(); return false; });
+    $("#@(id)save").click(function () { savePDF(); return false; });
+
+</script>

@@ -1,0 +1,206 @@
+﻿@using Gefco.CipQuai.Web.Extensions
+@using Gefco.CipQuai.Web.Models
+@model Gefco.CipQuai.Web.Models.FilterViewModel
+@{
+    var btn1 = Tools.GenerateRandomString(8);
+    var btn2 = Tools.GenerateRandomString(8);
+    var btn3 = Tools.GenerateRandomString(8);
+    var id = Tools.GenerateRandomString(8);
+}
+<script>
+    function onDateChanged(args) {
+        const startVal = start.val();
+        const endVal = end.val();
+        const today = "@DateTime.Today.ToString("dd/MM/yyyy")";
+        const startOfWeek = "@DateTime.Today.StartOfWeek().ToString("dd/MM/yyyy")";
+        const endOfWeek = "@DateTime.Today.StartOfWeek().AddDays(6).ToString("dd/MM/yyyy")";
+        const startOfMonth = "@(new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1).ToString("dd/MM/yyyy"))";
+        const endOfMonth =
+            "@(new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1).AddMonths(1).AddDays(-1).ToString("dd/MM/yyyy"))";
+
+        if (startVal == today && endVal == today) {
+            type.val("@nameof(FilterType.Default)");
+        } else if (startVal == startOfWeek && endVal == endOfWeek) {
+            type.val("@nameof(FilterType.Week)");
+        } else if (startVal == startOfMonth && endVal == endOfMonth) {
+            type.val("@nameof(FilterType.Month)");
+        } else {
+            type.val("@nameof(FilterType.Other)");
+        }
+    }
+</script>
+
+<form id="searchForm" class="flex flex-row col-12 mb-3 mt-2">
+    @Html.HiddenFor(p => p.FilterType)
+    @Html.HiddenFor(p => p.Id)
+    <div class="flex flex-column flex-wrap flex-auto">
+        <div>
+            <button id="@btn1"></button>
+            <button id="@btn2"></button>
+            <div class="d-sm-block d-md-inline-block ml-5">
+                <label style="width: 30px">Du </label><input ejs-for="true" id="StartDate" name="StartDate" type="text" value="@Model.StartDate.ToString("dd/MM/yyyy")" />
+            </div>
+            <div class="d-sm-block d-md-inline-block mt-2 mt-md-0">
+                <label style="width: 30px">Au </label><input ejs-for="true" id="EndDate" name="EndDate" type="text" value="@Model.EndDate.ToString("dd/MM/yyyy")" />
+            </div>
+            <div class="d-sm-block d-md-inline-block mt-2 mt-md-0">
+                <button id="@btn3"></button>
+            </div>
+            @*<div> @Html.ValidationMessageFor(model => model.objectValue) </div>*@
+            <div class="f-right">
+                <a class="px-3" data-toggle="tooltip" data-placement="bottom" title="Envoyer un lien par mail" id="@(id)mail" href="#"><i class='fa fa-lg fa-envelope'></i></a>
+                <a class="px-3" data-toggle="tooltip" data-placement="bottom" title="Imprimer la page" id="@(id)print" href="#"><i class='fa fa-lg fa-print'></i></a>
+                <a class="px-3" data-toggle="tooltip" data-placement="bottom" title="Télécharger en PDF" id="@(id)save" href="#"><i class='fa fa-lg fa-download'></i></a>
+                @if (ViewData.ContainsKey("Excel"))
+                {
+                    <a class="px-3" data-toggle="tooltip" data-placement="bottom" title="Télécharger en XLSX" id="@(id)save-excel" href="#"><i class='fa fa-lg fa-file-excel'></i></a>
+                }
+            </div>
+        </div>
+    </div>
+</form>
+
+<script>
+    var start = $("#@nameof(Model.StartDate)");
+    var end = $("#@nameof(Model.EndDate)");
+    var type = $("#@nameof(Model.FilterType)");
+    var StartDatePicker=new ejs.calendars.DatePicker({
+        "htmlAttributes": {
+            "ejs-for": "true",
+            "id": "StartDate"
+        },
+        "format": "dd/MM/yyyy",
+        "showClearButton": false,
+        "value": "@Model.StartDate.ToString("O")",
+        "width": "120px",
+        "change": onDateChanged
+    });
+    StartDatePicker.appendTo("#StartDate");
+    let _function = function(e) {
+        if (e.keyCode === 13) {
+            $("#searchForm").submit();
+            return false;
+        }
+    };
+    $("#StartDate").keydown(_function);
+    $("#EndDate").keydown(_function);
+    var EndDatePicker=new ejs.calendars.DatePicker({
+        "htmlAttributes": {
+            "ejs-for": "true",
+            "id": "EndDate"
+        },
+        "format": "dd/MM/yyyy",
+        "showClearButton": false,
+        "value": "@Model.EndDate.ToString("O")",
+        "width": "120px",
+        "change": onDateChanged
+    });
+    EndDatePicker.appendTo("#EndDate"); 
+    
+    $("#@(id)mail").click(function () { window.location.href = 'mailto:?body=' + encodeURIComponent(window.location); return false; });
+    $("#@(id)print").click(function () { printPDF(); return false; });
+    $("#@(id)save").click(function () { savePDF(); return false; });
+    $("#@(id)save-excel").click(function () { saveExcel(); return false; });
+
+    @switch (Model.FilterType)
+    {
+        case FilterType.Default:
+        case FilterType.Other:
+            <text>
+                var Button@(btn1) =new ejs.buttons.Button({
+                    "content": "SEMAINE EN COURS",
+                    "cssClass": "flex-fill"
+                });
+                Button@(btn1).appendTo("#@(btn1)"); 
+                var Button@(btn2)=new ejs.buttons.Button({
+                    "content": "MOIS EN COURS",
+                    "cssClass": "flex-fill ml-2 mr-5"
+                });
+                Button@(btn2).appendTo("#@(btn2)"); 
+                var Button@(btn3)=new ejs.buttons.Button({
+                    "content": "OK",
+                    "cssClass": "e-primary"
+                });
+                Button@(btn3).appendTo("#@(btn3)"); 
+                $("#@(btn1)").on("click",
+                    function() {
+                        start.val("@(DateTime.Today.StartOfWeek().ToString("dd/MM/yyyy"))");
+                        end.val("@(DateTime.Today.StartOfWeek().AddDays(6).ToString("dd/MM/yyyy"))");
+                        type.val("@nameof(FilterType.Week)");
+                    });
+                $("#@(btn2)").on("click",
+                    function() {
+                        start.val(
+                            "@(new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1).ToString("dd/MM/yyyy"))");
+                        end.val(
+                            "@(new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1).AddMonths(1).AddDays(-1).ToString("dd/MM/yyyy"))");
+                        type.val("@nameof(FilterType.Month)");
+                    });
+            </text>
+            break;
+        case FilterType.Month:
+            <text>
+                var Button@(btn1) =new ejs.buttons.Button({
+                    "content": "AUJOURD'HUI",
+                    "cssClass": "flex-fill"
+                });
+                Button@(btn1).appendTo("#@(btn1)"); 
+                var Button@(btn2)=new ejs.buttons.Button({
+                    "content": "SEMAINE EN COURS",
+                    "cssClass": "flex-fill ml-2 mr-5"
+                });
+                Button@(btn2).appendTo("#@(btn2)"); 
+                var Button@(btn3)=new ejs.buttons.Button({
+                    "content": "OK",
+                    "cssClass": "e-primary"
+                });
+                Button@(btn3).appendTo("#@(btn3)"); 
+                $("#@(btn1)").on("click",
+                    function() {
+                        start.val("@(DateTime.Today.ToString("dd/MM/yyyy"))");
+                        end.val("@(DateTime.Today.ToString("dd/MM/yyyy"))");
+                        type.val("@nameof(FilterType.Default)");
+                    });
+                $("#@(btn2)").on("click",
+                    function() {
+                        start.val("@(DateTime.Today.StartOfWeek().ToString("dd/MM/yyyy"))");
+                        end.val("@(DateTime.Today.StartOfWeek().AddDays(6).ToString("dd/MM/yyyy"))");
+                        type.val("@nameof(FilterType.Week)");
+                    });
+            </text>
+            break;
+        case FilterType.Week:
+            <text>
+    var Button@(btn1) =new ejs.buttons.Button({
+        "content": "AUJOURD'HUI",
+        "cssClass": "flex-fill"
+    });
+    Button@(btn1).appendTo("#@(btn1)"); 
+    var Button@(btn2)=new ejs.buttons.Button({
+        "content": "MOIS EN COURS",
+        "cssClass": "flex-fill ml-2 mr-5"
+    });
+    Button@(btn2).appendTo("#@(btn2)"); 
+    var Button@(btn3)=new ejs.buttons.Button({
+        "content": "OK",
+        "cssClass": "e-primary"
+    });
+    Button@(btn3).appendTo("#@(btn3)"); 
+    $("#@(btn1)").on("click",
+        function() {
+            start.val("@(DateTime.Today.ToString("dd/MM/yyyy"))");
+            end.val("@(DateTime.Today.ToString("dd/MM/yyyy"))");
+            type.val("@nameof(FilterType.Default)");
+        });
+    $("#@(btn2)").on("click",
+        function() {
+            start.val("@(new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1).ToString("dd/MM/yyyy"))");
+            end.val(
+                "@(new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1).AddMonths(1).AddDays(-1).ToString("dd/MM/yyyy"))");
+            type.val("@nameof(FilterType.Month)");
+        });
+            </text>
+            break;
+    }
+
+</script>

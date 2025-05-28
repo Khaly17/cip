@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:telerikChart="clr-namespace:Telerik.XamarinForms.Chart;assembly=Telerik.XamarinForms.Chart"
+             xmlns:telerikGauges="clr-namespace:Telerik.XamarinForms.DataVisualization.Gauges;assembly=Telerik.XamarinForms.DataVisualization"
+             xmlns:telerikCommon="clr-namespace:Telerik.XamarinForms.Common;assembly=Telerik.XamarinForms.Common"
+             xmlns:local="clr-namespace:Gefco.CipQuai.DoubleDeckPage"
+             xmlns:controls="clr-namespace:Gefco.CipQuai.Controls;assembly=Gefco.CipQuai"
+             Title="{Binding PageTitle}" Padding="20"
+             x:Class="Gefco.CipQuai.DoubleDeckPage.DoubleDeckPage">
+    <ContentPage.BindingContext>
+        <local:ViewModel />
+    </ContentPage.BindingContext>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <Label Text="{Binding PageInvite}" Grid.Row="0"
+               Style="{StaticResource TitleLabelStyle}" />
+
+        <StackLayout Grid.Row="1" Spacing="0">
+            <controls:ExtEntry Text="{Binding SelectedRemorque, Mode=TwoWay}" Placeholder="{Binding RemorqueInvite}" 
+                               Focused="FirstNameEntry_OnFocused" Padding="0,5" TextChanged="FirstNameEntry_OnTextChanged" 
+                               IsInvalid="{Binding IsInvalid}" HorizontalOptions="FillAndExpand" x:Name="FirstNameEntry" FontSize="Medium" RemoveBorder="True" />
+            <ContentView BackgroundColor="DarkGray" HeightRequest=".75" IsVisible="{Binding Source={x:Reference FirstNameEntry}, Path=IsValidAndFocused, Converter={StaticResource BooleanInverterConverter}}" />
+            <ContentView BackgroundColor="Black" HeightRequest="2" IsVisible="{Binding Source={x:Reference FirstNameEntry}, Path=IsValidAndFocused}" />
+            <ContentView BackgroundColor="Red" HeightRequest="2" IsVisible="{Binding IsInvalid}" />
+            <Label TextColor="Red" x:Name="FirstNameValidationSummary" FontSize="Default" Text="{Binding ValidationSummary}" LineBreakMode="WordWrap" IsVisible="{Binding IsInvalid}" />
+            <controls:FloatingActionButtonView x:Name="fab" Command="{Binding ValidateCommand}" Clicked="Clicked" />
+        </StackLayout>
+
+    </Grid>
+</ContentPage>

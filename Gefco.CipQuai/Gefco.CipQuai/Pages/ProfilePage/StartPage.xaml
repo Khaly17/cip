@@ -1,0 +1,168 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<controls:ExtTakePicturePage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:Gefco.CipQuai.ProfilePage;assembly=Gefco.CipQuai"
+             xmlns:controls="clr-namespace:Gefco.CipQuai.Controls;assembly=Gefco.CipQuai"
+             xmlns:cipQuai="clr-namespace:Gefco.CipQuai;assembly=Gefco.CipQuai"
+             xmlns:buttons="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms"
+             xmlns:forms="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             xmlns:transformations="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations"
+             x:Class="Gefco.CipQuai.ProfilePage.StartPage" NavigationPage.HasNavigationBar="False">
+    <ContentPage.BindingContext>
+        <local:ViewModel />
+    </ContentPage.BindingContext>
+    <ContentPage.Content>
+    <Grid RowSpacing="0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+            <Grid HeightRequest="200" BackgroundColor="{StaticResource MenuTopBackgroundColor}">
+            <controls:ExtImage Source="{Binding UserPicture}" HorizontalOptions="Center" DownsampleWidth="100" WidthRequest="100" Margin="0,20" HeightRequest="100" Aspect="AspectFit" DownsampleToViewSize="True">
+                <controls:ExtImage.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="ShowPictureMenu"></TapGestureRecognizer>
+                </controls:ExtImage.GestureRecognizers>
+                <forms:CachedImage.Transformations>
+                        <transformations:CircleTransformation>
+                            <x:Arguments>
+                                <x:Double>20</x:Double>
+                                <x:String>#FFCC00</x:String>
+                            </x:Arguments>
+                        </transformations:CircleTransformation>
+                </forms:CachedImage.Transformations>
+            </controls:ExtImage>
+            </Grid>
+        <Grid Grid.Row="0" HeightRequest="56" BackgroundColor="Transparent" VerticalOptions="Start">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <buttons:SfButton BackgroundColor="Transparent" Margin="4" WidthRequest="48" VerticalOptions="Center" HeightRequest="48" HorizontalOptions="Start" Command="{Binding GoBackCommand}">
+                <controls:ExtImage Source="ic_arrow_backy.svg" DownsampleToViewSize="True" HorizontalOptions="Center" VerticalOptions="Center" WidthRequest="24" HeightRequest="24" Command="{Binding GoBackCommand}"></controls:ExtImage>
+            </buttons:SfButton>
+            <!--<Label Grid.Column="1" Text="{Binding PageTitle}" TextColor="{StaticResource ProfileNavBarColor}" VerticalOptions="Center" HeightRequest="48"></Label>-->
+        </Grid>
+        <StackLayout Spacing="0" Grid.Row="1">
+            <controls:ContentButton Command="{Binding ModifierFirstNameCommand}">
+                <Grid HeightRequest="50" Padding="20,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Label Text="{Binding FirstNameInvite}" Style="{StaticResource EntryLabelStyle}" />
+                    <Label Grid.Row="1" Grid.Column="0" Style="{StaticResource NormalLabelStyle}" Text="{Binding UserFirstName}" FontSize="18" />
+                    <buttons:SfButton Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" BackgroundColor="Transparent" Margin="4" WidthRequest="48" VerticalOptions="Center" HeightRequest="48" HorizontalOptions="End" Command="{Binding ModifierFirstNameCommand}">
+                        <controls:ExtImage Source="ic_chevron_rightg.svg" DownsampleToViewSize="True" HorizontalOptions="Center" VerticalOptions="Center" WidthRequest="24" HeightRequest="24" Command="{Binding ModifierFirstNameCommand}"></controls:ExtImage>
+                    </buttons:SfButton>
+                </Grid>
+            </controls:ContentButton>
+            <BoxView HeightRequest="1" BackgroundColor="{StaticResource BottomMenuSeparatorColor}" VerticalOptions="End" />
+            <controls:ContentButton Command="{Binding ModifierLastNameCommand}">
+                <Grid HeightRequest="50" Padding="20,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Label Text="{Binding LastNameInvite}" Style="{StaticResource EntryLabelStyle}" />
+                    <Label Grid.Row="1" Grid.Column="0" Style="{StaticResource NormalLabelStyle}"
+                           Text="{Binding UserLastName}" FontSize="18" />
+                    <buttons:SfButton Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" BackgroundColor="Transparent"
+                                      Margin="4" WidthRequest="48" VerticalOptions="Center" HeightRequest="48"
+                                      HorizontalOptions="End" Command="{Binding ModifierLastNameCommand}">
+                        <controls:ExtImage Source="ic_chevron_rightg.svg" DownsampleToViewSize="True"
+                                           HorizontalOptions="Center" VerticalOptions="Center" WidthRequest="24"
+                                           Command="{Binding ModifierLastNameCommand}"
+                                           HeightRequest="24">
+                        </controls:ExtImage>
+                    </buttons:SfButton>
+                </Grid>
+            </controls:ContentButton>
+            <BoxView HeightRequest="1" BackgroundColor="{StaticResource BottomMenuSeparatorColor}" VerticalOptions="End" />
+            <Grid HeightRequest="50" Padding="20,10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Label Text="{Binding EmailInvite}" Style="{StaticResource EntryLabelStyle}" />
+                <Label Grid.Row="1" Grid.Column="0" Style="{StaticResource EntryLabelStyle}"
+                       Text="{Binding User.Email}" FontSize="18" />
+            </Grid>
+            <BoxView HeightRequest="1" BackgroundColor="{StaticResource BottomMenuSeparatorColor}" VerticalOptions="End" />
+            <controls:ContentButton Command="{Binding VerifierCodePinCommand}">
+                <Grid HeightRequest="50" Padding="20,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Label Text="{Binding CodePinInvite}" Style="{StaticResource EntryLabelStyle}" />
+                    <Label Grid.Row="1" Grid.Column="0" Style="{StaticResource NormalLabelStyle}" Text="****"
+                           FontSize="18" />
+                    <buttons:SfButton Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" BackgroundColor="Transparent"
+                                      Margin="4" WidthRequest="48" VerticalOptions="Center" HeightRequest="48"
+                                      HorizontalOptions="End" Command="{Binding VerifierCodePinCommand}">
+                        <controls:ExtImage Source="ic_chevron_rightg.svg" DownsampleToViewSize="True"
+                                           HorizontalOptions="Center" VerticalOptions="Center" WidthRequest="24"
+                                           Command="{Binding VerifierCodePinCommand}"
+                                           HeightRequest="24">
+                        </controls:ExtImage>
+                    </buttons:SfButton>
+                </Grid>
+            </controls:ContentButton>
+            <BoxView HeightRequest="1" BackgroundColor="{StaticResource BottomMenuSeparatorColor}" VerticalOptions="End" />
+        </StackLayout>
+        <Grid Grid.Row="2" Margin="20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <controls:ExtHyperLink Grid.Column="0" Text="{Binding ModifierCodePinLink}" Command="{Binding VerifierCodePinCommand}" />
+            <controls:ExtHyperLink Grid.Column="1" Text="{Binding DéconnexionLink}" HorizontalOptions="End" Command="{Binding LogoutCommand}" />
+        </Grid>
+        <!-- Bottom Menus -->
+        <ContentView Grid.Row="0" Grid.RowSpan="3" x:Name="BusyIndicator" BackgroundColor="{StaticResource BottomMenuOverlayColor}" Opacity="0" IsVisible="False">
+        </ContentView>
+
+        <StackLayout Grid.Row="1" Grid.RowSpan="2" VerticalOptions="End" Margin="5" x:Name="BottomButtonsFrame" TranslationY="250">
+            <Frame BackgroundColor="{StaticResource ColorFrameBackground}" HasShadow="True" Padding="5,0" CornerRadius="5">
+                <StackLayout Spacing="0">
+                    <buttons:SfButton Clicked="TakePicture" Text="{Binding TakePictureButtonLabel}" CornerRadius="0" BorderWidth="0"
+                                      Style="{StaticResource SecondaryActionButtonStyle}" FontAttributes="None">
+                    </buttons:SfButton>
+                    <ContentView HeightRequest="1" BackgroundColor="{StaticResource BottomMenuSeparatorColor}" />
+                    <buttons:SfButton Clicked="ChoosePicture" Text="{Binding ChoosePictureButtonLabel}" CornerRadius="0" BorderWidth="0"
+                                      Style="{StaticResource SecondaryActionButtonStyle}" FontAttributes="None">
+                    </buttons:SfButton>
+                    <!--<buttons:SfButton Command="{Binding DeletePictureCommand}" Text="{Binding DeclarationImpossibleChoosePictureButtonLabel}"
+                                   Style="{StaticResource SecondaryActionButtonStyle}">
+                </buttons:SfButton>-->
+
+                </StackLayout>
+            </Frame>
+            <Frame BackgroundColor="{StaticResource ColorFrameBackground}" HasShadow="True" Padding="5,0" CornerRadius="5">
+                <StackLayout Spacing="0">
+                    <buttons:SfButton Clicked="CancelPictureMenu" Text="{Binding CancelInvite}" CornerRadius="0" BorderWidth="0"
+                                      Style="{StaticResource SecondaryActionButtonStyle}">
+                    </buttons:SfButton>
+                </StackLayout>
+            </Frame>
+        </StackLayout>
+    </Grid>
+    </ContentPage.Content>
+</controls:ExtTakePicturePage>

@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<controls:ExtContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:Gefco.CipQuai.Controls;assembly=Gefco.CipQuai" 
+             xmlns:local="clr-namespace:Gefco.CipQuai.ProfilePage"
+             x:Class="Gefco.CipQuai.ProfilePage.ModifierLastNamePage" NavBarMainCommand="{Binding PopCommand}" PageIcon="ic_close.svg" PageTitle="{Binding PageTitle}" ControlTemplate="{StaticResource GefcoPage}" NavigationPage.HasNavigationBar="False" Appearing="OnAppearing">
+    <ContentPage.BindingContext>
+        <local:ViewModel />
+    </ContentPage.BindingContext>
+    <Grid RowSpacing="0" Padding="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <Label Text="{Binding LastNameInvite}" Grid.Row="0" Margin="0,40,0,0" Style="{StaticResource EntryLabelStyle}" />
+
+        <StackLayout Grid.Row="1" Spacing="0">
+            <controls:ExtEntry HorizontalOptions="FillAndExpand" Text="{Binding LastName, Mode=TwoWay}" x:Name="MyEntry" Placeholder="{Binding LastNameInvite}" TextColor="{Binding IsValidLastName, Converter={StaticResource BooleanValidConverter}}"  />
+            <ContentView HeightRequest="1" BackgroundColor="{Binding IsValidLastName, Converter={StaticResource BooleanValidConverter}}" />
+            <controls:FloatingActionButtonView Command="{Binding SaveLastNameCommand}" IsEnabled="{Binding IsValidLastName}" Margin="0,20" />
+        </StackLayout>
+
+
+    </Grid>
+</controls:ExtContentPage>

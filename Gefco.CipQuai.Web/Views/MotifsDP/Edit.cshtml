@@ -1,0 +1,135 @@
+﻿@using Gefco.CipQuai.Web.Models
+@model Gefco.CipQuai.Web.Models.MotifDP
+
+@{
+    ViewBag.Title = "Éditer Motif DP [" + Model.Name + "]";
+    Layout = "~/Views/Shared/_AuthLayout.cshtml";
+    ViewBag.ShowHeader = false;
+    var id = Tools.GenerateRandomString(8);
+}
+<div class="row dashboard" id="capture">
+    <div class="col-xl-12 col-md-12 px-1 px-sm-3">
+        <div class="card product-progress-card">
+            <div class="card-header main-header">
+                <h4>Infos Motif DP - @Model.Name</h4>
+            </div>
+            <div class="card-block p-2">
+                <div class="pp-main row m-0">
+                    <div class="col-3 px-0"></div>
+                    <div class="col-6 px-0">
+                        @using (Html.BeginForm())
+                        {
+                            @Html.AntiForgeryToken()
+
+                            <div class="form-horizontal">
+                                @Html.HiddenFor(model => model.Id)
+
+                                <div class="form-group row">
+                                    <label class=" col-md-4" for="@nameof(Model.Name)">Nom</label>
+                                    <div class="col-md-8">
+                                        @Html.EditorFor(model => model.Name, new
+                                        {
+                                            htmlAttributes = new
+                                            {
+                                                @class = "form-control"
+                                            }
+                                        })
+                                        @Html.ValidationMessageFor(model => model.Name, "", new
+                                        {
+                                            @class = "text-danger"
+                                        })
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class=" col-md-4" for="@nameof(Model.DisplayOrder)">Ordre de tri</label>
+                                    <div class="col-md-8">
+                                        @Html.EditorFor(model => model.DisplayOrder, new
+                                        {
+                                            htmlAttributes = new
+                                            {
+                                                @class = "form-control"
+                                            }
+                                        })
+                                        @Html.ValidationMessageFor(model => model.DisplayOrder, "", new
+                                        {
+                                            @class = "text-danger"
+                                        })
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class=" col-md-4" for="@nameof(Model.IsNbDP)">Saisie nombre de DP</label>
+                                    <div class="col-md-8">
+                                        @Html.EJS().CheckBoxFor(model => model.IsNbDP, new
+                                        {
+                                            htmlAttributes = new
+                                            {
+                                                @class = "form-control"
+                                            }
+                                        }).Render()
+                                        @Html.ValidationMessageFor(model => model.IsNbDP, "", new
+                                        {
+                                            @class = "text-danger"
+                                        })
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class=" col-md-4" for="@nameof(Model.IsOther)">Saisie autre motif</label>
+                                    <div class="col-md-8">
+                                        @Html.EJS().CheckBoxFor(model => model.IsOther, new
+                                        {
+                                            htmlAttributes = new
+                                            {
+                                                @class = "form-control"
+                                            }
+                                        }).Render()
+                                        @Html.ValidationMessageFor(model => model.IsOther, "", new
+                                        {
+                                            @class = "text-danger"
+                                        })
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class=" col-md-4" for="@nameof(Model.NeedPicture)">Photo obligatoire</label>
+                                    <div class="col-md-8">
+                                        @Html.EJS().CheckBoxFor(model => model.NeedPicture, new
+                                        {
+                                            htmlAttributes = new
+                                            {
+                                                @class = "form-control"
+                                            }
+                                        }).Render()
+                                        @Html.ValidationMessageFor(model => model.NeedPicture, "", new
+                                        {
+                                            @class = "text-danger"
+                                        })
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group row">
+                                    <div class="col-md-4"></div>
+                                    <div class="col-md-8">
+                                        <button type="button" class="e-btn e-danger" onclick="javascript:window.location = '@Url.Action("Index")'">Retour à la liste</button>
+                                        <input type="submit" value="Sauvegarder" class="e-btn e-primary" />
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts
+{
+    <script>
+        $("#menu-admin-motifsDP").addClass("active");
+        @*function toggleRole(e) {
+            let input = $(e);
+            $.post('@Url.Action("ToggleRole")', { roleId: input.val(), AgenceId: '@Model.Id', isInRole: input.prop('checked') }, () => { window.location = window.location });
+        }*@
+    </script>
+
+}

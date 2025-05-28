@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<FlyoutPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:cipQuai="clr-namespace:Gefco.CipQuai;assembly=Gefco.CipQuai"
+             xmlns:startPage="clr-namespace:Gefco.CipQuai.StartPage;assembly=Gefco.CipQuai"
+             FlyoutLayoutBehavior="Default" BackgroundColor="Transparent" IconImageSource="ic_menu"
+                  Title="My Title Page"
+             x:Class="Gefco.CipQuai.MainPage">
+
+    <FlyoutPage.Flyout>
+        <cipQuai:MenuPage x:Name="UI_MenuPage" IconImageSource="ic_menu" />
+    </FlyoutPage.Flyout>
+    <FlyoutPage.Detail>
+        <NavigationPage Popped="NavPageOnPopped" Pushed="NavPageOnPushed" IconImageSource="ic_menu" x:Name="NavPage" BarBackgroundColor="{StaticResource ColorNavbarBackground}" BarTextColor="{StaticResource ColorNavbarForeground}" Tint="{StaticResource ColorNavbarBackground}" BackgroundColor="Transparent">
+            <x:Arguments>
+                <startPage:StartPage />
+            </x:Arguments>
+        </NavigationPage>
+    </FlyoutPage.Detail>
+
+</FlyoutPage>

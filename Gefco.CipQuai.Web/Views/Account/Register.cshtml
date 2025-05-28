@@ -1,0 +1,72 @@
+﻿@model Gefco.CipQuai.Web.Models.RegisterViewModel
+@{
+    ViewBag.Title = "Register";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-material", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="text-center">
+        <div class="navbar-brand">
+            <svg role="presentation" class="logo img-fluid"><use xlink:href="~/Content/assets/images/sprite.svg#gefco_logo"></use></svg>
+        </div>
+    </div>
+    <div class="auth-box card">
+        <div class="card-block">
+            <div class="row m-b-20">
+                <div class="col-md-12">
+                    <h3 class="text-center txt-primary">Sign up</h3>
+                </div>
+            </div>
+            <div class="form-group form-primary">
+                @Html.TextBoxFor(m => m.Username, new { @class = "form-control" })
+                <span class="form-bar"></span>
+                @Html.LabelFor(m => m.Username, new { @class = "float-label" })
+                @Html.ValidationMessageFor(m => m.Username, "", new { @class = "text-danger" })
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group form-primary">
+                        @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                        <span class="form-bar"></span>
+                        @Html.LabelFor(m => m.Password, new { @class = "float-label" })
+                        @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group form-primary">
+                        @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
+                        <span class="form-bar"></span>
+                        @Html.LabelFor(m => m.ConfirmPassword, new { @class = "float-label" })
+                        @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="row m-t-25 text-left">
+                <div class="col-md-12">
+                    <div class="checkbox-fade fade-in-primary">
+                        <label>
+                            <input type="checkbox" value="">
+                            <span class="cr"><i class="cr-icon icofont icofont-ui-check txt-primary"></i></span>
+                            <span class="text-inverse">I read and accept <a href="#">Terms &amp; Conditions.</a></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="row m-t-30">
+                <div class="col-md-12">
+                    <button class="btn btn-primary btn-md btn-block waves-effect text-center m-b-20">Sign up now</button>
+                </div>
+            </div>
+            <hr />
+            <div class="row">
+                <div class="col-md-10">
+                    <p class="text-inverse text-left m-b-0">Thank you.</p>
+                    <p class="text-inverse text-left"><a href="@Url.Action("Index", "Home")"><b>Back to website</b></a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+}

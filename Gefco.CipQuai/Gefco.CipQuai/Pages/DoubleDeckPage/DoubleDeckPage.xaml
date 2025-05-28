@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<controls:ExtContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:Gefco.CipQuai.DoubleDeckPage"
+             xmlns:controls="clr-namespace:Gefco.CipQuai.Controls;assembly=Gefco.CipQuai"
+             xmlns:xForms="clr-namespace:Syncfusion.SfAutoComplete.XForms;assembly=Syncfusion.SfAutoComplete.XForms"
+             xmlns:buttons="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms"
+             xmlns:xForms1="clr-namespace:Syncfusion.SfBusyIndicator.XForms;assembly=Syncfusion.SfBusyIndicator.XForms"
+                         NavBarMainCommand="{Binding GoBackCommand}" PageIcon="ic_arrow_backy.svg" PageTitle="{Binding PageTitle}" ControlTemplate="{StaticResource GefcoPage}" NavigationPage.HasNavigationBar="False" IsLoading="{Binding IsLoading}"
+             x:Class="Gefco.CipQuai.DoubleDeckPage.DoubleDeckPage">
+    <ContentPage.BindingContext>
+        <local:DPViewModel />
+    </ContentPage.BindingContext>
+    <Grid RowSpacing="0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Label Text="{Binding StartPageInvite}" Grid.Row="0" Margin="20"
+               Style="{StaticResource TitleLabelStyle}" />
+
+        <StackLayout Grid.Row="1" Spacing="0">
+            <xForms:SfAutoComplete x:Name="AutoComplete" DataSource="{Binding Tractions}" NoResultsFoundText="{Binding NoResultsMessage}" Margin="20,0" 
+                                   AutoCompleteMode="Suggest" SuggestionMode="Contains" Watermark="{Binding TractionInvite}" Completed="AutoComplete_OnCompleted" MaximumDropDownHeight="160"
+                                   BorderColor="{Binding IsInvalid, Converter={StaticResource BooleanInvalidConverter}}" TextColor="{Binding IsInvalid, Converter={StaticResource BooleanInvalidConverter}}" 
+                                   SelectedItem="{Binding SelectedTraction, Mode=TwoWay}" SelectedValuePath="Id" Text="{Binding TractionName, Mode=TwoWay}" DisplayMemberPath="Name" />
+            <Label Style="{StaticResource InvalidLabelStyle}" Text="{Binding ErrorMessage}" Margin="20,0" />
+            <controls:FloatingActionButtonView Command="{Binding ValidateTractionCommand}" IsVisible="{Binding IsValidTraction, Converter={StaticResource BooleanInverterConverter}}" Margin="20" />
+
+            <StackLayout IsVisible="{Binding IsValidTraction}" Margin="20">
+                <Label Style="{StaticResource EntryLabelStyle}" Text="{Binding AgenceDepartLabel}" />
+                <Label Style="{StaticResource NormalLabelStyle}" Text="{Binding AgenceDepart.Name}" />
+                <ContentView Margin="0,10" />
+                <Label Style="{StaticResource EntryLabelStyle}" Text="{Binding AgenceArriveeLabel}" />
+                <Label Style="{StaticResource NormalLabelStyle}" Text="{Binding AgenceArrivee.Name}" />
+                <!--<ContentView Margin="0,10" />
+                <Label Style="{StaticResource EntryLabelStyle}" Text="{Binding RemorqueNumberLabel}" />
+                <Label Style="{StaticResource NormalLabelStyle}" Text="{Binding RemorqueNumber}" />-->
+            </StackLayout>
+        </StackLayout>
+
+        <buttons:SfButton Text="Suivant" Grid.Row="2" VerticalOptions="End" CornerRadius="0" IsVisible="{Binding IsValidTraction}"
+                         x:Name="NextButton" Command="{Binding ValidateTractionCommand}"
+                         Style="{StaticResource ActionButtonStyle}" />
+
+        <!-- Bottom Menus -->
+        <ContentView Grid.Row="0" Grid.RowSpan="3" x:Name="BusyIndicator" BackgroundColor="{StaticResource BottomMenuOverlayColor}" Opacity="0" IsVisible="False">
+        </ContentView>
+
+        <StackLayout Grid.Row="0" Grid.RowSpan="3" VerticalOptions="End" Margin="5" x:Name="CancelButtonsFrame" TranslationY="250">
+            <Frame BackgroundColor="{StaticResource ColorFrameBackground}" HasShadow="True" CornerRadius="5" Padding="0">
+                <StackLayout Spacing="0">
+                    <Label Style="{StaticResource FrameTitleLabelStyle}" Text="{Binding RestartLabelInvite}" Margin="5,10"></Label>
+                    <ContentView HeightRequest="2" BackgroundColor="{StaticResource BottomMenuSeparatorColor}" Margin="0" />
+                    <buttons:SfButton Clicked="ResumeDeclaration" Text="{Binding ResumeButtonInvite}" CornerRadius="0" BorderWidth="0"
+                            Style="{StaticResource SecondaryActionButtonStyle}" FontAttributes="None">
+                    </buttons:SfButton>
+                    <ContentView HeightRequest="1" BackgroundColor="{StaticResource BottomMenuSeparatorColor}" Margin="5,0" />
+                    <buttons:SfButton Clicked="RestartDeclaration" Text="{Binding RestartButtonInvite}" CornerRadius="0" BorderWidth="0"
+                            Style="{StaticResource SecondaryActionButtonStyle}" FontAttributes="None">
+                    </buttons:SfButton>
+                    <!--<buttons:SfButton Command="{Binding DeletePictureCommand}" Text="{Binding DeclarationImpossibleChoosePictureButtonLabel}"
+                                   Style="{StaticResource SecondaryActionButtonStyle}">
+                </buttons:SfButton>-->
+
+                </StackLayout>
+            </Frame>
+            <Frame BackgroundColor="{StaticResource ColorFrameBackground}" HasShadow="True" Padding="5,0" CornerRadius="5">
+                <StackLayout Spacing="0">
+                    <buttons:SfButton Clicked="CancelBottomMenu" Text="{Binding CancelInvite}" CornerRadius="0" BorderWidth="0"
+                            Style="{StaticResource SecondaryActionButtonStyle}">
+                    </buttons:SfButton>
+                </StackLayout>
+            </Frame>
+        </StackLayout>
+
+    </Grid>
+</controls:ExtContentPage>

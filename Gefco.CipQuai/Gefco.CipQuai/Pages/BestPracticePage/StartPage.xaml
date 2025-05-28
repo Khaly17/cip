@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<controls:ExtContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:buttons="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms"
+             xmlns:local="clr-namespace:Gefco.CipQuai.BestPracticePage;assembly=Gefco.CipQuai"
+             xmlns:xForms="clr-namespace:Syncfusion.SfBusyIndicator.XForms;assembly=Syncfusion.SfBusyIndicator.XForms"
+             xmlns:controls="clr-namespace:Gefco.CipQuai.Controls;assembly=Gefco.CipQuai"
+             xmlns:xForms1="clr-namespace:Syncfusion.SfAutoComplete.XForms;assembly=Syncfusion.SfAutoComplete.XForms"
+                         NavBarMainCommand="{Binding GoBackCommand}" PageIcon="ic_arrow_backy.svg" PageTitle="{Binding PageTitle}" ControlTemplate="{StaticResource GefcoPage}" NavigationPage.HasNavigationBar="False" ShowHome="True" NavBarHomeCommand="{Binding GoBackCommand}" IsLoading="{Binding IsLoading}"
+                         x:Class="Gefco.CipQuai.BestPracticePage.StartPage">
+    <controls:ExtContentPage.BindingContext>
+        <local:BPViewModel />
+    </controls:ExtContentPage.BindingContext>
+    <ContentPage.Content>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <Label Text="{Binding StartPageInvite}" Grid.Row="0" 
+                   Style="{StaticResource TitleLabelStyle}" />
+            <StackLayout Grid.Row="1" Spacing="0" Padding="20">
+                <controls:ExtEntry x:Name="AutoComplete" Completed="AutoComplete_OnCompleted" TextColor="{Binding IsInvalid, Converter={StaticResource BooleanInvalidConverter}}" 
+                                       Text="{Binding SelectedActeur}" />
+                <ContentView HeightRequest="1" BackgroundColor="{Binding IsInvalid, Converter={StaticResource BooleanInvalidConverter}}" />
+                <Label Style="{StaticResource InvalidLabelStyle}" Text="{Binding ErrorMessage}" Margin="20,0" />
+                <controls:FloatingActionButtonView Command="{Binding ValidateActeurCommand}" Margin="20" />
+            </StackLayout>
+            <Grid Grid.Row="2" VerticalOptions="End" ColumnSpacing="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+
+            </Grid>
+            <xForms:SfBusyIndicator Grid.Row="0" Grid.RowSpan="3" x:Name="BusyIndicator" AnimationType="SingleCircle"
+                                     IsVisible="{Binding IsLoading}"
+                                     IsBusy="{Binding IsLoading}">
+            </xForms:SfBusyIndicator>
+        </Grid>
+    </ContentPage.Content>
+</controls:ExtContentPage>

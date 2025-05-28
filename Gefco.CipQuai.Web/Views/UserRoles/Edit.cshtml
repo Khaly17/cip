@@ -1,0 +1,236 @@
+﻿@using Gefco.CipQuai.Web.Models
+@model Gefco.CipQuai.Web.Models.BusinessRole
+
+@{
+    ViewBag.Title = "Éditer Rôle [" + Model.Value + "]";
+    Layout = "~/Views/Shared/_AuthLayout.cshtml";
+    ViewBag.ShowHeader = false;
+    var id = Tools.GenerateRandomString(8);
+}
+
+<div class="row dashboard" id="capture">
+    <div class="col-xl-12 col-md-12 px-1 px-sm-3">
+        <div class="card product-progress-card">
+            <div class="card-header main-header">
+                <h4>Infos Rôle - @Model.Value</h4>
+            </div>
+            <div class="card-block p-2">
+                <div class="pp-main row m-0">
+                    <div class="col-3 px-0"></div>
+                    <div class="col-6 px-0">
+                        @using (Html.BeginForm())
+                        {
+                            @Html.AntiForgeryToken()
+
+                            <div class="form-horizontal">
+                                @Html.HiddenFor(model => model.Key)
+
+                                <div class="form-group row">
+                                    <label class=" col-md-4" for="@nameof(Model.Value)">Nom</label>
+                                    <div class="col-md-8">
+                                        @if (User.IsInRole("Super Admin"))
+                                        {
+                                            @Html.EditorFor(model => model.Value, new
+                                       {
+                                           htmlAttributes = new
+                                           {
+                                               @class = "form-control"
+                                           }
+                                       })
+                                            @Html.ValidationMessageFor(model => model.Value, "", new
+                                            {
+                                                @class = "text-danger"
+                                            })
+                                        }
+                                        else
+                                        {
+                                            @Html.EditorFor(model => model.Value, new
+                                            {
+                                                htmlAttributes = new
+                                                {
+                                                    @class = "form-control", @readonly = "readonly"
+                                                }
+                                            })
+                                        }
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class=" col-md-4" for="@nameof(Model.Description)">Description</label>
+                                    <div class="col-md-8">
+                                        @Html.EditorFor(model => model.Description, new
+                                        {
+                                            htmlAttributes = new
+                                            {
+                                                @class = "form-control"
+                                            }
+                                        })
+                                        @Html.ValidationMessageFor(model => model.Description, "", new
+                                        {
+                                            @class = "text-danger"
+                                        })
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group row">
+                                    <div class="col-md-4"></div>
+                                    <div class="col-md-8">
+                                        <button type="button" class="e-btn e-danger" onclick="javascript:window.location = '@Url.Action("Index")'">Retour à la liste</button>
+                                        <input type="submit" value="Sauvegarder" class="e-btn e-primary" />
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-12 col-md-12 px-1 px-sm-3">
+        <div class="card product-progress-card">
+            <div class="card-header main-header">
+                <button type="button" class="f-right e-btn e-primary" data-toggle="modal" data-target="#myModal">Ajouter un utilisateur</button>
+                <h4>Membres du rôle</h4>
+            </div>
+            <div class="card-block p-2">
+                <div class="pp-main row m-0">
+                    <div class="col-12 px-0">
+                        @if (Model is NationalRole nr)
+                        {
+                            @(Html.EJS().Grid("Grid").DataSource(ds => ds.Url(Url.Action("UserNationalRoleData", new
+                              {
+                                  roleId = Model.Key
+                              })).Adaptor("UrlAdaptor")).DataBound("postLoad").Columns(col =>
+                              {
+                                  col.Width("120").Field(nameof(UserNationalRole.User) + ".FirstName").HeaderText("Prénom").Add();
+                                  col.Width("120").Field(nameof(UserNationalRole.User) + ".LastName").HeaderText("Nom").Add();
+                                  col.Width("70").Field(nameof(UserNationalRole.Id)).HeaderText("Détails").Template("<a href='#' class='e-btn e-danger mx-2' data_id='${Id}'>Enlever</a>").Add();
+                              }).Toolbar(new List<string>()
+                              {
+                                  "Search"
+                              }).AllowSorting().AllowPaging().PageSettings(p => p.PageCount(3).PageSize(10)).SortSettings(sort => sort.AllowUnsort(false).Columns(new[]
+                              {
+                                  new
+                                  {
+                                      field = "User.FirstName",
+                                      direction = "Ascending"
+                                  }
+                              })).Render())
+                            Html.RenderPartial("AddUserNationalRole", new UserNationalRole(nr));
+                        }
+                        @if (Model is RegionRole rr)
+                        {
+                            @(Html.EJS().Grid("Grid").DataSource(ds => ds.Url(Url.Action("UserRegionRoleData", new
+                        {
+                            roleId = Model.Key
+                        })).Adaptor("UrlAdaptor")).DataBound("postLoad").Columns(col =>
+                        {
+                            col.Width("80").Field(nameof(UserRegionRole.Region) + ".Name").HeaderText("Région").Add();
+                            col.Width("80").Field(nameof(UserRegionRole.User) + ".FirstName").HeaderText("Prénom").Add();
+                            col.Width("80").Field(nameof(UserRegionRole.User) + ".LastName").HeaderText("Nom").Add();
+                            col.Width("70").Field(nameof(UserRegionRole.Id)).HeaderText("Détails").Template("<a href='#' class='e-btn e-danger mx-2' data_id='${Id}'>Enlever</a>").Add();
+                        }).Toolbar(new List<string>()
+                              {
+                                  "Search"
+                              }).AllowSorting().AllowPaging().PageSettings(p => p.PageCount(3).PageSize(10)).SortSettings(sort => sort.AllowUnsort(false).Columns(new[]
+                              {
+                                  new
+                                  {
+                                      field = "Region.Name",
+                                      direction = "Ascending"
+                                  }
+                              })).Render())
+                            Html.RenderPartial("AddUserRegionRole", new UserRegionRole(rr));
+                        }
+                        @if (Model is AgenceRole ar)
+                        {
+                            @(Html.EJS().Grid("Grid").DataSource(ds => ds.Url(Url.Action("UserAgenceRoleData", new
+                        {
+                            roleId = Model.Key
+                        })).Adaptor("UrlAdaptor")).DataBound("postLoad").Columns(col =>
+                        {
+                            col.Width("80").Field(nameof(UserAgenceRole.Agence) + ".Name").HeaderText("Agence").Add();
+                            col.Width("80").Field(nameof(UserAgenceRole.User) + ".FirstName").HeaderText("Prénom").Add();
+                            col.Width("80").Field(nameof(UserAgenceRole.User) + ".LastName").HeaderText("Nom").Add();
+                            col.Width("70").Field(nameof(UserAgenceRole.Id)).HeaderText("Détails").Template("<a href='#' class='e-btn e-danger mx-2' data_id='${Id}'>Enlever</a>").Add();
+                        }).Toolbar(new List<string>()
+                              {
+                                  "Search"
+                              }).AllowSorting().AllowPaging().PageSettings(p => p.PageCount(3).PageSize(10)).SortSettings(sort => sort.AllowUnsort(false).Columns(new[]
+                              {
+                                  new
+                                  {
+                                      field = "Agence.Name",
+                                      direction = "Ascending"
+                                  }
+                              })).Render())
+                            Html.RenderPartial("AddUserAgenceRole", new UserAgenceRole(ar));
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function addRole() {
+        swal({
+            title: "Ajout Rôle " + (type === 'A' ? 'Agence' : type === 'N' ? 'National' : 'Région'),
+            text: "Saisissez le nom :",
+            type: "input",
+            showCancelButton: true,
+            closeOnConfirm: false,
+            inputPlaceholder: "Rôle..."
+        }, function(inputValue) {
+            if (inputValue === false)
+                return false;
+            if (inputValue === "") {
+                swal.showInputError("Saisie obligatoire !");
+                return false;
+            }
+            $.post(type === 'A' ? '@Url.Action("CreateAgenceRole")' : 'N' ? '@Url.Action("CreateNationalRole")' : '@Url.Action("CreateRegionRole")', { Value: inputValue }, function (result) {
+                swal({
+                    title: "Succès", text: "Élément ajouté avec succès", type: "success"
+                }, () => {
+                    var grid = document.getElementById("Grid").ej2_instances[0];
+                    grid.refresh(); // refresh the Grid.
+                });
+            });
+        });
+        return false;
+    }
+
+    $("#menu-admin-userroles").addClass("active");
+    @*function toggleRole(e) {
+            let input = $(e);
+            $.post('@Url.Action("ToggleRole")', { roleId: input.val(), AgenceId: '@Model.Id', isInRole: input.prop('checked') }, () => { window.location = window.location });
+        }*@
+    function postLoad() {
+        $("table a.e-danger").click(
+            function (e) {
+                e.preventDefault();
+                var id = this.attributes.data_id.value;
+                swal({
+                        title: "Êtes-vous sûr ?",
+                        text: "Vous ne pouvez pas annuler cette action !",
+                        type: "warning",
+                        showCancelButton: true,
+                        confirmButtonClass: "btn-danger",
+                        confirmButtonText: "Supprimer",
+                        closeOnConfirm: false
+                    },
+                    () => {
+                        $.post('@(Model is NationalRole ? Url.Action("DeleteUserNationalRole") : Model is AgenceRole ? Url.Action("DeleteUserAgenceRole") : Url.Action("DeleteUserRegionRole"))/' + id, null, function(result) {
+                            swal({
+                                title: "Suppression confirmée", text: "Utilisateur enlevé", type:"success"
+                            }, () => {
+                                var grid = document.getElementById("Grid").ej2_instances[0];
+                                grid.refresh(); // refresh the Grid.
+                            });
+                        });
+                    });
+            });
+    }
+
+</script>

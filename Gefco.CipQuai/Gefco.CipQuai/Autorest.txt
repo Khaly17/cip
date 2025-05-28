@@ -1,0 +1,1 @@
+autorest -Input http://localhost/CipQuai/swagger/docs/v1 -Namespace Gefco.CipQuai.ApiClient -CodeGenerator CSharp -Modeler Swagger

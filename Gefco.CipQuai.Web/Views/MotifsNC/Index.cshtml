@@ -1,0 +1,105 @@
+﻿@using Gefco.CipQuai.Web.Models
+@using Syncfusion.EJ2.Grids
+@model IEnumerable<Gefco.CipQuai.Web.Models.MotifNC>
+
+@{
+    ViewBag.Title = "Motifs NC";
+    Layout = "~/Views/Shared/_AuthLayout.cshtml";
+    ViewBag.ShowHeader = false;
+    var id = Tools.GenerateRandomString(8);
+
+}
+
+<div class="row dashboard" id="capture">
+    <div class="col-xl-12 col-md-12 px-1 px-sm-3">
+        <div class="card product-progress-card">
+            <div class="card-header main-header">
+                <button type="button" class="f-right e-btn e-primary" onclick="addMotifNC()">Ajouter un motif</button>
+                <h4>@ViewBag.Title</h4>
+            </div>
+            <div class="card-block p-0">
+                <div class="pp-main row m-0">
+                    <div class="col-12 px-0">
+                        @(Html.EJS().Grid("Grid")
+                                                                              .DataSource(ds => ds.Url(Url.Action("IndexData")).Adaptor("UrlAdaptor")).DataBound("postLoad")
+                                                                      .AllowExcelExport().ExcelExportComplete("showColumns")
+                                                                              .Columns(col =>
+                                                                              {
+                                                                                  col.Field(nameof(MotifNC.Name)).HeaderText("Nom").Width("150").Add();
+                                                                                  col.Field(nameof(MotifNC.DisplayOrder)).HeaderText("Ordre tri").Width("70").Add();
+                                                                                  col.Field(nameof(MotifNC.IsOther)).HeaderText("Saisie autre motif").DisplayAsCheckBox(true).Width("70").Add();
+                                                                                  col.Field("Id").HeaderText("Détails").Template("<a href='" + Url.Action("Edit") + "/${Id}' class='e-btn e-primary'>Éditer</a><a href='#' class='e-btn e-danger mx-2' data_id='${Id}'>Supprimer</a>").Width("90").Add();
+                                                                              })
+                                                                              .Toolbar(new List<string>() { "Search" })
+                                                                              .AllowSorting()
+                                                              .AllowPaging().PageSettings(p => p.PageCount(3).PageSize(10))
+                                                                              .SortSettings(sort => sort.AllowUnsort(false).Columns(new[] { new { field = "DisplayOrder", direction = "Ascending" } }))
+                                                                              .Render())
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    function postLoad() {
+        $("table a.e-danger").click(
+            function (e) {
+                e.preventDefault();
+                var id = this.attributes.data_id.value;
+                swal({
+                        title: "Êtes-vous sûr ?",
+                        text: "Vous ne pouvez pas annuler cette action !",
+                        type: "warning",
+                        showCancelButton: true,
+                        confirmButtonClass: "btn-danger",
+                        confirmButtonText: "Supprimer",
+                        closeOnConfirm: false
+                    },
+                    () => {
+                        $.post('@Url.Action("Delete")/' + id, null, function(result) {
+                            swal({ title: "Suppression confirmée", text: "Motif supprimé", type:"success"
+                            }, () => {
+                                var grid = document.getElementById("Grid").ej2_instances[0];
+                                grid.refresh(); // refresh the Grid.
+                            });
+                        });
+                    });
+            });
+    }
+
+    function showColumns(args) {
+        this.columns[3].visible = true;
+        document.getElementById('Grid').ej2_instances[0].hideSpinner();
+        return false;
+    }
+    function addMotifNC() {
+        swal({
+            title: "Ajout Motif NC",
+            text: "Saisissez le motif :",
+            type: "input",
+            showCancelButton: true,
+            closeOnConfirm: false,
+            inputPlaceholder: "Motif..."
+        }, function(inputValue) {
+            if (inputValue === false)
+                return false;
+            if (inputValue === "") {
+                swal.showInputError("Saisie obligatoire !");
+                return false;
+            }
+            $.post('@Url.Action("Create")', { Name: inputValue }, function (result) {
+                swal({
+                    title: "Succès", text: "Élément ajouté avec succès", type: "success"
+                }, () => {
+                    window.location = "@Url.Action("Edit")/" + result;
+                });
+            });
+        });
+        return false;
+    }
+
+    $("#menu-admin-motifsNC").addClass("active");
+</script>

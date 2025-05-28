@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:converters="clr-namespace:Gefco.CipQuai.Converters;assembly=Gefco.CipQuai"
+             xmlns:menu="clr-namespace:Gefco.CipQuai.Menu;assembly=Gefco.CipQuai"
+             xmlns:controls="clr-namespace:Gefco.CipQuai.Controls;assembly=Gefco.CipQuai"
+             xmlns:cipQuai="clr-namespace:Gefco.CipQuai;assembly=Gefco.CipQuai"
+             xmlns:transformations="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations"
+             xmlns:forms="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             Title="My Title"
+             x:Class="Gefco.CipQuai.MenuPage" BackgroundColor="{StaticResource MenuBackgroundColor}" Icon="ic_menu">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:MenuPageItemSelectedColorConverter x:Key="MenuPageItemSelectedColorConverter" />
+        </ResourceDictionary>
+
+    </ContentPage.Resources>
+    <ContentPage.BindingContext>
+        <menu:MenuPageViewModel/>
+    </ContentPage.BindingContext>
+
+    <ContentPage.Content>
+        <Grid RowSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="2*" />
+                <RowDefinition Height="3*" />
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0" BackgroundColor="{StaticResource MenuTopBackgroundColor}" Padding="30">
+                <StackLayout VerticalOptions="Center" HorizontalOptions="FillAndExpand" Spacing="20">
+                    <Grid>
+                        <controls:ExtImage Source="{Binding Source={x:Static cipQuai:App.Settings}, Path=ProfilePicture}" WidthRequest="100" HeightRequest="100">
+                            <forms:CachedImage.Transformations>
+                                <transformations:CircleTransformation>
+                                    <x:Arguments>
+                                        <x:Double>20</x:Double>
+                                        <x:String>#FFCC00</x:String>
+                                    </x:Arguments>
+                                </transformations:CircleTransformation>
+                            </forms:CachedImage.Transformations>
+
+                        </controls:ExtImage>
+                    </Grid>
+                    <Label Grid.Row="1" HorizontalOptions="FillAndExpand" Text="{Binding DisplayName}" HorizontalTextAlignment="Center" FontSize="20" TextColor="{StaticResource ColorPageBackground}" />
+                </StackLayout>
+            </Grid>
+            <Grid Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <controls:ExtListView Margin="0,40,0,0" Grid.Row="0" ItemsSource="{Binding MenuItems, Mode=OneWay}" SelectedItem="{Binding SelectedMenu, Mode=TwoWay}" Command="{Binding CmdOpenPage, Mode=OneWay}" DesactivateSelection="True"
+                                  VerticalOptions="FillAndExpand" SeparatorVisibility="None" RowHeight="50">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <controls:ExtendedViewCell SelectedBackgroundColor="Transparent">
+                                <Grid>
+                                    <Image Margin="40,0,0,0" Source="{Binding IconSource}" HeightRequest="{Binding IconHeight}" WidthRequest="{Binding IconWidth}" HorizontalOptions="Start" />
+                                    <Label Margin="73,0,0,0" FontFamily="Univia Pro" FontSize="16" Text="{Binding Title}" TextColor="{Binding IsSelected, Converter={StaticResource MenuPageItemSelectedColorConverter}}" HeightRequest="50" VerticalTextAlignment="Center"></Label>
+                                </Grid>
+                            </controls:ExtendedViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </controls:ExtListView>
+                <Grid Grid.Row="1" Margin="0,0,0,40" >
+                    <Image Margin="40,0,0,0" Source="PictoDeco" HeightRequest="16" WidthRequest="12" HorizontalOptions="Start" />
+                    <controls:ExtHyperLink Margin="73,0,0,0" FontSize="16" HorizontalOptions="Start" Text="Déconnexion" TextColor="{StaticResource ColorPageBackground}" Command="{Binding LogoutCommand}" />
+                </Grid>
+                <Label Margin="18,12" TranslationY="-5" Grid.Row="1" HorizontalOptions="End" Text="{Binding Version}" HorizontalTextAlignment="Center" FontSize="10" TextColor="{StaticResource VersionColor}">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="TapGestureRecognizer_OnTapped"></TapGestureRecognizer>
+                    </Label.GestureRecognizers>
+                </Label>
+            </Grid>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

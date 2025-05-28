@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<controls:ExtContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:Gefco.CipQuai.ControleReceptionPage"
+             xmlns:controls="clr-namespace:Gefco.CipQuai.Controls;assembly=Gefco.CipQuai"
+             xmlns:buttons="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms"
+                         NavBarMainCommand="{Binding GoBackCommand}" PageIcon="ic_arrow_backy.svg" PageTitle="{Binding ViewModel.PageTitle}" ControlTemplate="{StaticResource GefcoPage}" NavigationPage.HasNavigationBar="False" IsLoading="{Binding IsLoading}"
+             x:Class="Gefco.CipQuai.ControleReceptionPage.EndSessionPage">
+    <controls:ExtContentPage.BindingContext>
+        <local:EndSessionPageViewModel />
+    </controls:ExtContentPage.BindingContext>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Label Text="{Binding PageInvite}" Grid.Row="0" Margin="20"
+               Style="{StaticResource TitleLabelStyle}" />
+
+        <Grid Grid.Row="1" Margin="20,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="3*" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="3*" />
+            </Grid.RowDefinitions>
+            <buttons:SfButton Grid.Row="1" Text="{Binding StartNewDeclarationInvite}" Clicked="StartNewDeclaration" VerticalOptions="Center"
+                              Style="{StaticResource ActionButtonStyle}" />
+            <buttons:SfButton Grid.Row="3" Text="{Binding GoHomeInvite}" Clicked="GoHome" VerticalOptions="Center"
+                              Style="{StaticResource ActionButtonStyle}" />
+        </Grid>
+
+    </Grid>
+</controls:ExtContentPage>

@@ -1,0 +1,250 @@
+﻿@using System.Globalization
+@using Gefco.CipQuai.Web.Extensions
+@using Gefco.CipQuai.Web.Models
+@using Syncfusion.EJ2.HeatMap
+@using ValueType = Syncfusion.EJ2.HeatMap.ValueType
+@model Gefco.CipQuai.Web.Models.FilterViewModel
+
+@{
+    ViewBag.PageIcon = "feather icon-home";
+    ViewBag.ShowHeader = false;
+    Layout = "~/Views/Shared/_AuthLayout.cshtml";
+    var id = Tools.GenerateRandomString(8);
+    var statuses = new[]
+{
+"Aucune déclaration",
+"En cours",
+"Libre",
+"Bloquée",
+"Supprimée",
+};
+    // This presumes that weeks start with Monday.
+    // Week 1 is the 1st week of the year with a Thursday in it.
+    int GetIso8601WeekOfYear(DateTime time)
+    {
+        // Seriously cheat.  If its Monday, Tuesday or Wednesday, then it'll
+        // be the same week# as whatever Thursday, Friday or Saturday are,
+        // and we always get those right
+        var day = CultureInfo.InvariantCulture.Calendar.GetDayOfWeek(time);
+        if (day >= DayOfWeek.Monday && day <= DayOfWeek.Wednesday)
+        {
+            time = time.AddDays(3);
+        }
+
+        // Return the week of our adjusted day
+        return CultureInfo.InvariantCulture.Calendar.GetWeekOfYear(time, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
+    }
+
+    var cats = new List<Tuple<int, string>>();
+
+    var days = (Model.EndDate.Date - Model.StartDate.Date).TotalDays + 1;
+    for (var i = 0; i < days; i++)
+    {
+        var day = Model.StartDate.AddDays(i);
+        if (day.Date.DayOfWeek == DayOfWeek.Saturday || day.Date.DayOfWeek == DayOfWeek.Sunday)
+        {
+            continue;
+        }
+        if (day.Date > Model.EndDate.Date)
+        {
+            break;
+        }
+        var week = GetIso8601WeekOfYear(day.Date);
+        cats.Add(new Tuple<int, string>(i, "S" + week));
+    }
+}
+<script src="~/Content/assets/amcharts/core.js"></script>
+<script src="~/Content/assets/amcharts/charts.js"></script>
+<script>
+    var tooltipRender = function(args) {
+        const intl = new ej.base.Internationalization();
+        const format = intl.getDateFormat({ format: 'EEEE dd MMMM yyyy' });
+        const newDate = args.xValue;
+        const date = new Date(newDate.getTime());
+        const axisLabel = args.heatmap.axisCollections[1].axisLabels;
+        const index = axisLabel.indexOf(args.yLabel);
+        const value = format(date);
+        var status = "";
+        switch (args.value) {
+            case -1:
+                args.cancel = true;
+            status = "@Html.Raw(statuses[0])";
+            break;
+        case -2:
+            status = "@Html.Raw(statuses[1])";
+            break;
+        case -4:
+            status = "@Html.Raw(statuses[2])";
+            break;
+        case -5:
+            status = "@Html.Raw(statuses[3])";
+            break;
+        case -3:
+            status = "@Html.Raw(statuses[4])";
+            break;
+        }
+        var dest = dests[args.heatmap.axisCollections[0].axisLabels.indexOf(args.xLabel)][args.heatmap.axisCollections[1].axisLabels.indexOf(args.yValue)];
+        var act = names[args.heatmap.axisCollections[0].axisLabels.indexOf(args.xLabel)][args.heatmap.axisCollections[1].axisLabels.indexOf(args.yValue)];
+        if (act.length > 0)
+            args.content = [dest + "<br />" + status + "<br />Par " + act];
+        else
+            args.content = [dest + "<br />" + status];
+    };
+    var ids = @Html.Raw(Json.Encode(ViewBag.ids));
+    var names = @Html.Raw(Json.Encode(ViewBag.names));
+    var dests = @Html.Raw(Json.Encode(ViewBag.dests));
+
+    function cellRender(args) {
+        if ((!args.yLabel.startsWith("T1") && !args.yLabel.startsWith("T2")) || args.value === "")
+            args.displayText = "";
+        else {
+            args.displayText += "%";
+        }
+    }
+
+    function cellSelected(args) {
+        const data = args.data;
+        const heatMap = document.getElementById('container').ej2_instances[0];
+        if (data[0].value >= -1) {
+            heatMap.clearSelection();
+            return false;
+        }
+        window.open(`@Url.Action("Detail", "DoublesPlanchers")?id=${ids[args.data[0].xPosition][args.data[0].yPosition]
+            }&rUrl=@(ViewBag.rUrl)`);
+        heatMap.clearSelection();
+    }
+
+    function load(args) {
+        args.heatmap.xAxis.multiLevelLabels = ([
+            {
+                border: { type: 'WithoutBorder', color: '#a19d9d' },
+                textStyle: {
+                    color: 'black',
+                    fontWeight: 'Bold'
+                },
+                categories: [
+                    @{
+                        foreach (var week in cats.GroupBy(p => p.Item2))
+                        {
+                            <text>
+                                { start: @week.Min(p => p.Item1), end: @week.Max(p => p.Item1), text: '@week.Key', },
+                            </text>
+                        }
+                    }
+                ]
+            },
+        ]);
+    }
+
+    function onDateChanged(args) {
+        const startVal = start.val();
+        const endVal = end.val();
+        const today = "@DateTime.Today.ToString("dd/MM/yyyy")";
+        const startOfWeek = "@DateTime.Today.StartOfWeek().ToString("dd/MM/yyyy")";
+        const endOfWeek = "@DateTime.Today.StartOfWeek().AddDays(6).ToString("dd/MM/yyyy")";
+        const startOfMonth = "@(new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1).ToString("dd/MM/yyyy"))";
+        const endOfMonth =
+            "@(new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1).AddMonths(1).AddDays(-1).ToString("dd/MM/yyyy"))";
+
+        if (startVal == today && endVal == today) {
+            type.val("@nameof(FilterType.Default)");
+        } else if (startVal == startOfWeek && endVal == endOfWeek) {
+            type.val("@nameof(FilterType.Week)");
+        } else if (startVal == startOfMonth && endVal == endOfMonth) {
+            type.val("@nameof(FilterType.Month)");
+        } else {
+            type.val("@nameof(FilterType.Other)");
+        }
+    }
+
+</script>
+
+<div class="row dashboard">
+    @{
+        Html.RenderPartial("Filters", Model, new ViewDataDictionary
+    {
+        {"Title", ViewBag.Title}
+    });
+    }
+    <div class="col-xl-12 col-md-12 px-1 px-sm-3">
+        <div class="card product-progress-card">
+            <div class="card-header main-header">
+                <div class="f-right" style="line-height: 30px;">
+                    <a href="@ViewBag.GrilleDPAUrl"  class="px-3 icon" data-toggle="tooltip" data-placement="bottom" title="Accès à la grille Validation"><i class='fa-lg feather icon-grid'></i></a>
+                    <a href="@ViewBag.ListeUrl" class="px-3 icon" data-toggle="tooltip" data-placement="bottom" title="Accès à la liste En Cours"><i class='fa-lg feather icon-menu danger'></i></a>
+                </div>
+                <h4>@ViewBag.Title</h4>
+                <span class="details">Données du @Model.StartDate.ToString("dd/MM/yyyy") au @Model.EndDate.ToString("dd/MM/yyyy")</span>
+            </div>
+            <div class="card-block p-0">
+                <div style="width: calc(100% - 250px)">
+                    @Html.EJS().HeatMap("container").RenderingMode(DrawType.Canvas).Width("100%").XAxis(xAxis => { xAxis.Minimum(Model.StartDate).Maximum(Model.EndDate).IntervalType(IntervalType.Days).ValueType(ValueType.DateTime).ShowLabelOn(LabelType.Days).LabelFormat("dd").OpposedPosition(true).LabelIntersectAction(LabelIntersectAction.Rotate45).Increment(1); }).YAxis(yaxis => { yaxis.Labels(ViewBag.yLabels).IsInversed(true); }).LegendSettings(ls => ls.LabelDisplayType(LabelDisplayType.All).Position(LegendPosition.Bottom).Alignment(Alignment.Near)).CellSelected("cellSelected").CellRender("cellRender").AllowSelection(true).PaletteSettings(ps => ps.Palette(palette =>
+               {
+                   palette.Value(-1).Color("rgb(238,238,238)").Label(statuses[0]).Add();    //"Aucune déclaration",
+                   palette.Value(-2).Color("#ffc107").Label(statuses[1]).Add();             //"In progress",
+                   palette.Value(-3).Color("#000000").Label(statuses[4]).Add();             //"Supprimé",
+                   palette.Value(-4).Color("#007bff").Label(statuses[2]).Add();             //"Paused and free",
+                   palette.Value(-5).Color("#dc3545").Label(statuses[3]).Add();             //"Paused and locked"
+               }).Type(PaletteType.Fixed).EmptyPointColor("white")).Load("load").CellSettings(cs => cs.Border(ViewBag.border)).TooltipRender("tooltipRender").DataSource(ViewBag.dataSource).Height(ViewBag.height).Render()
+                </div>
+                <div id="chart"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts
+{
+    <script>
+
+        $("#menu-dash-national").addClass("active");
+        function savePDF(type) {
+            var chart = am4core.create(document.getElementById("chart"), am4charts.XYChart);
+            chart.logo.dispose();
+            Promise.all([chart.exporting.pdfmake, chart.exporting.getImage("png")]).then(function(res) {
+
+                const pdfMake = res[0];
+
+                // pdfmake is ready
+                // Create document template
+                const doc = {
+                    pageSize: "A4",
+                    pageOrientation: "landscape",
+                    pageMargins: [30, 30, 30, 30],
+                    content: []
+                };
+
+
+                doc.content.push({
+                    text: "GEFCO CIP Quai",
+                    fontSize: 20,
+                    bold: true,
+                    margin: [0, -10, 0, 0]
+                });
+                doc.content.push({
+                    text: "Grille DP @ViewBag.Title du @(ViewBag.StartDate.ToString("dd/MM/yyyy")) au @(ViewBag.EndDate.ToString("dd/MM/yyyy"))",
+                    fontSize: 16,
+                    bold: false,
+                    margin: [0, 10, 0, 0]
+                });
+                var canvas = document.getElementById("container_canvas");
+                var img = canvas.toDataURL("image/png");
+                
+                doc.content.push({
+                    image: img,
+                    width: 734
+                });
+
+                if (type === "print")
+                    pdfMake.createPdf(doc).print();
+                else
+                    pdfMake.createPdf(doc).download("@(DateTime.Now.ToString("yyyyMMdd-hhmmss")) - Grille DP - @(ViewBag.PdfName).pdf");
+
+            });
+        }
+        function printPDF() {
+            savePDF("print");
+        }
+
+    </script>
+}

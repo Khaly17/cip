@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<controls:ExtContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:Gefco.CipQuai.Controls;assembly=Gefco.CipQuai"
+             xmlns:local="clr-namespace:Gefco.CipQuai.ProfilePage;assembly=Gefco.CipQuai"
+             xmlns:converters="clr-namespace:Gefco.CipQuai.Converters;assembly=Gefco.CipQuai" x:Name="root"
+             x:Class="Gefco.CipQuai.ProfilePage.ModifierCodePinPage" NavBarMainCommand="{Binding PopCommand}" PageIcon="ic_close.svg" PageTitle="{Binding PageTitle}" ControlTemplate="{StaticResource GefcoPage}" NavigationPage.HasNavigationBar="False" Appearing="OnAppearing">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:NullValidConverter x:Key="NullValidConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.BindingContext>
+        <local:ViewModel />
+    </ContentPage.BindingContext>
+    <Grid Padding="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <Label Text="{Binding ForcerModifierCodePinInvite}" Grid.Row="0" Margin="20" FontSize="18" Style="{StaticResource TitleLabelStyle}" IsVisible="{Binding Source={x:Reference root}, Path=ShowBackOrClose, Converter={StaticResource BooleanInverterConverter}}" />
+
+        <StackLayout Grid.Row="1" Spacing="0">
+            <controls:ExtEntry Margin="0,40,0,0" HorizontalOptions="FillAndExpand" Text="{Binding NouveauPin, Mode=TwoWay}" Keyboard="Numeric" x:Name="MyEntry" Placeholder="{Binding NouveauPinInvite}" />
+            <ContentView HeightRequest="1" BackgroundColor="{StaticResource ValidColor}" />
+            <Label Style="{StaticResource InvalidLabelStyle}" Text="{Binding NouveauPinComporte4Chiffres}" TextColor="{Binding HasLengthNouveauPin, Converter={StaticResource NullValidConverter}}" />
+            <Label Style="{StaticResource InvalidLabelStyle}" Text="{Binding NouveauPinDifférentActuel}" TextColor="{Binding IsDifferentNouveauPin, Converter={StaticResource NullValidConverter}}" />
+            <controls:FloatingActionButtonView Command="{Binding SaveNouveauPinCommand}" IsEnabled="{Binding IsValidCodePin}" Margin="20" />
+        </StackLayout>
+
+
+    </Grid>
+</controls:ExtContentPage>

@@ -1,0 +1,180 @@
+﻿@using Gefco.CipQuai.Web.Extensions
+@using Gefco.CipQuai.Web.Models
+@using Gefco.CipQuai.Web.Views
+@using Microsoft.AspNet.Identity
+@model Gefco.CipQuai.Web.Views.ListeNCViewModel
+@{
+    ViewBag.PageIcon = "feather icon-home";
+    ViewBag.ShowHeader = false;
+    Layout = "~/Views/Shared/_AuthLayout.cshtml";
+}
+<script>
+    function onDateChanged(args) {
+        var startVal = start.val();
+        var endVal = end.val();
+        let today = "@DateTime.Today.ToString("dd/MM/yyyy")";
+        let startOfWeek = "@DateTime.Today.StartOfWeek().ToString("dd/MM/yyyy")";
+        let endOfWeek = "@DateTime.Today.StartOfWeek().AddDays(6).ToString("dd/MM/yyyy")";
+        let startOfMonth = "@(new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1).ToString("dd/MM/yyyy"))";
+        let endOfMonth = "@(new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1).AddMonths(1).AddDays(-1).ToString("dd/MM/yyyy"))";
+
+        if (startVal == today && endVal == today) {
+            type.val("@nameof(FilterType.Default)");
+        }
+        else if (startVal == startOfWeek && endVal == endOfWeek) {
+            type.val("@nameof(FilterType.Week)");
+        }
+        else if (startVal == startOfMonth && endVal == endOfMonth) {
+            type.val("@nameof(FilterType.Month)");
+        }
+        else {
+            type.val("@nameof(FilterType.Other)");
+        }
+    }
+
+</script>
+<div class="row dashboard">
+    @{
+        Html.RenderPartial("Filters", Model, new ViewDataDictionary() { { "Excel", true } });
+    }
+    <div class="col-xl-12 col-md-12 px-1 px-sm-3">
+        <div class="card product-progress-card">
+            <div class="card-header main-header">
+                <h4>@ViewBag.Title</h4>
+            </div>
+            <div class="card-block p-0">
+                <div class="pp-main row m-0">
+                    <div class="col-12 px-0" id="capture">
+                        @(Html.EJS().Grid("Grid")
+                                              .DataSource(Model.Items)
+                                      .AllowExcelExport().ExcelExportComplete("showColumns").PdfExportComplete("showColumns").PrintComplete("showColumns").AllowPdfExport().PdfQueryCellInfo("pdfQueryCellInfo")
+                                              .Columns(col =>
+                                              {
+                                                  col.Field(nameof(ListItemNCViewModel.Status)).HeaderText("Statut").Width("60").Add();
+                                                  col.Field(nameof(ListItemNCViewModel.Date)).HeaderText("Date").Width("50").Add();
+                                                  col.Field(nameof(ListItemNCViewModel.Heure)).HeaderText("Heure").Width("50").Add();
+                                                  col.Field(nameof(ListItemNCViewModel.Origine)).HeaderText("Agence émettrice de la NC").Width("90").Add();
+                                                  //col.Field(nameof(ListItemNCViewModel.Origine)).HeaderText("Origine").Width("90").Add();
+                                                  col.Field(nameof(ListItemNCViewModel.Destination)).HeaderText("Agence à l’origine de la NC").Width("90").Add();
+                                                  col.Field(nameof(ListItemNCViewModel.NumVoyage)).HeaderText("Ident. voyage").Width("90").Add();
+                                                  col.Field(nameof(ListItemNCViewModel.MotifsNC)).HeaderText("Description de NC").Width("120").Visible(false).Add();
+                                                  col.Field(nameof(ListItemNCViewModel.MotifNC)).HeaderText("Description de NC").Template("${if(MotifNC && MotifNC !== null && MotifNC !== undefined)}<span class='e-badge e-badge-danger'>${MotifNC}</span>${/if}").Width("120").Add();
+                                                  col.Field("Id").HeaderText("Accès à la fiche NC").Template("<a href='${DetailsLink}' class='e-btn e-primary' target='_blank'>Détails</a>").Width("90").Add();
+                                              })
+                                              .Toolbar(new List<string>() { "Search" })
+                                              .AllowSorting()
+                                              .AllowPaging()
+                                              .PageSettings(page => page.PageCount(3).PageSize(10))
+                                              .SortSettings(sort => sort.AllowUnsort(false).Columns(new[] { new { field = "Date", direction = "Descending" }, new { field = "Heure", direction = "Descending" } }))
+                                              .Render())
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @*<div class="col-xl-12 col-md-12 px-1 px-sm-3">
+            <div class="card product-progress-card">
+                <div class="card-block p-0">
+                    <div class="pp-main row m-0">
+                        <div class="col-12 px-0">
+                            @Html.EJS().Grid("Grid").DataSource(Model.Items).Render()
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>*@
+</div>
+<div id="chart"></div>
+<script src="~/Content/assets/html2canvas.js"></script>
+<script src="~/Content/assets/amcharts/core.js"></script>
+<script src="~/Content/assets/amcharts/charts.js"></script>
+<script>
+
+    $("#menu-dash-national").addClass("active");
+
+    function saveExcel() {
+        var gridObj = document.getElementById('Grid').ej2_instances[0];
+        var excelExportProperties = {
+            fileName: "@(DateTime.Now.ToString("yyyyMMdd-hhmmss")) - Liste NC.xlsx",
+            header: {
+                headerRows: 5,
+                rows: [
+                    { cells: [{ colSpan: 6, value: "GEFCO CIP Quai", style: { fontColor: '#1c2b51', fontSize: 24, hAlign: 'Center', bold: true, } }] },
+                    { cells: [{ colSpan: 6, hyperlink: { target: 'http://cipquai.sensor6ty.com/', displayText: 'http://cipquai.sensor6ty.com/' }, style: { hAlign: 'Center' } }] },
+                    { cells: [{ colSpan: 6, value: "", style: { fontColor: '#1c2b51' } }] },
+                    { cells: [{ colSpan: 1, value: "@Html.Raw(ViewBag.Title) du @(ViewBag.StartDate.ToString("dd/MM/yyyy")) au @(ViewBag.EndDate.ToString("dd/MM/yyyy"))", style: { fontColor: '#1c2b51', bold: true } }] },
+                ]
+        }};
+        gridObj.columns[6].visible = true;
+        gridObj.columns[7].visible = false;
+        gridObj.columns[8].visible = false;
+        gridObj.showSpinner();
+        gridObj.excelExport(excelExportProperties);
+        return false;
+    }
+        function savePDF(type) {
+            var gridObj = document.getElementById('Grid').ej2_instances[0];
+            $("#Grid table tr").find("td:last").hide();
+            $("#Grid table").find("th:last").hide();
+            var chart = am4core.create(document.getElementById("chart"), am4charts.XYChart);
+            chart.logo.dispose();
+            Promise.all([chart.exporting.pdfmake, chart.exporting.getImage("png"), html2canvas(document.querySelector("#capture"))]).then(function(res) {
+
+                const pdfMake = res[0];
+
+                // pdfmake is ready
+                // Create document template
+                const doc = {
+                    pageSize: "A4",
+                    pageOrientation: "landscape",
+                    pageMargins: [30, 30, 30, 30],
+                    content: []
+                };
+
+                doc.content.push({
+                    text: "GEFCO CIP Quai",
+                    fontSize: 20,
+                    bold: true,
+                    margin: [0, -10, 0, 0]
+                });
+                doc.content.push({
+                    text: "Liste @ViewBag.Title du @(ViewBag.StartDate.ToString("dd/MM/yyyy")) au @(ViewBag.EndDate.ToString("dd/MM/yyyy"))",
+                    fontSize: 16,
+                    bold: false,
+                    margin: [0, 10, 0, 0]
+                });
+                var canvas = res[2];
+                var img = canvas.toDataURL("image/png");
+
+                doc.content.push({
+                    image: img,
+                    width: 774
+                });
+
+                gridObj.hideSpinner();
+                if (type === "print")
+                    pdfMake.createPdf(doc).print();
+                else
+                    pdfMake.createPdf(doc).download("@(DateTime.Now.ToString("yyyyMMdd-hhmmss")) - Liste NC - @(ViewBag.PdfName).pdf");
+                this.columns[6].visible = false;
+                this.columns[7].visible = true;
+                this.columns[8].visible = true;
+            });
+    }
+    function printPDF() {
+        savePDF("print");
+    }
+    function pdfQueryCellInfo(args) {
+        if (args.column.field == '@nameof(ListItemDPViewModel.MotifNC)')
+            if (args.value !== "") {
+                args.style = { backgroundColor: '#cc202e' };
+            }
+    }
+    function showColumns(args) {
+        this.columns[6].visible = false;
+        this.columns[7].visible = true;
+        this.columns[8].visible = true;
+        document.getElementById('Grid').ej2_instances[0].hideSpinner();
+        return false;
+    }
+</script>

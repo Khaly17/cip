@@ -1,0 +1,142 @@
+﻿@using Gefco.CipQuai.Web.Extensions
+@using Gefco.CipQuai.Web.Models
+@using Gefco.CipQuai.Web.Views
+@model Gefco.CipQuai.Web.Models.StatNCViewModel
+@{
+    ViewBag.PageIcon = "feather icon-home";
+    ViewBag.ShowHeader = false;
+    Layout = "~/Views/Shared/_AuthLayout.cshtml";
+}
+<script>
+    function onDateChanged(args) {
+        var startVal = start.val();
+        var endVal = end.val();
+        let today = "@DateTime.Today.ToString("dd/MM/yyyy")";
+        let startOfWeek = "@DateTime.Today.StartOfWeek().ToString("dd/MM/yyyy")";
+        let endOfWeek = "@DateTime.Today.StartOfWeek().AddDays(6).ToString("dd/MM/yyyy")";
+        let startOfMonth = "@(new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1).ToString("dd/MM/yyyy"))";
+        let endOfMonth = "@(new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1).AddMonths(1).AddDays(-1).ToString("dd/MM/yyyy"))";
+
+        if (startVal == today && endVal == today) {
+            type.val("@nameof(FilterType.Default)");
+        }
+        else if (startVal == startOfWeek && endVal == endOfWeek) {
+            type.val("@nameof(FilterType.Week)");
+        }
+        else if (startVal == startOfMonth && endVal == endOfMonth) {
+            type.val("@nameof(FilterType.Month)");
+        }
+        else {
+            type.val("@nameof(FilterType.Other)");
+        }
+    }
+
+</script>
+<div class="row dashboard">
+    @{
+        Html.RenderPartial("Filters", Model, new ViewDataDictionary() { { "Excel", true } });
+    }
+    <div class="col-xl-12 col-md-12 px-1 px-sm-3">
+        <div class="card product-progress-card">
+            <div class="card-header main-header">
+                <h4>@ViewBag.Title</h4>
+            </div>
+            <div class="card-block p-0">
+                <div class="pp-main row m-0">
+                    <div class="col-12 px-0">
+                        @(Html.EJS().Grid("Grid")
+                                              .DataSource(Model.Data)
+                                      .AllowExcelExport().ExcelExportComplete("showColumns").PdfExportComplete("showColumns").PrintComplete("showColumns").AllowPdfExport().PdfQueryCellInfo("pdfQueryCellInfo")
+                                              .Columns(col =>
+                                              {
+                                                  col.Field(nameof(DataValue.Name)).HeaderText("Motif").Width("200").Add();
+                                                  col.Field(nameof(DataValue.Value)).HeaderText("Cumul").Width("90").Add();
+                                              })
+                                              .Toolbar(new List<string>() { "Search" })
+                                              .AllowSorting()
+                                              .SortSettings(sort => sort.AllowUnsort(false).Columns(new[] { new { field = "Value", direction = "Descending" } }))
+                                              .Render())
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @*<div class="col-xl-12 col-md-12 px-1 px-sm-3">
+            <div class="card product-progress-card">
+                <div class="card-block p-0">
+                    <div class="pp-main row m-0">
+                        <div class="col-12 px-0">
+                            @Html.EJS().Grid("Grid").DataSource(Model.Items).Render()
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>*@
+</div>
+<script>
+
+        $("#menu-dash-national").addClass("active");
+        function savePDF() {
+            var gridObj = document.getElementById('Grid').ej2_instances[0];
+            gridObj.showSpinner();
+            var excelExportProperties = {
+                fileName: "@(DateTime.Now.ToString("yyyyMMdd-hhmmss")) - Liste BP.pdf",
+                header: {
+                    fromTop: 0,
+                    height: 130,
+                    contents: [
+                        {
+                            type: 'Text',
+                            value: "GEFCO CIP Quai",
+                            position: { x: 0, y: 20 },
+                            style: { textBrushColor: '#1c2b51', fontSize: 24, bold:true }
+                        },
+                        {
+                            type: 'Text',
+                            value: "@Html.Raw(ViewBag.Title) du @(ViewBag.StartDate.ToString("dd/MM/yyyy")) au @(ViewBag.EndDate.ToString("dd/MM/yyyy"))",
+                            position: { x: 0, y: 70 },
+                            style: { textBrushColor: '#1c2b51', fontSize: 20 }
+                        },
+
+                    ]
+                }
+            };
+            gridObj.pdfExport(excelExportProperties);
+            return false;
+        }
+        function saveExcel() {
+            var gridObj = document.getElementById('Grid').ej2_instances[0];
+            var excelExportProperties = {
+                fileName: "@(DateTime.Now.ToString("yyyyMMdd-hhmmss")) - Liste NC.xlsx",
+                header: {
+                    headerRows: 5,
+                    rows: [
+                        { cells: [{ colSpan: 2, value: "GEFCO CIP Quai", style: { fontColor: '#1c2b51', fontSize: 24, hAlign: 'Center', bold: true, } }] },
+                        { cells: [{ colSpan: 2, hyperlink: { target: 'http://cipquai.sensor6ty.com/', displayText: 'http://cipquai.sensor6ty.com/' }, style: { hAlign: 'Center' } }] },
+                        { cells: [{ colSpan: 2, value: "", style: { fontColor: '#1c2b51' } }] },
+                        { cells: [{ colSpan: 1, value: "@Html.Raw(ViewBag.Title) du @(ViewBag.StartDate.ToString("dd/MM/yyyy")) au @(ViewBag.EndDate.ToString("dd/MM/yyyy"))", style: { fontColor: '#1c2b51', bold: true } }] },
+                    ]
+                },
+            };
+            gridObj.showSpinner();
+            gridObj.excelExport(excelExportProperties);
+            return false;
+        }
+        function printPDF() {
+            var gridObj = document.getElementById('Grid').ej2_instances[0];
+            gridObj.showSpinner();
+            gridObj.print();
+            return false;
+        }
+        function pdfQueryCellInfo(args) {
+            if (args.column.field == '@nameof(ListItemDPViewModel.MotifNC)')
+                if (args.value !== "") {
+                    args.style = { backgroundColor: '#cc202e' };
+                }
+        }
+        function showColumns(args) {
+            document.getElementById('Grid').ej2_instances[0].hideSpinner();
+            return false;
+        }
+
+</script>

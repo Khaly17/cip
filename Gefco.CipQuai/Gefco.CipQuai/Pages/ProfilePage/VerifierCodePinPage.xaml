@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<controls:ExtContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:Gefco.CipQuai.Controls;assembly=Gefco.CipQuai"
+             xmlns:local="clr-namespace:Gefco.CipQuai.ProfilePage;assembly=Gefco.CipQuai"
+             x:Class="Gefco.CipQuai.ProfilePage.VerifierCodePinPage" NavBarMainCommand="{Binding PopCommand}" PageIcon="ic_close.svg" PageTitle="{Binding PageTitle}" ControlTemplate="{StaticResource GefcoPage}" NavigationPage.HasNavigationBar="False" Appearing="OnAppearing">
+    <ContentPage.BindingContext>
+        <local:ViewModel />
+    </ContentPage.BindingContext>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <Label Text="{Binding ModifierCodePinInvite}" Grid.Row="0" Margin="20" FontSize="18" Style="{StaticResource TitleLabelStyle}" />
+
+        <StackLayout Grid.Row="1" Spacing="0">
+            <controls:ExtEntry Margin="20,0" HorizontalOptions="FillAndExpand" Text="{Binding CodePin, Mode=TwoWay}" Keyboard="Numeric" x:Name="MyEntry" Placeholder="{Binding CodePinActuelInvite}" TextColor="{Binding IsValidCodePin, Converter={StaticResource BooleanValidConverter}}"  />
+            <ContentView Margin="20,0" HeightRequest="1" BackgroundColor="{Binding IsValidCodePin, Converter={StaticResource BooleanValidConverter}}" />
+            <Label Style="{StaticResource InvalidLabelStyle}" Text="{Binding CodePinInvalide}" IsVisible="{Binding IsValidCodePin, Converter={StaticResource BooleanInverterConverter}}" Margin="20,0" />
+            <controls:FloatingActionButtonView Command="{Binding ModifierCodePinCommand}" IsEnabled="{Binding IsValidCodePin}" Margin="20" />
+        </StackLayout>
+
+
+    </Grid>
+</controls:ExtContentPage>

@@ -1,0 +1,202 @@
+﻿@using Gefco.CipQuai.Web.Extensions
+@using Gefco.CipQuai.Web.Models
+@using Gefco.CipQuai.Web.Views
+@using Microsoft.AspNet.Identity
+@using Syncfusion.EJ2.Grids
+@using FilterType = Gefco.CipQuai.Web.Models.FilterType
+@model Gefco.CipQuai.Web.Views.ListeDPViewModel
+@{
+    ViewBag.PageIcon = "feather icon-home";
+    ViewBag.ShowHeader = false;
+    Layout = "~/Views/Shared/_AuthLayout.cshtml";
+    var id = Tools.GenerateRandomString(8);
+}
+<div class="row dashboard">
+    @{
+        Html.RenderPartial("Filters", Model, new ViewDataDictionary() { { "Excel", true } });
+    }
+    <div class="col-xl-12 col-md-12 px-1 px-sm-3">
+        <div class="card product-progress-card">
+            <div class="card-header main-header">
+                <span class="f-right" style="line-height: 30px;">
+                    <a href="@ViewBag.GrilleUrl" class="px-3 icon" data-toggle="tooltip" data-placement="bottom" title="Accès à la grille"><i class='fa-lg feather icon-grid'></i></a>
+                </span>
+                <h4>@ViewBag.Title</h4>
+                <span class="details">Données du @Model.StartDate.ToString("dd/MM/yyyy") au @Model.EndDate.ToString("dd/MM/yyyy")</span>
+            </div>
+            <div class="card-block p-0">
+                <div class="pp-main row m-0">
+                    <div class="col-12 px-0" id="capture">
+                        @(Html.EJS().Grid<ListItemDPViewModel>("Grid")
+                                      .DataSource(Model.Items)
+                                      .AllowExcelExport().ExcelExportComplete("showColumns").PdfExportComplete("showColumns").PrintComplete("showColumns").AllowPdfExport().PdfQueryCellInfo("pdfQueryCellInfo")
+                                      .Columns(col =>
+                                      {
+                                          col.Field(nameof(ListItemDPViewModel.Status)).HeaderText("Statut").Width("60").Add();
+                                          col.Field(nameof(ListItemDPViewModel.Date)).HeaderText("Date").Width("50").Add();
+                                          col.Field(nameof(ListItemDPViewModel.Origine)).HeaderText("Origine").Width("90").Add();
+                                          col.Field(nameof(ListItemDPViewModel.Destination)).HeaderText("Destination").Width("90").Add();
+                                          col.Field(nameof(ListItemDPViewModel.DpUtilisé)).Type("boolean").HeaderText("DP Utilisé").TextAlign(TextAlign.Center).DisplayAsCheckBox(true).Width("60").Add();
+                                          col.Field(nameof(ListItemDPViewModel.MotifNC)).HeaderText("Motif DP").Template("${if(MotifNC && MotifNC !== null && MotifNC !== undefined)}<span class='e-badge e-badge-danger'>${MotifNC}</span>${/if}").Width("120").Add();
+                                          col.Visible(false).Field(nameof(ListItemDPViewModel.MotifsNC)).HeaderText("Motifs DP").Add();
+                                          col.Field("Id").HeaderText("Accès à la fiche").Template("<a href='${DetailsLink}' class='e-btn e-primary'>Détails</a>").Width("90").Add();
+                                      })
+                                      .Toolbar(new List<string>() { "Search" })
+                                      .AllowSorting()
+                                      .AllowPaging()
+                                      .PageSettings(page => page.PageCount(3).PageSize(10))
+                                      .SortSettings(sort => sort.AllowUnsort(false).Columns(new[] { new { field = "Date", direction = "Ascending" }, new { field = "Origine", direction = "Ascending" }, new { field = "Destination", direction = "Ascending" } }))
+                              .Render())
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @*<div class="col-xl-12 col-md-12 px-1 px-sm-3">
+            <div class="card product-progress-card">
+                <div class="card-block p-0">
+                    <div class="pp-main row m-0">
+                        <div class="col-12 px-0">
+                            @Html.EJS().Grid("Grid").DataSource(Model.Items).Render()
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>*@
+</div>
+<div id="chart"></div>
+<script src="~/Content/assets/html2canvas.js"></script>
+<script src="~/Content/assets/amcharts/core.js"></script>
+<script src="~/Content/assets/amcharts/charts.js"></script>
+<script>
+
+        $("#menu-dash-national").addClass("active");
+        function savePDF(type) {
+            var gridObj = document.getElementById('Grid').ej2_instances[0];
+            gridObj.columns[5].visible = false;
+            gridObj.columns[6].visible = true;
+            gridObj.columns[7].visible = false;
+            var chart = am4core.create(document.getElementById("chart"), am4charts.XYChart);
+            chart.logo.dispose();
+            Promise.all([chart.exporting.pdfmake, chart.exporting.getImage("png"), html2canvas(document.querySelector("#capture"))]).then(function(res) {
+
+                const pdfMake = res[0];
+
+                // pdfmake is ready
+                // Create document template
+                const doc = {
+                    pageSize: "A4",
+                    pageOrientation: "landscape",
+                    pageMargins: [30, 30, 30, 30],
+                    content: []
+                };
+
+                doc.content.push({
+                    text: "GEFCO CIP Quai",
+                    fontSize: 20,
+                    bold: true,
+                    margin: [0, -10, 0, 0]
+                });
+                doc.content.push({
+                    text: "Grille DP @ViewBag.Title du @(ViewBag.StartDate.ToString("dd/MM/yyyy")) au @(ViewBag.EndDate.ToString("dd/MM/yyyy"))",
+                    fontSize: 16,
+                    bold: false,
+                    margin: [0, 10, 0, 0]
+                });
+                var canvas = res[2];
+                var img = canvas.toDataURL("image/png");
+                
+                doc.content.push({
+                    image: img,
+                    width: 774
+                });
+
+                gridObj.hideSpinner();
+                if (type === "print")
+                    pdfMake.createPdf(doc).print();
+                else
+                    pdfMake.createPdf(doc).download("@(DateTime.Now.ToString("yyyyMMdd-hhmmss")) - Grille DP - @(ViewBag.PdfName).pdf");
+                $("#Grid table tr").find("td:last").show();
+                $("#Grid table").find("th:last").show();
+                gridObj.columns[5].visible = true;
+                gridObj.columns[6].visible = false;
+                gridObj.columns[7].visible = true;
+            });
+        }
+        function savePDF2() {
+            var gridObj = document.getElementById('Grid').ej2_instances[0];
+            gridObj.showSpinner();
+            gridObj.columns[5].visible = false;
+            gridObj.columns[6].visible = true;
+            gridObj.columns[7].visible = false;
+            var excelExportProperties = {
+                fileName: "@(DateTime.Now.ToString("yyyyMMdd-hhmmss")) - Liste DP.pdf",
+                header: {
+                    fromTop: 0,
+                    height: 130,
+                    contents: [
+                        {
+                            type: 'Text',
+                            value: "GEFCO CIP Quai",
+                            position: { x: 0, y: 20 },
+                            style: { textBrushColor: '#1c2b51', fontSize: 24, bold:true }
+                        },
+                        {
+                            type: 'Text',
+                            value: "@Html.Raw(ViewBag.Title) du @(ViewBag.StartDate.ToString("dd/MM/yyyy")) au @(ViewBag.EndDate.ToString("dd/MM/yyyy"))",
+                            position: { x: 0, y: 70 },
+                            style: { textBrushColor: '#1c2b51', fontSize: 20 }
+                        },
+
+                    ]
+                }
+            };
+            gridObj.pdfExport(excelExportProperties);
+            return false;
+        }
+        function saveExcel() {
+            var gridObj = document.getElementById('Grid').ej2_instances[0];
+            var excelExportProperties = {
+                fileName: "@(DateTime.Now.ToString("yyyyMMdd-hhmmss")) - Liste DP.xlsx",
+                header: {
+                    headerRows: 5,
+                    rows: [
+                        { cells: [{ colSpan: 5, value: "GEFCO CIP Quai", style: { fontColor: '#1c2b51', fontSize: 24, hAlign: 'Center', bold: true, } }] },
+                        { cells: [{ colSpan: 5, hyperlink: { target: 'http://cipquai.sensor6ty.com/', displayText: 'http://cipquai.sensor6ty.com/' }, style: { hAlign: 'Center' }}]},
+                        { cells: [{ colSpan: 5, value: "", style: { fontColor: '#1c2b51' } }] },
+                        { cells: [{ colSpan: 1, value: "@Html.Raw(ViewBag.Title) du @(ViewBag.StartDate.ToString("dd/MM/yyyy")) au @(ViewBag.EndDate.ToString("dd/MM/yyyy"))", style: { fontColor: '#1c2b51', bold: true } }] },
+                    ]
+                }};
+            gridObj.columns[5].visible = false;
+            gridObj.columns[6].visible = true;
+            gridObj.columns[7].visible = false;
+            gridObj.showSpinner();
+            gridObj.excelExport(excelExportProperties);
+            return false;
+        }
+        function printPDF2() {
+            var gridObj = document.getElementById('Grid').ej2_instances[0];
+            gridObj.columns[5].visible = false;
+            gridObj.columns[6].visible = true;
+            gridObj.columns[7].visible = false;
+            gridObj.showSpinner();
+            gridObj.print();
+            return false;
+        }
+        function printPDF() {
+            savePDF("print");
+        }
+        function pdfQueryCellInfo(args) {
+            if (args.column.field == '@nameof(ListItemDPViewModel.MotifNC)')
+                if (args.value !== "") {
+                    args.style = { backgroundColor: '#cc202e' };
+                }
+        }
+        function showColumns(args) {
+            this.columns[5].visible = true;
+            this.columns[6].visible = false;
+            this.columns[7].visible = true;
+            document.getElementById('Grid').ej2_instances[0].hideSpinner();
+            return false;
+        }
+</script>

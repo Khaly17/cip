@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Frame xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Gefco.CipQuai.Controls.ContentButton" x:Name="ThisContentButton">
+    <Frame.GestureRecognizers>
+        <TapGestureRecognizer Tapped="TapGestureRecognizer_OnTapped" x:Name="GestureRecognizer" Command="{Binding Source={x:Reference ThisContentButton}, Path=Command}"></TapGestureRecognizer>
+    </Frame.GestureRecognizers>
+</Frame>

@@ -1,0 +1,253 @@
+﻿@using Gefco.CipQuai.Web.Models
+@model Gefco.CipQuai.Web.Views.NCStatListViewModel
+@{
+    ViewBag.PageIcon = "feather icon-home";
+    ViewBag.Title = "Rapport Régional - Non conformités émises";
+    ViewBag.ShowHeader = false;
+    Layout = "~/Views/Shared/_AuthLayout.cshtml";
+
+    var nc1 = Tools.GenerateRandomString(8);
+
+    var grouped2 = Model.Data.GroupBy(p => p.AgenceConcernée).Select(p => new DataValue(p.Key.Name, p.SelectMany(q => q.MotifNCs).Count()));
+    var monthed = new Dictionary<int, List<DeclarationNonConformite>>();
+    var days = (Model.EndDate.Date - Model.StartDate.Date).TotalDays + 1;
+    for (var i = 0; i < days; i++)
+    {
+        var day = Model.StartDate.AddDays(i);
+        var month = day.Date.Month;
+        var ncs = Model.Data.Where(p => p.CreationDate.Date == day.Date).ToList();
+        if (monthed.ContainsKey(month))
+        {
+            monthed[month].AddRange(ncs);
+        }
+        else
+        {
+            monthed.Add(month, ncs);
+        }
+    }
+    var cats2 = Model.Data.Select(p => p.AgenceConcernée).GroupBy(p => p).ToList();
+}
+
+<script src="~/Content/assets/amcharts/core.js"></script>
+<script src="~/Content/assets/amcharts/charts.js"></script>
+<script src="~/Content/assets/amcharts/animated.js"></script>
+
+<script>
+    am4core.useTheme(am4themes_animated);
+</script>
+
+<div class="row dashboard">
+    @{
+        Html.RenderPartial("Filters", Model, new ViewDataDictionary
+        {
+            {"Title", ViewBag.Title}
+        });
+    }
+    <div class="col-xl-12 col-md-12 px-1 px-sm-3">
+        <div class="card product-progress-card">
+            <div class="card-block p-0">
+                <div class="pp-main row m-0">
+                    <div class="col-12 px-0">
+                        <div class="pp-cont">
+                            <div class="w-100">
+                                <div class="card sale-card">
+                                    <div class="card-header">
+                                        <span class="f-right" style="line-height: 30px;">
+                                            <a class="details" href="#grid">Accès à la grille</a>
+                                            <a class="details" href="#chart" style="display:none">Accès au graphique</a>
+                                        </span>
+                                        <h4>NC émises par agences de la région / période donnée</h4>
+                                    </div>
+                                    <div class="card-block">
+                                        <div id="@nc1" style="height: 65vh"></div>
+                                        @(Html.EJS().Grid("Grid").Width("100%").HtmlAttributes(new Dictionary<string,object>() { { "style", "display:none" } }).DataSource(grouped2).Columns(col =>
+                                    {
+                                        col.Field(nameof(DataValue.Name)).HeaderText("Agences départ").Add();
+                                        col.Field(nameof(DataValue.Value)).HeaderText("Nombre de Non conformités").Add();
+                                    }).AllowSorting().SortSettings(sort => sort.AllowUnsort(false).Columns(new[]
+                                    {
+                                              new
+                                              {
+                                                  field = "Value",
+                                                  direction = "Descending"
+                                              }
+                                          })).Render())
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts
+{
+
+    <script>
+        $(function() {
+            $("#menu-rapport-regional").addClass("pcoded-trigger active").find(".pcoded-submenu.main").show()
+                .find("#menu-rapport-regional-@Model.Id").addClass("pcoded-trigger active").find(".pcoded-submenu")
+                .show().find("#menu-rapport-regional-nc-emises-@Model.Id").addClass("active");
+            const grid_button = $("a[href='#grid']");
+            const chart_button = $("a[href='#chart']");
+            grid_button.click((e) => {
+                chart_button.show();
+                grid_button.hide();
+                $("#@nc1").hide();
+                $("#Grid").show();
+            });
+            chart_button.click((e) => {
+                chart_button.hide();
+                grid_button.show();
+                $("#@nc1").show();
+                $("#Grid").hide();
+            });
+        });
+        function savePDF(type) {
+            Promise.all([
+                @(nc1).exporting.pdfmake,
+                @(nc1).exporting.getImage("png")
+            ]).then(function(res) {
+
+                const pdfMake = res[0];
+
+                // pdfmake is ready
+                // Create document template
+                const doc = {
+                    pageSize: "A4",
+                    pageOrientation: "landscape",
+                    pageMargins: [30, 30, 30, 30],
+                    content: []
+                };
+
+                doc.content.push({
+                    text: "GEFCO CIP Quai",
+                    fontSize: 20,
+                    bold: true,
+                    margin: [0, -10, 0, 0]
+                });
+                doc.content.push({
+                    text: "Région @ViewBag.Region.Name",
+                    fontSize: 18,
+                    bold: false,
+                    margin: [0, 10, 0, 0]
+                });
+                doc.content.push({
+                    text: "NC émises du @(ViewBag.StartDate.ToString("dd/MM/yyyy")) au @(ViewBag.EndDate.ToString("dd/MM/yyyy"))",
+                    fontSize: 16,
+                    bold: false,
+                    margin: [0, 10, 0, 30]
+                });
+
+                doc.content.push({
+                    stack: [
+                        {
+                            text: "NC émises par agences de la région / période donnée",
+                            fontSize: 14,
+                            bold: true,
+                            margin: [0, 5, 0, 5]
+                        }, {
+                            image: res[1],
+                            width: 760
+                        }
+                    ],
+                    width: "*"
+                });
+
+                if (type === "print")
+                    pdfMake.createPdf(doc).print();
+                else
+                    pdfMake.createPdf(doc).download("@(DateTime.Now.ToString("yyyyMMdd-hhmmss")) - NC Régional Émises - @(ViewBag.Region.Name).pdf");
+
+            });
+        }
+        function printPDF() {
+            savePDF("print");
+        }
+
+        var @nc1;
+        am4core.ready(function () {
+            
+            @nc1 = am4core.create("@nc1", am4charts.XYChart);
+            var chart = @nc1;
+            chart.logo.dispose();
+
+// Add data
+            chart.data = [
+                @foreach (var group in monthed)
+                {
+                    <text>{
+                    "month": "@(Html.Raw(new DateTime(DateTime.Now.Year, group.Key, 1).ToString("MMMM")))",</text>
+                    foreach (var value in cats2)
+                    {
+                        var ncs = group.Value.Where(p => p.AgenceConcernée_Id == value.Key.Id).SelectMany(p => p.MotifNCs).Count();
+                        <text> "@(Html.Raw(value.Key.Name))": @(ncs),</text>
+                    }
+                    <text>},</text>
+                }
+            ];
+            @if (grouped2.Count() <= 2)
+            {
+                <text>
+                    chart.colors.list = [
+                        am4core.color("#0B2850"),
+                        am4core.color("#ffcc00"),
+                    ];
+                </text>
+            }
+            else
+            {
+                <text>
+                    chart.colors.list = [
+                        am4core.color("#00538b"),
+                        am4core.color("#ffcf79"),
+                        am4core.color("#ee9800"),
+                        am4core.color("#95d7e9"),
+                        am4core.color("#0099d4"),
+                        am4core.color("#c2ddb0"),
+                        am4core.color("#007d4a"),
+                        am4core.color("#f28f9a"),
+                        am4core.color("#ae1022"),
+                        am4core.color("#7b67a8"),
+                    ];
+                </text>
+
+            }
+
+// Create axes
+            const categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
+            categoryAxis.dataFields.category = "month";
+            categoryAxis.numberFormatter.numberFormat = "#";
+            //categoryAxis.renderer.inversed = true;
+            categoryAxis.renderer.grid.template.location = 0;
+            categoryAxis.renderer.cellStartLocation = 0.1;
+            categoryAxis.renderer.cellEndLocation = 0.9;
+
+            const valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+            valueAxis.min = 0;
+            valueAxis.maxPrecision = 0;
+
+// Create series
+            function createSeries(field, name) {
+                const series = chart.series.push(new am4charts.ColumnSeries());
+                series.dataFields.valueY = field;
+                series.dataFields.categoryX = "month";
+                series.name = name;
+                series.columns.template.tooltipText = "{name}: [bold]{valueY}[/]";
+                series.columns.template.height = am4core.percent(100);
+                //series.sequencedInterpolation = true;
+            }
+
+            @foreach (var value in grouped2)
+            {
+                <text> createSeries("@(Html.Raw(value.Name))", "@(Html.Raw(value.Name))"); </text>
+            }
+            chart.legend = new am4charts.Legend();
+        }); // end am4core.ready()
+
+    </script>
+
+}

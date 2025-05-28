@@ -1,0 +1,1208 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
+  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{099D9020-3E89-4FAB-948C-99D68973B875}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Gefco.CipQuai.Web</RootNamespace>
+    <AssemblyName>Gefco.CipQuai.Web</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <UseIISExpress>false</UseIISExpress>
+    <Use64BitIISExpress />
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <TypeScriptToolsVersion>3.2</TypeScriptToolsVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AutoMapper, Version=5.1.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.5.1.1\lib\net45\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.Client, Version=2.4.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.Client.2.4.1\lib\net45\Microsoft.AspNet.SignalR.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.Core, Version=2.4.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.Core.2.4.1\lib\net45\Microsoft.AspNet.SignalR.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.SystemWeb, Version=2.4.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.SystemWeb.2.4.1\lib\net45\Microsoft.AspNet.SignalR.SystemWeb.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.TelemetryCorrelation, Version=1.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.TelemetryCorrelation.1.0.5\lib\net45\Microsoft.AspNet.TelemetryCorrelation.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=2.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Exchange.WebServices, Version=15.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Exchange.WebServices.2.2\lib\40\Microsoft.Exchange.WebServices.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Exchange.WebServices.Auth, Version=15.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Exchange.WebServices.2.2\lib\40\Microsoft.Exchange.WebServices.Auth.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin, Version=4.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.4.0.1\lib\net45\Microsoft.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Cors, Version=4.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Cors.4.0.1\lib\net45\Microsoft.Owin.Cors.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Host.SystemWeb, Version=4.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Host.SystemWeb.4.0.1\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security, Version=4.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.4.0.1\lib\net45\Microsoft.Owin.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Cookies, Version=4.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.Cookies.4.0.1\lib\net45\Microsoft.Owin.Security.Cookies.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Facebook, Version=4.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.Facebook.4.0.1\lib\net45\Microsoft.Owin.Security.Facebook.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Google, Version=4.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.Google.4.0.1\lib\net45\Microsoft.Owin.Security.Google.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.MicrosoftAccount, Version=4.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.MicrosoftAccount.4.0.1\lib\net45\Microsoft.Owin.Security.MicrosoftAccount.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.OAuth, Version=4.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.OAuth.4.0.1\lib\net45\Microsoft.Owin.Security.OAuth.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Twitter, Version=4.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.Twitter.4.0.1\lib\net45\Microsoft.Owin.Security.Twitter.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Swashbuckle.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cd1bb07a5ac7c7bc, processorArchitecture=MSIL">
+      <HintPath>..\packages\Swashbuckle.Core.5.6.0\lib\net40\Swashbuckle.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.EJ2, Version=17.1500.0.40, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL">
+      <HintPath>..\packages\Syncfusion.EJ2.MVC5.17.1.0.40\lib\net45\Syncfusion.EJ2.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.Licensing, Version=17.1460.0.40, Culture=neutral, PublicKeyToken=632609b4d040f6b4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Syncfusion.Licensing.17.1.0.40\lib\net46\Syncfusion.Licensing.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Diagnostics.DiagnosticSource, Version=4.0.3.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Diagnostics.DiagnosticSource.4.5.1\lib\net46\System.Diagnostics.DiagnosticSource.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.7\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security" />
+    <Reference Include="System.Web.Cors, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Cors.5.2.7\lib\net45\System.Web.Cors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.7\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.Owin, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Owin.5.2.7\lib\net45\System.Web.Http.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.7\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.7\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.7\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http">
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest">
+    </Reference>
+    <Reference Include="System.Web.Optimization">
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="WebActivatorEx, Version=2.0.0.0, Culture=neutral, PublicKeyToken=7b26dc2a43f6a0d4, processorArchitecture=MSIL">
+      <HintPath>..\packages\WebActivatorEx.2.0\lib\net40\WebActivatorEx.dll</HintPath>
+    </Reference>
+    <Reference Include="WebGrease">
+      <Private>True</Private>
+      <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
+    </Reference>
+    <Reference Include="Antlr3.Runtime">
+      <Private>True</Private>
+      <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.2\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Owin">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Owin.2.2.2\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.2\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Owin">
+      <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Cookies">
+      <HintPath>..\packages\Microsoft.Owin.Security.Cookies.4.0.0\lib\net451\Microsoft.Owin.Security.Cookies.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\IdentityConfig.cs" />
+    <Compile Include="App_Start\ModelBinderConfig.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="App_Start\SwaggerConfig.cs" />
+    <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Base\SimpleLogger.cs" />
+    <Compile Include="Controllers\Api\DeclarationControleReceptionController.cs" />
+    <Compile Include="Controllers\Api\DeclarationRemorqueController.cs" />
+    <Compile Include="Controllers\Api\PictureParameter.cs" />
+    <Compile Include="Controllers\ControlesReceptionController.cs" />
+    <Compile Include="Controllers\SimplesPlanchersController.cs" />
+    <Compile Include="Controllers\MyAuthorizeAttribute.cs" />
+    <Compile Include="Controllers\TractionsController.cs" />
+    <Compile Include="Controllers\RegionsController.cs" />
+    <Compile Include="Controllers\MotifsNCController.cs" />
+    <Compile Include="Controllers\MotifsDPController.cs" />
+    <Compile Include="Controllers\BonnesPratiquesController.cs" />
+    <Compile Include="Controllers\AgencesController.cs" />
+    <Compile Include="Controllers\RapportsController.cs" />
+    <Compile Include="Controllers\UserRolesController.cs" />
+    <Compile Include="Controllers\ZoneController.cs" />
+    <Compile Include="Dal.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\Api\AccountController.cs" />
+    <Compile Include="Controllers\Api\BusinessController.cs" />
+    <Compile Include="Controllers\Api\DeclarationBonnePratiqueController.cs" />
+    <Compile Include="Controllers\Api\DeclarationDoublePlancherController.cs" />
+    <Compile Include="Controllers\Api\DeclarationNonConformiteController.cs" />
+    <Compile Include="Controllers\Api\PicturesController.cs" />
+    <Compile Include="Controllers\Api\ValidateMimeMultipartContentFilter.cs" />
+    <Compile Include="Controllers\NonConformitesController.cs" />
+    <Compile Include="Controllers\DoublesPlanchersController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\NationalDashboardController.cs" />
+    <Compile Include="Controllers\PagesController.cs" />
+    <Compile Include="Controllers\AgenceDashboardController.cs" />
+    <Compile Include="Controllers\RegionDashboardController.cs" />
+    <Compile Include="Exceptions\InvalidUserException.cs" />
+    <Compile Include="Extensions\IEnumerableExtensions.cs" />
+    <Compile Include="Hubs\EngineHub.cs" />
+    <Compile Include="Instances.cs" />
+    <Compile Include="Migrations\201901300256282_Add PageRoles.cs" />
+    <Compile Include="Migrations\201901300256282_Add PageRoles.Designer.cs">
+      <DependentUpon>201901300256282_Add PageRoles.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201901300354377_Add Page.MenuTag.cs" />
+    <Compile Include="Migrations\201901300354377_Add Page.MenuTag.Designer.cs">
+      <DependentUpon>201901300354377_Add Page.MenuTag.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201903281716098_Add Devices.cs" />
+    <Compile Include="Migrations\201903281716098_Add Devices.Designer.cs">
+      <DependentUpon>201903281716098_Add Devices.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201904020838163_Add Resources.cs" />
+    <Compile Include="Migrations\201904020838163_Add Resources.Designer.cs">
+      <DependentUpon>201904020838163_Add Resources.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201904042205214_Retours AD.cs" />
+    <Compile Include="Migrations\201904042205214_Retours AD.Designer.cs">
+      <DependentUpon>201904042205214_Retours AD.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201904050939023_UPDATE User.Agence &amp;&amp; TractionDefinition.cs" />
+    <Compile Include="Migrations\201904050939023_UPDATE User.Agence &amp;&amp; TractionDefinition.Designer.cs">
+      <DependentUpon>201904050939023_UPDATE User.Agence &amp;&amp; TractionDefinition.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201904050943548_UPDATE User.Agence &amp;&amp; TractionDefinition 1.cs" />
+    <Compile Include="Migrations\201904050943548_UPDATE User.Agence &amp;&amp; TractionDefinition 1.Designer.cs">
+      <DependentUpon>201904050943548_UPDATE User.Agence &amp;&amp; TractionDefinition 1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201904050958490_UPDATE Traction.TractionDefinition.cs" />
+    <Compile Include="Migrations\201904050958490_UPDATE Traction.TractionDefinition.Designer.cs">
+      <DependentUpon>201904050958490_UPDATE Traction.TractionDefinition.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201904051011449_UPDATE TractionDefinition.DaysOfWeek.cs" />
+    <Compile Include="Migrations\201904051011449_UPDATE TractionDefinition.DaysOfWeek.Designer.cs">
+      <DependentUpon>201904051011449_UPDATE TractionDefinition.DaysOfWeek.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201904051014022_UPDATE TractionDefinition.DaysOfWeekValue.cs" />
+    <Compile Include="Migrations\201904051014022_UPDATE TractionDefinition.DaysOfWeekValue.Designer.cs">
+      <DependentUpon>201904051014022_UPDATE TractionDefinition.DaysOfWeekValue.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201904051032465_Add DeclarationRemorquesStatuses.cs" />
+    <Compile Include="Migrations\201904051032465_Add DeclarationRemorquesStatuses.Designer.cs">
+      <DependentUpon>201904051032465_Add DeclarationRemorquesStatuses.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201904051050586_Add Configuration.cs" />
+    <Compile Include="Migrations\201904051050586_Add Configuration.Designer.cs">
+      <DependentUpon>201904051050586_Add Configuration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201904051053373_Add Configuration.Description.cs" />
+    <Compile Include="Migrations\201904051053373_Add Configuration.Description.Designer.cs">
+      <DependentUpon>201904051053373_Add Configuration.Description.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201904051106000_Add Motifs.DisplayOrder.cs" />
+    <Compile Include="Migrations\201904051106000_Add Motifs.DisplayOrder.Designer.cs">
+      <DependentUpon>201904051106000_Add Motifs.DisplayOrder.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201904051213011_Add DeclarationRemorque.AutreAgenceArrivee.cs" />
+    <Compile Include="Migrations\201904051213011_Add DeclarationRemorque.AutreAgenceArrivee.Designer.cs">
+      <DependentUpon>201904051213011_Add DeclarationRemorque.AutreAgenceArrivee.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201904051319235_Add DeclarationRemorque.Pictures.cs" />
+    <Compile Include="Migrations\201904051319235_Add DeclarationRemorque.Pictures.Designer.cs">
+      <DependentUpon>201904051319235_Add DeclarationRemorque.Pictures.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201904090903495_Add RemorqueStatus.Description.cs" />
+    <Compile Include="Migrations\201904090903495_Add RemorqueStatus.Description.Designer.cs">
+      <DependentUpon>201904090903495_Add RemorqueStatus.Description.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201904101227155_Add Traction.IsCreated.cs" />
+    <Compile Include="Migrations\201904101227155_Add Traction.IsCreated.Designer.cs">
+      <DependentUpon>201904101227155_Add Traction.IsCreated.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201904111027069_Add ForeignKeys.cs" />
+    <Compile Include="Migrations\201904111027069_Add ForeignKeys.Designer.cs">
+      <DependentUpon>201904111027069_Add ForeignKeys.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201904120027075_Add DeclarationBonnePratique.cs" />
+    <Compile Include="Migrations\201904120027075_Add DeclarationBonnePratique.Designer.cs">
+      <DependentUpon>201904120027075_Add DeclarationBonnePratique.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201904222326543_Add DeclarationNonConformite.cs" />
+    <Compile Include="Migrations\201904222326543_Add DeclarationNonConformite.Designer.cs">
+      <DependentUpon>201904222326543_Add DeclarationNonConformite.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201904240938355_Add DeclarationNonConformite_MotifNC.cs" />
+    <Compile Include="Migrations\201904240938355_Add DeclarationNonConformite_MotifNC.Designer.cs">
+      <DependentUpon>201904240938355_Add DeclarationNonConformite_MotifNC.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201904251615571_Add User.ProfilePicture.cs" />
+    <Compile Include="Migrations\201904251615571_Add User.ProfilePicture.Designer.cs">
+      <DependentUpon>201904251615571_Add User.ProfilePicture.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201904252014563_Add Motif.NeedPicture.cs" />
+    <Compile Include="Migrations\201904252014563_Add Motif.NeedPicture.Designer.cs">
+      <DependentUpon>201904252014563_Add Motif.NeedPicture.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201904271004375_Update.cs" />
+    <Compile Include="Migrations\201904271004375_Update.Designer.cs">
+      <DependentUpon>201904271004375_Update.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201904301105377_Remove ProvenanceDP.cs" />
+    <Compile Include="Migrations\201904301105377_Remove ProvenanceDP.Designer.cs">
+      <DependentUpon>201904301105377_Remove ProvenanceDP.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201904301131119_Remove ProvenanceDP 2.cs" />
+    <Compile Include="Migrations\201904301131119_Remove ProvenanceDP 2.Designer.cs">
+      <DependentUpon>201904301131119_Remove ProvenanceDP 2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201904301132370_Add NonConformites.AgenceConcernee.cs" />
+    <Compile Include="Migrations\201904301132370_Add NonConformites.AgenceConcernee.Designer.cs">
+      <DependentUpon>201904301132370_Add NonConformites.AgenceConcernee.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201904301305512_Replace Agence.AgenceType to EnumType.cs" />
+    <Compile Include="Migrations\201904301305512_Replace Agence.AgenceType to EnumType.Designer.cs">
+      <DependentUpon>201904301305512_Replace Agence.AgenceType to EnumType.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201904302156293_Change Everything.cs" />
+    <Compile Include="Migrations\201904302156293_Change Everything.Designer.cs">
+      <DependentUpon>201904302156293_Change Everything.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201905011250151_Change Everything 2.cs" />
+    <Compile Include="Migrations\201905011250151_Change Everything 2.Designer.cs">
+      <DependentUpon>201905011250151_Change Everything 2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201905070044152_Add Agence.UserCreated.cs" />
+    <Compile Include="Migrations\201905070044152_Add Agence.UserCreated.Designer.cs">
+      <DependentUpon>201905070044152_Add Agence.UserCreated.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201905180522572_Remove NC &amp; BP Statuses.cs" />
+    <Compile Include="Migrations\201905180522572_Remove NC &amp; BP Statuses.Designer.cs">
+      <DependentUpon>201905180522572_Remove NC &amp; BP Statuses.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201905201253157_Add MotifNC.Color.cs" />
+    <Compile Include="Migrations\201905201253157_Add MotifNC.Color.Designer.cs">
+      <DependentUpon>201905201253157_Add MotifNC.Color.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201905222038121_Add Agence.IsProvenanceDP.cs" />
+    <Compile Include="Migrations\201905222038121_Add Agence.IsProvenanceDP.Designer.cs">
+      <DependentUpon>201905222038121_Add Agence.IsProvenanceDP.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201905230652058_Add Agence.IsProvenanceNC.cs" />
+    <Compile Include="Migrations\201905230652058_Add Agence.IsProvenanceNC.Designer.cs">
+      <DependentUpon>201905230652058_Add Agence.IsProvenanceNC.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201905231550289_Add some more.cs" />
+    <Compile Include="Migrations\201905231550289_Add some more.Designer.cs">
+      <DependentUpon>201905231550289_Add some more.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201905231610416_Add some more 2.cs" />
+    <Compile Include="Migrations\201905231610416_Add some more 2.Designer.cs">
+      <DependentUpon>201905231610416_Add some more 2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201905240811404_Add User Agence &amp; Region Roles.cs" />
+    <Compile Include="Migrations\201905240811404_Add User Agence &amp; Region Roles.Designer.cs">
+      <DependentUpon>201905240811404_Add User Agence &amp; Region Roles.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201905241002156_Add User National Roles.cs" />
+    <Compile Include="Migrations\201905241002156_Add User National Roles.Designer.cs">
+      <DependentUpon>201905241002156_Add User National Roles.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201905301310344_Add EmailTemplates.cs" />
+    <Compile Include="Migrations\201905301310344_Add EmailTemplates.Designer.cs">
+      <DependentUpon>201905301310344_Add EmailTemplates.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201905301806496_Add User.AppVersion.cs" />
+    <Compile Include="Migrations\201905301806496_Add User.AppVersion.Designer.cs">
+      <DependentUpon>201905301806496_Add User.AppVersion.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201906011132077_Add DeclarationNC.NumVoyage.cs" />
+    <Compile Include="Migrations\201906011132077_Add DeclarationNC.NumVoyage.Designer.cs">
+      <DependentUpon>201906011132077_Add DeclarationNC.NumVoyage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201906021035515_Add User.NeedsChangePin.cs" />
+    <Compile Include="Migrations\201906021035515_Add User.NeedsChangePin.Designer.cs">
+      <DependentUpon>201906021035515_Add User.NeedsChangePin.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201906021039484_Remove User.Pin.cs" />
+    <Compile Include="Migrations\201906021039484_Remove User.Pin.Designer.cs">
+      <DependentUpon>201906021039484_Remove User.Pin.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201906061813247_Add User.IsDeleted.cs" />
+    <Compile Include="Migrations\201906061813247_Add User.IsDeleted.Designer.cs">
+      <DependentUpon>201906061813247_Add User.IsDeleted.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201907251742178_dunno.cs" />
+    <Compile Include="Migrations\201907251742178_dunno.Designer.cs">
+      <DependentUpon>201907251742178_dunno.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201907251833422_Add DeclarationNcStatus.cs" />
+    <Compile Include="Migrations\201907251833422_Add DeclarationNcStatus.Designer.cs">
+      <DependentUpon>201907251833422_Add DeclarationNcStatus.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201909191055039_Drop Traction_Ix.cs" />
+    <Compile Include="Migrations\201909191055039_Drop Traction_Ix.Designer.cs">
+      <DependentUpon>201909191055039_Drop Traction_Ix.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201910220933059_Add Unique Declaration Traction.cs" />
+    <Compile Include="Migrations\201910220933059_Add Unique Declaration Traction.Designer.cs">
+      <DependentUpon>201910220933059_Add Unique Declaration Traction.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202104280602566_Add.Agence.IsUnderWatch.cs" />
+    <Compile Include="Migrations\202104280602566_Add.Agence.IsUnderWatch.Designer.cs">
+      <DependentUpon>202104280602566_Add.Agence.IsUnderWatch.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202104280633341_Add.ControlesReception.cs" />
+    <Compile Include="Migrations\202104280633341_Add.ControlesReception.Designer.cs">
+      <DependentUpon>202104280633341_Add.ControlesReception.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202104280748389_Add.ControlesReception.IsCr.cs" />
+    <Compile Include="Migrations\202104280748389_Add.ControlesReception.IsCr.Designer.cs">
+      <DependentUpon>202104280748389_Add.ControlesReception.IsCr.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202104280802118_Add.ControlesReception.Agence.cs" />
+    <Compile Include="Migrations\202104280802118_Add.ControlesReception.Agence.Designer.cs">
+      <DependentUpon>202104280802118_Add.ControlesReception.Agence.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202104281710439_Add.DeclarationRemorque.Discriminator.cs" />
+    <Compile Include="Migrations\202104281710439_Add.DeclarationRemorque.Discriminator.Designer.cs">
+      <DependentUpon>202104281710439_Add.DeclarationRemorque.Discriminator.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202104281725470_Make.DeclarationRemorque.Abstract.cs" />
+    <Compile Include="Migrations\202104281725470_Make.DeclarationRemorque.Abstract.Designer.cs">
+      <DependentUpon>202104281725470_Make.DeclarationRemorque.Abstract.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202104281859468_Add.Agence.Partout.cs" />
+    <Compile Include="Migrations\202104281859468_Add.Agence.Partout.Designer.cs">
+      <DependentUpon>202104281859468_Add.Agence.Partout.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202104291549506_Add.Pictures.Trigger.cs" />
+    <Compile Include="Migrations\202104291549506_Add.Pictures.Trigger.Designer.cs">
+      <DependentUpon>202104291549506_Add.Pictures.Trigger.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202109191330313_Add.TempPictures.cs" />
+    <Compile Include="Migrations\202109191330313_Add.TempPictures.Designer.cs">
+      <DependentUpon>202109191330313_Add.TempPictures.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202111151955030_Add.Region.AutoValidateNC.cs" />
+    <Compile Include="Migrations\202111151955030_Add.Region.AutoValidateNC.Designer.cs">
+      <DependentUpon>202111151955030_Add.Region.AutoValidateNC.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202201061755470_Add.Region.AutoCloseDP.cs" />
+    <Compile Include="Migrations\202201061755470_Add.Region.AutoCloseDP.Designer.cs">
+      <DependentUpon>202201061755470_Add.Region.AutoCloseDP.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Agence.cs" />
+    <Compile Include="Models\BusinessRole.cs" />
+    <Compile Include="Models\Core\ApplicationDbContext.cs" />
+    <Compile Include="Models\Core\BaseModel.cs" />
+    <Compile Include="Models\Core\Configuration.cs" />
+    <Compile Include="Models\Core\Device.cs" />
+    <Compile Include="Models\Core\NameBaseModel.cs" />
+    <Compile Include="Models\Core\PageRole.cs" />
+    <Compile Include="Models\DeclarationBonnePratique.cs" />
+    <Compile Include="Models\DeclarationNcStatus.cs" />
+    <Compile Include="Models\DeclarationNonConformite.cs" />
+    <Compile Include="Models\DeclarationRemorque.cs" />
+    <Compile Include="Models\DeclarationRemorqueStatus.cs" />
+    <Compile Include="Models\EmailTemplate.cs" />
+    <Compile Include="Models\EnumType.cs" />
+    <Compile Include="Models\MotifDP.cs" />
+    <Compile Include="Models\MotifNC.cs" />
+    <Compile Include="Models\Picture.cs" />
+    <Compile Include="Models\PictureType.cs" />
+    <Compile Include="Models\Region.cs" />
+    <Compile Include="Models\Remorque.cs" />
+    <Compile Include="Models\RemorqueStatus.cs" />
+    <Compile Include="Models\Traction.cs" />
+    <Compile Include="Models\Core\Resource.cs" />
+    <Compile Include="Models\TractionDefinition.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="Results\BaseServiceResult.cs" />
+    <Compile Include="Results\BooleanServiceResult.cs" />
+    <Compile Include="Results\IntServiceResult.cs" />
+    <Compile Include="Results\ListServiceResult.cs" />
+    <Compile Include="Results\PictureServiceResult.cs" />
+    <Compile Include="Results\ServiceResult.cs" />
+    <Compile Include="Results\StringServiceResult.cs" />
+    <Compile Include="Results\UserServiceResult.cs" />
+    <Compile Include="ViewModels\BusinessRoleViewModel.cs" />
+    <Compile Include="ViewModels\TractionViewModel.cs" />
+    <Compile Include="ViewModels\AgenceViewModel.cs" />
+    <Compile Include="Views\NationalDashboard\ListeCRViewModel.cs" />
+    <Compile Include="Views\NationalDashboard\ListeSPViewModel.cs" />
+    <Compile Include="Views\ControlesReception\DetailCRViewModel.cs" />
+    <Compile Include="Views\ControlesReception\ListItemCRViewModel.cs" />
+    <Compile Include="Views\SimplesPlanchers\DetailSPViewModel.cs" />
+    <Compile Include="Views\SimplesPlanchers\ListItemSPViewModel.cs" />
+    <Compile Include="Views\BonnesPratiques\ListItemBPViewModel.cs" />
+    <Compile Include="Views\DoublesPlanchers\ListItemDPViewModel.cs" />
+    <Compile Include="Views\NationalDashboard\ListeBPViewModel.cs" />
+    <Compile Include="Views\NationalDashboard\StatBPViewModel.cs" />
+    <Compile Include="ViewModels\RegionCategoryDataValue.cs" />
+    <Compile Include="ViewModels\DataValue.cs" />
+    <Compile Include="Views\NationalDashboard\StatDPViewModel.cs" />
+    <Compile Include="Views\NationalDashboard\ListeDPViewModel.cs" />
+    <Compile Include="Views\NationalDashboard\ListeNCViewModel.cs" />
+    <Compile Include="Views\BonnesPratiques\DetailBPViewModel.cs" />
+    <Compile Include="Views\Rapports\ListItem.cs" />
+    <Compile Include="Views\Rapports\NCNationalStatViewModel.cs" />
+    <Compile Include="Views\NationalDashboard\StatNCViewModel.cs" />
+    <Compile Include="Views\NonConformites\DetailNCViewModel.cs" />
+    <Compile Include="Views\NonConformites\ListItemNCViewModel.cs" />
+    <Compile Include="ViewModels\PageViewModel.cs" />
+    <Compile Include="Controllers\SectionsController.cs" />
+    <Compile Include="Controllers\RolesController.cs" />
+    <Compile Include="Controllers\UsersController.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201901271535168_InitialCreate.cs" />
+    <Compile Include="Migrations\201901271535168_InitialCreate.Designer.cs">
+      <DependentUpon>201901271535168_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201901280033082_Add User.FirstName &amp; LastName.cs" />
+    <Compile Include="Migrations\201901280033082_Add User.FirstName &amp; LastName.Designer.cs">
+      <DependentUpon>201901280033082_Add User.FirstName &amp; LastName.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201901291812547_Add Pages &amp; PageRoles.cs" />
+    <Compile Include="Migrations\201901291812547_Add Pages &amp; PageRoles.Designer.cs">
+      <DependentUpon>201901291812547_Add Pages &amp; PageRoles.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201901291855151_Add Page.SortOrder.cs" />
+    <Compile Include="Migrations\201901291855151_Add Page.SortOrder.Designer.cs">
+      <DependentUpon>201901291855151_Add Page.SortOrder.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201901291900160_Add Page.Link.cs" />
+    <Compile Include="Migrations\201901291900160_Add Page.Link.Designer.cs">
+      <DependentUpon>201901291900160_Add Page.Link.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201901300011483_Add Page.Story.cs" />
+    <Compile Include="Migrations\201901300011483_Add Page.Story.Designer.cs">
+      <DependentUpon>201901300011483_Add Page.Story.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201901300021016_Remove Page.Story.cs" />
+    <Compile Include="Migrations\201901300021016_Remove Page.Story.Designer.cs">
+      <DependentUpon>201901300021016_Remove Page.Story.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201901300022515_Add Page.Section.cs" />
+    <Compile Include="Migrations\201901300022515_Add Page.Section.Designer.cs">
+      <DependentUpon>201901300022515_Add Page.Section.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201901300107350_Add Sections.cs" />
+    <Compile Include="Migrations\201901300107350_Add Sections.Designer.cs">
+      <DependentUpon>201901300107350_Add Sections.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="ViewModels\AccountViewModels.cs" />
+    <Compile Include="ViewModels\ApplicationUserViewModel.cs" />
+    <Compile Include="Models\Core\ApplicationUser.cs" />
+    <Compile Include="ViewModels\IdentityRoleViewModel.cs" />
+    <Compile Include="ViewModels\ManageViewModels.cs" />
+    <Compile Include="Models\Core\Page.cs" />
+    <Compile Include="Models\Core\Section.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Startup.cs" />
+    <Compile Include="StringExtensions.cs" />
+    <Compile Include="Tools.cs" />
+    <Compile Include="Views\DoublesPlanchers\DetailDPViewModel.cs" />
+    <Compile Include="ViewModels\FilterViewModel.cs" />
+    <Compile Include="Views\Rapports\NCPivotData.cs" />
+    <Compile Include="Views\Rapports\NCStatListViewModel.cs" />
+    <Compile Include="Views\Rapports\NCRegionalStatViewModel.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\assets\amcharts\animated.js" />
+    <Content Include="Content\assets\amcharts\charts.js" />
+    <Content Include="Content\assets\amcharts\core.js" />
+    <Content Include="Content\assets\amcharts\deps\pdfmake.js" />
+    <Content Include="Content\assets\chartist\css\chartist.css" />
+    <Content Include="Content\assets\chartist\js\chartist.js" />
+    <Content Include="Content\assets\css\component.css" />
+    <Content Include="Content\assets\css\font-awesome-n.min.css" />
+    <Content Include="Content\assets\css\pages.css" />
+    <Content Include="Content\assets\css\site.css" />
+    <Content Include="Content\assets\css\style.css" />
+    <Content Include="Content\assets\css\widget.css" />
+    <Content Include="Content\assets\html2canvas.js" />
+    <Content Include="Content\assets\icon\feather\css\feather.css" />
+    <Content Include="Content\assets\icon\font-awesome\css\font-awesome.min.css" />
+    <Content Include="Content\assets\icon\icofont\css\icofont.css" />
+    <Content Include="Content\assets\icon\themify-icons\themify-icons.css" />
+    <Content Include="Content\assets\images\auth\Logo-small-bottom.png" />
+    <Content Include="Content\assets\images\avatar-1.jpg" />
+    <Content Include="Content\assets\images\avatar-2.jpg" />
+    <Content Include="Content\assets\images\avatar-3.jpg" />
+    <Content Include="Content\assets\images\avatar-4.jpg" />
+    <Content Include="Content\assets\images\favicon.ico" />
+    <Content Include="Content\assets\images\logo.png" />
+    <Content Include="Content\assets\images\mega-menu\01.jpg" />
+    <Content Include="Content\assets\images\mega-menu\02.jpg" />
+    <Content Include="Content\assets\images\mega-menu\03.jpg" />
+    <Content Include="Content\assets\images\sprite.svg" />
+    <Content Include="Content\assets\images\widget\p1.jpg" />
+    <Content Include="Content\assets\images\widget\p2.jpg" />
+    <Content Include="Content\assets\images\widget\p3.jpg" />
+    <Content Include="Content\assets\images\widget\p4.jpg" />
+    <Content Include="Content\assets\js\common-pages.js" />
+    <Content Include="Content\assets\js\modal.js" />
+    <Content Include="Content\assets\js\modernizr\js\css-scrollbars.js" />
+    <Content Include="Content\assets\js\modernizr\js\modernizr.js" />
+    <Content Include="Content\assets\js\pcoded.min.js" />
+    <Content Include="Content\assets\js\script.min.js" />
+    <Content Include="Content\assets\js\vertical\vertical-layout.min.js" />
+    <Content Include="Content\assets\pages\chart\float\curvedLines.js" />
+    <Content Include="Content\assets\pages\chart\float\jquery.flot.categories.js" />
+    <Content Include="Content\assets\pages\chart\float\jquery.flot.js" />
+    <Content Include="Content\assets\pages\chart\float\jquery.flot.tooltip.min.js" />
+    <Content Include="Content\assets\pages\dashboard\national-dashboard.js" />
+    <Content Include="Content\assets\pages\dashboard\analytic-dashboard.min.js" />
+    <Content Include="Content\assets\pages\dashboard\crm-dashboard.min.js" />
+    <Content Include="Content\assets\pages\dashboard\custom-dashboard.min.js" />
+    <Content Include="Content\assets\pages\google-maps\gmaps.js" />
+    <Content Include="Content\assets\pages\todo\todo.js" />
+    <Content Include="Content\assets\pages\waves\css\waves.min.css" />
+    <Content Include="Content\assets\pages\waves\js\waves.min.js" />
+    <Content Include="Content\assets\pages\widget\amchart\amcharts.js" />
+    <Content Include="Content\assets\pages\widget\amchart\ammap.min.js" />
+    <Content Include="Content\assets\pages\widget\amchart\gauge.js" />
+    <Content Include="Content\assets\pages\widget\amchart\images\dragIconRoundBig.svg" />
+    <Content Include="Content\assets\pages\widget\amchart\images\lens.svg" />
+    <Content Include="Content\assets\pages\widget\amchart\light.js" />
+    <Content Include="Content\assets\pages\widget\amchart\pie.min.js" />
+    <Content Include="Content\assets\pages\widget\amchart\plugins\animate\animate.min.js" />
+    <Content Include="Content\assets\pages\widget\amchart\plugins\dataloader\dataloader.min.js" />
+    <Content Include="Content\assets\pages\widget\amchart\plugins\responsive\responsive.min.js" />
+    <Content Include="Content\assets\pages\widget\amchart\serial.js" />
+    <Content Include="Content\assets\pages\widget\amchart\usaLow.js" />
+    <Content Include="Content\assets\pages\widget\widget-data.js" />
+    <Content Include="Content\assets\sf\ej.culture.fr-FR.min.js" />
+    <Content Include="Content\assets\sf\ej.localetexts.fr-FR.min.js" />
+    <Content Include="Content\assets\sf\ej2.min.js" />
+    <Content Include="Content\assets\sf\fabric.css" />
+    <Content Include="Content\assets\sf\index.css" />
+    <Content Include="Content\assets\sf\fusion.css" />
+    <Content Include="Content\assets\sweetalert\css\sweetalert.css" />
+    <Content Include="Content\assets\sweetalert\js\sweetalert.min.js" />
+    <Content Include="Content\bootstrap-grid.css" />
+    <Content Include="Content\bootstrap-grid.min.css" />
+    <Content Include="Content\bootstrap-reboot.css" />
+    <Content Include="Content\bootstrap-reboot.min.css" />
+    <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\assets\js\jquery-slimscroll\js\jquery.slimscroll.js" />
+    <Content Include="favicon.ico" />
+    <Content Include="Global.asax" />
+    <Content Include="Scripts\bootstrap.bundle.js" />
+    <Content Include="Scripts\bootstrap.bundle.min.js" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\bootstrap.min.js.map" />
+    <Content Include="Scripts\bootstrap.js.map" />
+    <Content Include="Scripts\bootstrap.bundle.min.js.map" />
+    <Content Include="Scripts\bootstrap.bundle.js.map" />
+    <Content Include="Content\bootstrap.min.css.map" />
+    <Content Include="Content\bootstrap.css.map" />
+    <Content Include="Content\bootstrap-reboot.min.css.map" />
+    <Content Include="Content\bootstrap-reboot.css.map" />
+    <Content Include="Content\bootstrap-grid.min.css.map" />
+    <Content Include="Content\bootstrap-grid.css.map" />
+    <Content Include="Scripts\esm\popper-utils.js" />
+    <Content Include="Scripts\esm\popper-utils.min.js" />
+    <Content Include="Scripts\esm\popper.js" />
+    <Content Include="Scripts\esm\popper.min.js" />
+    <Content Include="Scripts\esm\popper.min.js.map" />
+    <Content Include="Scripts\esm\popper.js.map" />
+    <Content Include="Scripts\esm\popper-utils.min.js.map" />
+    <Content Include="Scripts\esm\popper-utils.js.map" />
+    <Content Include="Content\assets\icon\feather\fonts\feather.ttf" />
+    <Content Include="Content\assets\icon\feather\fonts\feather.woff" />
+    <Content Include="Content\assets\icon\icofont\fonts\icofont.ttf" />
+    <Content Include="Content\assets\icon\icofont\fonts\icofont.woff" />
+    <Content Include="Content\assets\fonts\fa-solid-900.woff2" />
+    <Content Include="Content\assets\fonts\fa-regular-400.woff2" />
+    <Content Include="ClassDiagram1.cd" />
+    <Content Include="Scripts\cldr-data\main\fr\ca-buddhist.json" />
+    <Content Include="Scripts\cldr-data\main\fr\ca-chinese.json" />
+    <Content Include="Scripts\cldr-data\main\fr\ca-coptic.json" />
+    <Content Include="Scripts\cldr-data\main\fr\ca-dangi.json" />
+    <Content Include="Scripts\cldr-data\main\fr\ca-ethiopic-amete-alem.json" />
+    <Content Include="Scripts\cldr-data\main\fr\ca-ethiopic.json" />
+    <Content Include="Scripts\cldr-data\main\fr\ca-generic.json" />
+    <Content Include="Scripts\cldr-data\main\fr\ca-gregorian.json" />
+    <Content Include="Scripts\cldr-data\main\fr\ca-hebrew.json" />
+    <Content Include="Scripts\cldr-data\main\fr\ca-indian.json" />
+    <Content Include="Scripts\cldr-data\main\fr\ca-islamic-civil.json" />
+    <Content Include="Scripts\cldr-data\main\fr\ca-islamic-rgsa.json" />
+    <Content Include="Scripts\cldr-data\main\fr\ca-islamic-tbla.json" />
+    <Content Include="Scripts\cldr-data\main\fr\ca-islamic-umalqura.json" />
+    <Content Include="Scripts\cldr-data\main\fr\ca-islamic.json" />
+    <Content Include="Scripts\cldr-data\main\fr\ca-japanese.json" />
+    <Content Include="Scripts\cldr-data\main\fr\ca-persian.json" />
+    <Content Include="Scripts\cldr-data\main\fr\ca-roc.json" />
+    <Content Include="Scripts\cldr-data\main\fr\characters.json" />
+    <Content Include="Scripts\cldr-data\main\fr\contextTransforms.json" />
+    <Content Include="Scripts\cldr-data\main\fr\currencies.json" />
+    <Content Include="Scripts\cldr-data\main\fr\dateFields.json" />
+    <Content Include="Scripts\cldr-data\main\fr\delimiters.json" />
+    <Content Include="Scripts\cldr-data\main\fr\languages.json" />
+    <Content Include="Scripts\cldr-data\main\fr\layout.json" />
+    <Content Include="Scripts\cldr-data\main\fr\listPatterns.json" />
+    <Content Include="Scripts\cldr-data\main\fr\localeDisplayNames.json" />
+    <Content Include="Scripts\cldr-data\main\fr\measurementSystemNames.json" />
+    <Content Include="Scripts\cldr-data\main\fr\numbers.json" />
+    <Content Include="Scripts\cldr-data\main\fr\posix.json" />
+    <Content Include="Scripts\cldr-data\main\fr\scripts.json" />
+    <Content Include="Scripts\cldr-data\main\fr\territories.json" />
+    <Content Include="Scripts\cldr-data\main\fr\timeZoneNames.json" />
+    <Content Include="Scripts\cldr-data\main\fr\units.json" />
+    <Content Include="Scripts\cldr-data\main\fr\variants.json" />
+    <Content Include="Content\assets\sf\fr.json" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
+    <Content Include="Scripts\cldr-data\supplemental\aliases.json" />
+    <Content Include="Scripts\cldr-data\supplemental\calendarData.json" />
+    <Content Include="Scripts\cldr-data\supplemental\calendarPreferenceData.json" />
+    <Content Include="Scripts\cldr-data\supplemental\characterFallbacks.json" />
+    <Content Include="Scripts\cldr-data\supplemental\codeMappings.json" />
+    <Content Include="Scripts\cldr-data\supplemental\currencyData.json" />
+    <Content Include="Scripts\cldr-data\supplemental\dayPeriods.json" />
+    <Content Include="Scripts\cldr-data\supplemental\gender.json" />
+    <Content Include="Scripts\cldr-data\supplemental\languageData.json" />
+    <Content Include="Scripts\cldr-data\supplemental\languageGroups.json" />
+    <Content Include="Scripts\cldr-data\supplemental\languageMatching.json" />
+    <Content Include="Scripts\cldr-data\supplemental\likelySubtags.json" />
+    <Content Include="Scripts\cldr-data\supplemental\measurementData.json" />
+    <Content Include="Scripts\cldr-data\supplemental\metaZones.json" />
+    <Content Include="Scripts\cldr-data\supplemental\numberingSystems.json" />
+    <Content Include="Scripts\cldr-data\supplemental\ordinals.json" />
+    <Content Include="Scripts\cldr-data\supplemental\parentLocales.json" />
+    <Content Include="Scripts\cldr-data\supplemental\plurals.json" />
+    <Content Include="Scripts\cldr-data\supplemental\primaryZones.json" />
+    <Content Include="Scripts\cldr-data\supplemental\references.json" />
+    <Content Include="Scripts\cldr-data\supplemental\territoryContainment.json" />
+    <Content Include="Scripts\cldr-data\supplemental\territoryInfo.json" />
+    <Content Include="Scripts\cldr-data\supplemental\timeData.json" />
+    <Content Include="Scripts\cldr-data\supplemental\unitPreferenceData.json" />
+    <Content Include="Scripts\cldr-data\supplemental\weekData.json" />
+    <Content Include="Scripts\cldr-data\supplemental\windowsZones.json" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Scripts\jquery-3.3.1.intellisense.js" />
+    <Content Include="Scripts\jquery-3.3.1.js" />
+    <Content Include="Scripts\jquery-3.3.1.min.js" />
+    <Content Include="Scripts\jquery-3.3.1.slim.js" />
+    <Content Include="Scripts\jquery-3.3.1.slim.min.js" />
+    <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery-ui.min.js" />
+    <Content Include="Scripts\jquery.signalR-2.4.1.min.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
+    <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\popper-utils.js" />
+    <Content Include="Scripts\popper-utils.min.js" />
+    <Content Include="Scripts\popper.js" />
+    <Content Include="Scripts\popper.min.js" />
+    <Content Include="Scripts\umd\popper-utils.js" />
+    <Content Include="Scripts\umd\popper-utils.min.js" />
+    <Content Include="Scripts\umd\popper.js" />
+    <Content Include="Scripts\umd\popper.min.js" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Views\Web.config" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Shared\_AuthLayout.cshtml" />
+    <Content Include="Views\Home\Dashboard.cshtml" />
+    <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
+    <Content Include="Views\Account\ConfirmEmail.cshtml" />
+    <Content Include="Views\Account\ExternalLoginConfirmation.cshtml" />
+    <Content Include="Views\Account\ExternalLoginFailure.cshtml" />
+    <Content Include="Views\Account\ForgotPassword.cshtml" />
+    <Content Include="Views\Account\ForgotPasswordConfirmation.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Account\Register.cshtml" />
+    <Content Include="Views\Account\ResetPassword.cshtml" />
+    <Content Include="Views\Account\ResetPasswordConfirmation.cshtml" />
+    <Content Include="Views\Account\SendCode.cshtml" />
+    <Content Include="Views\Account\VerifyCode.cshtml" />
+    <Content Include="Views\Manage\AddPhoneNumber.cshtml" />
+    <Content Include="Views\Manage\ChangePassword.cshtml" />
+    <Content Include="Views\Manage\Index.cshtml" />
+    <Content Include="Views\Manage\ManageLogins.cshtml" />
+    <Content Include="Views\Manage\SetPassword.cshtml" />
+    <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
+    <Content Include="Views\Shared\Lockout.cshtml" />
+    <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Scripts\umd\popper.min.js.map" />
+    <Content Include="Scripts\umd\popper.js.map" />
+    <Content Include="Scripts\umd\popper-utils.min.js.map" />
+    <Content Include="Scripts\umd\popper-utils.js.map" />
+    <Content Include="Scripts\README.md" />
+    <Content Include="Scripts\popper.min.js.map" />
+    <Content Include="Scripts\popper.js.map" />
+    <Content Include="Scripts\popper-utils.min.js.map" />
+    <Content Include="Scripts\popper-utils.js.map" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Home\DashboardCrm.cshtml" />
+    <Content Include="Views\Home\DashboardAnalytics.cshtml" />
+    <Content Include="Views\Users\Edit.cshtml" />
+    <Content Include="Views\Users\Index.cshtml" />
+    <Content Include="Views\Roles\Index.cshtml" />
+    <Content Include="Views\Roles\Edit.cshtml" />
+    <Content Include="Views\Home\Widgets.cshtml" />
+    <Content Include="Views\Pages\Create.cshtml" />
+    <Content Include="Views\Pages\Edit.cshtml" />
+    <Content Include="Views\Pages\Index.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Sections\Create.cshtml" />
+    <Content Include="Views\Sections\Delete.cshtml" />
+    <Content Include="Views\Sections\Details.cshtml" />
+    <Content Include="Views\Sections\Edit.cshtml" />
+    <Content Include="Views\Sections\Index.cshtml" />
+    <Content Include="Views\NationalDashboard\Index.cshtml" />
+    <Content Include="Views\Shared\PieLayout.cshtml" />
+    <Content Include="Views\RegionDashboard\Index.cshtml" />
+    <Content Include="Views\Shared\GrilleDP.cshtml" />
+    <Content Include="Views\DoublesPlanchers\Detail.cshtml" />
+    <Content Include="Views\AgenceDashboard\Index.cshtml" />
+    <Content Include="Views\Shared\ParetoLayout.cshtml" />
+    <Content Include="Views\Shared\ListeNC.cshtml" />
+    <Content Include="Views\Shared\Filters.cshtml" />
+    <Content Include="Views\Shared\ListeDP.cshtml" />
+    <Content Include="Views\NonConformites\Detail.cshtml" />
+    <Content Include="Views\Shared\ListeNCTypo.cshtml" />
+    <Content Include="Views\Rapports\NCNational.cshtml" />
+    <Content Include="Views\BonnesPratiques\Detail.cshtml" />
+    <Content Include="Views\Shared\ListeBP.cshtml" />
+    <Content Include="Views\Rapports\NCRegionalEmises.cshtml" />
+    <Content Include="Views\Rapports\NCRegional.cshtml" />
+    <Content Include="Views\Rapports\NCRegionalEvolution.cshtml" />
+    <Content Include="Views\Rapports\NCRegionalRecues.cshtml" />
+    <Content Include="Views\Rapports\NCRegionalTypoEmises.cshtml" />
+    <Content Include="Views\Rapports\NCRegionalTypoRecues.cshtml" />
+    <Content Include="Views\Agences\Edit.cshtml" />
+    <Content Include="Views\Agences\Index.cshtml" />
+    <Content Include="Views\MotifsDP\Edit.cshtml" />
+    <Content Include="Views\MotifsDP\Index.cshtml" />
+    <Content Include="Views\MotifsNC\Edit.cshtml" />
+    <Content Include="Views\MotifsNC\Index.cshtml" />
+    <Content Include="Views\Regions\Edit.cshtml" />
+    <Content Include="Views\Regions\Index.cshtml" />
+    <Content Include="Views\Tractions\Edit.cshtml" />
+    <Content Include="Views\Tractions\Index.cshtml" />
+    <Content Include="Views\UserRoles\Edit.cshtml" />
+    <Content Include="Views\UserRoles\Index.cshtml" />
+    <Content Include="Views\Shared\AddUserNationalRole.cshtml" />
+    <Content Include="Views\Shared\AddUserRegionRole.cshtml" />
+    <Content Include="Views\Shared\AddUserAgenceRole.cshtml" />
+    <Content Include="Views\Shared\GrilleDPA.cshtml" />
+    <Content Include="Views\Tractions\AnnulationTractions.cshtml" />
+    <Content Include="Views\Shared\GaugeLayout.cshtml" />
+    <Content Include="Views\SimplesPlanchers\Detail.cshtml" />
+    <Content Include="Views\Shared\ListeSP.cshtml" />
+    <Content Include="Views\ControlesReception\Detail.cshtml" />
+    <Content Include="Views\Shared\ListeCR.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\Pictures\" />
+    <Folder Include="Views\Shared\EditorTemplates\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <Content Include="Scripts\jquery-3.3.1.slim.min.map" />
+    <Content Include="Scripts\jquery-3.3.1.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="Scripts\index.d.ts" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201901271535168_InitialCreate.resx">
+      <DependentUpon>201901271535168_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901280033082_Add User.FirstName &amp; LastName.resx">
+      <DependentUpon>201901280033082_Add User.FirstName &amp; LastName.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901291812547_Add Pages &amp; PageRoles.resx">
+      <DependentUpon>201901291812547_Add Pages &amp; PageRoles.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901291855151_Add Page.SortOrder.resx">
+      <DependentUpon>201901291855151_Add Page.SortOrder.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901291900160_Add Page.Link.resx">
+      <DependentUpon>201901291900160_Add Page.Link.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901300011483_Add Page.Story.resx">
+      <DependentUpon>201901300011483_Add Page.Story.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901300021016_Remove Page.Story.resx">
+      <DependentUpon>201901300021016_Remove Page.Story.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901300022515_Add Page.Section.resx">
+      <DependentUpon>201901300022515_Add Page.Section.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901300107350_Add Sections.resx">
+      <DependentUpon>201901300107350_Add Sections.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901300256282_Add PageRoles.resx">
+      <DependentUpon>201901300256282_Add PageRoles.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901300354377_Add Page.MenuTag.resx">
+      <DependentUpon>201901300354377_Add Page.MenuTag.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201903281716098_Add Devices.resx">
+      <DependentUpon>201903281716098_Add Devices.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201904020838163_Add Resources.resx">
+      <DependentUpon>201904020838163_Add Resources.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201904042205214_Retours AD.resx">
+      <DependentUpon>201904042205214_Retours AD.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201904050939023_UPDATE User.Agence &amp;&amp; TractionDefinition.resx">
+      <DependentUpon>201904050939023_UPDATE User.Agence &amp;&amp; TractionDefinition.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201904050943548_UPDATE User.Agence &amp;&amp; TractionDefinition 1.resx">
+      <DependentUpon>201904050943548_UPDATE User.Agence &amp;&amp; TractionDefinition 1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201904050958490_UPDATE Traction.TractionDefinition.resx">
+      <DependentUpon>201904050958490_UPDATE Traction.TractionDefinition.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201904051011449_UPDATE TractionDefinition.DaysOfWeek.resx">
+      <DependentUpon>201904051011449_UPDATE TractionDefinition.DaysOfWeek.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201904051014022_UPDATE TractionDefinition.DaysOfWeekValue.resx">
+      <DependentUpon>201904051014022_UPDATE TractionDefinition.DaysOfWeekValue.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201904051032465_Add DeclarationRemorquesStatuses.resx">
+      <DependentUpon>201904051032465_Add DeclarationRemorquesStatuses.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201904051050586_Add Configuration.resx">
+      <DependentUpon>201904051050586_Add Configuration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201904051053373_Add Configuration.Description.resx">
+      <DependentUpon>201904051053373_Add Configuration.Description.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201904051106000_Add Motifs.DisplayOrder.resx">
+      <DependentUpon>201904051106000_Add Motifs.DisplayOrder.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201904051213011_Add DeclarationRemorque.AutreAgenceArrivee.resx">
+      <DependentUpon>201904051213011_Add DeclarationRemorque.AutreAgenceArrivee.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201904051319235_Add DeclarationRemorque.Pictures.resx">
+      <DependentUpon>201904051319235_Add DeclarationRemorque.Pictures.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201904090903495_Add RemorqueStatus.Description.resx">
+      <DependentUpon>201904090903495_Add RemorqueStatus.Description.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201904101227155_Add Traction.IsCreated.resx">
+      <DependentUpon>201904101227155_Add Traction.IsCreated.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201904111027069_Add ForeignKeys.resx">
+      <DependentUpon>201904111027069_Add ForeignKeys.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201904120027075_Add DeclarationBonnePratique.resx">
+      <DependentUpon>201904120027075_Add DeclarationBonnePratique.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201904222326543_Add DeclarationNonConformite.resx">
+      <DependentUpon>201904222326543_Add DeclarationNonConformite.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201904240938355_Add DeclarationNonConformite_MotifNC.resx">
+      <DependentUpon>201904240938355_Add DeclarationNonConformite_MotifNC.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201904251615571_Add User.ProfilePicture.resx">
+      <DependentUpon>201904251615571_Add User.ProfilePicture.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201904252014563_Add Motif.NeedPicture.resx">
+      <DependentUpon>201904252014563_Add Motif.NeedPicture.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201904271004375_Update.resx">
+      <DependentUpon>201904271004375_Update.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201904301105377_Remove ProvenanceDP.resx">
+      <DependentUpon>201904301105377_Remove ProvenanceDP.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201904301131119_Remove ProvenanceDP 2.resx">
+      <DependentUpon>201904301131119_Remove ProvenanceDP 2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201904301132370_Add NonConformites.AgenceConcernee.resx">
+      <DependentUpon>201904301132370_Add NonConformites.AgenceConcernee.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201904301305512_Replace Agence.AgenceType to EnumType.resx">
+      <DependentUpon>201904301305512_Replace Agence.AgenceType to EnumType.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201904302156293_Change Everything.resx">
+      <DependentUpon>201904302156293_Change Everything.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201905011250151_Change Everything 2.resx">
+      <DependentUpon>201905011250151_Change Everything 2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201905070044152_Add Agence.UserCreated.resx">
+      <DependentUpon>201905070044152_Add Agence.UserCreated.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201905180522572_Remove NC &amp; BP Statuses.resx">
+      <DependentUpon>201905180522572_Remove NC &amp; BP Statuses.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201905201253157_Add MotifNC.Color.resx">
+      <DependentUpon>201905201253157_Add MotifNC.Color.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201905222038121_Add Agence.IsProvenanceDP.resx">
+      <DependentUpon>201905222038121_Add Agence.IsProvenanceDP.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201905230652058_Add Agence.IsProvenanceNC.resx">
+      <DependentUpon>201905230652058_Add Agence.IsProvenanceNC.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201905231550289_Add some more.resx">
+      <DependentUpon>201905231550289_Add some more.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201905231610416_Add some more 2.resx">
+      <DependentUpon>201905231610416_Add some more 2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201905240811404_Add User Agence &amp; Region Roles.resx">
+      <DependentUpon>201905240811404_Add User Agence &amp; Region Roles.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201905241002156_Add User National Roles.resx">
+      <DependentUpon>201905241002156_Add User National Roles.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201905301310344_Add EmailTemplates.resx">
+      <DependentUpon>201905301310344_Add EmailTemplates.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201905301806496_Add User.AppVersion.resx">
+      <DependentUpon>201905301806496_Add User.AppVersion.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906011132077_Add DeclarationNC.NumVoyage.resx">
+      <DependentUpon>201906011132077_Add DeclarationNC.NumVoyage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906021035515_Add User.NeedsChangePin.resx">
+      <DependentUpon>201906021035515_Add User.NeedsChangePin.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906021039484_Remove User.Pin.resx">
+      <DependentUpon>201906021039484_Remove User.Pin.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906061813247_Add User.IsDeleted.resx">
+      <DependentUpon>201906061813247_Add User.IsDeleted.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907251742178_dunno.resx">
+      <DependentUpon>201907251742178_dunno.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907251833422_Add DeclarationNcStatus.resx">
+      <DependentUpon>201907251833422_Add DeclarationNcStatus.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201909191055039_Drop Traction_Ix.resx">
+      <DependentUpon>201909191055039_Drop Traction_Ix.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910220933059_Add Unique Declaration Traction.resx">
+      <DependentUpon>201910220933059_Add Unique Declaration Traction.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202104280602566_Add.Agence.IsUnderWatch.resx">
+      <DependentUpon>202104280602566_Add.Agence.IsUnderWatch.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202104280633341_Add.ControlesReception.resx">
+      <DependentUpon>202104280633341_Add.ControlesReception.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202104280748389_Add.ControlesReception.IsCr.resx">
+      <DependentUpon>202104280748389_Add.ControlesReception.IsCr.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202104280802118_Add.ControlesReception.Agence.resx">
+      <DependentUpon>202104280802118_Add.ControlesReception.Agence.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202104281710439_Add.DeclarationRemorque.Discriminator.resx">
+      <DependentUpon>202104281710439_Add.DeclarationRemorque.Discriminator.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202104281725470_Make.DeclarationRemorque.Abstract.resx">
+      <DependentUpon>202104281725470_Make.DeclarationRemorque.Abstract.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202104281859468_Add.Agence.Partout.resx">
+      <DependentUpon>202104281859468_Add.Agence.Partout.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202104291549506_Add.Pictures.Trigger.resx">
+      <DependentUpon>202104291549506_Add.Pictures.Trigger.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202109191330313_Add.TempPictures.resx">
+      <DependentUpon>202109191330313_Add.TempPictures.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202111151955030_Add.Region.AutoValidateNC.resx">
+      <DependentUpon>202111151955030_Add.Region.AutoValidateNC.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202201061755470_Add.Region.AutoCloseDP.resx">
+      <DependentUpon>202201061755470_Add.Region.AutoCloseDP.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>62944</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost/CipQuai</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+</Project>

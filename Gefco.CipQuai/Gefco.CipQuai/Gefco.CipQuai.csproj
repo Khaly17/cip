@@ -1,0 +1,53 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
+    <LangVersion>8</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Pages\DoubleDeckPage - Copy\**" />
+    <EmbeddedResource Remove="Pages\DoubleDeckPage - Copy\**" />
+    <None Remove="Pages\DoubleDeckPage - Copy\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Autorest.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommonServiceLocator" Version="2.0.6" />
+    <PackageReference Include="Microsoft.AppCenter.Analytics" Version="4.2.0" />
+    <PackageReference Include="Microsoft.AppCenter.Crashes" Version="4.2.0" />
+    <PackageReference Include="Microsoft.AppCenter.Distribute" Version="4.2.0" />
+    <PackageReference Include="Microsoft.AppCenter.Push" Version="3.4.3" />
+    <PackageReference Include="Microsoft.Rest.ClientRuntime" Version="2.3.23" />
+    <PackageReference Include="MvvmLightLibs" Version="5.4.1.1" />
+    <PackageReference Include="SkiaSharp.Views.Forms" Version="2.80.2" />
+    <PackageReference Include="Syncfusion.Xamarin.Buttons" Version="19.1.0.58" />
+    <PackageReference Include="Syncfusion.Xamarin.SfAutoComplete" Version="19.1.0.58" />
+    <PackageReference Include="Syncfusion.Xamarin.SfBusyIndicator" Version="19.1.0.58" />
+    <PackageReference Include="Syncfusion.Xamarin.SfListView" Version="19.1.0.58" />
+    <PackageReference Include="Syncfusion.Xamarin.SfProgressBar" Version="19.1.0.58" />
+    <PackageReference Include="Xam.Plugin.Media" Version="5.0.1" />
+    <PackageReference Include="Xam.Plugins.Settings" Version="3.1.1" />
+    <PackageReference Include="Xamarin.Auth" Version="1.7.0" />
+    <PackageReference Include="Xamarin.FFImageLoading.Svg.Forms" Version="2.4.3.840" />
+    <PackageReference Include="Xamarin.FFImageLoading.Transformations" Version="2.4.3.840" />
+    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2012" />  
+    <PackageReference Include="Xamarin.Essentials" Version="1.6.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Telerik.XamarinForms.Common">
+      <HintPath>..\..\..\..\Program Files (x86)\Progress\Telerik UI for Xamarin R3 2018\Binaries\Portable\Telerik.XamarinForms.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Telerik.XamarinForms.DataControls">
+      <HintPath>..\..\..\..\Program Files (x86)\Progress\Telerik UI for Xamarin R3 2018\Binaries\Portable\Telerik.XamarinForms.DataControls.dll</HintPath>
+    </Reference>
+    <Reference Include="Telerik.XamarinForms.Input">
+      <HintPath>..\..\..\..\Program Files (x86)\Progress\Telerik UI for Xamarin R3 2018\Binaries\Portable\Telerik.XamarinForms.Input.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,765 @@
+﻿@using Microsoft.Ajax.Utilities
+@using Microsoft.AspNet.Identity
+@using Gefco.CipQuai.Web.Models
+@using Page = Gefco.CipQuai.Web.Models.Page
+@{
+    using (var dal = new Dal())
+    {
+        try
+        {
+            var user = dal.FindUser(User.Identity.GetUserId());
+            ViewBag.UserName = user.FirstName + " " + user.LastName;
+            ViewBag.RegionId = user.WebUserAgence?.Region_Id;
+            ViewBag.AgenceId = user.WebUserAgence_Id;
+
+        }
+        catch (Exception e)
+        {
+            ViewBag.UserName = "";
+            ViewBag.RegionId = "";
+            ViewBag.AgenceId = "";
+        }
+
+    }
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Cip Quai | @ViewBag.Title</title>
+
+
+    <!--[if lt IE 10]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="description" content="Gefco CIP Quai" />
+    @*<meta name="keywords" content="flat ui, admin Admin , Responsive, Landing, Bootstrap, App, Template, Mobile, iOS, Android, apple, creative app">*@
+    <meta name="author" content="Waxalica" />
+
+    <link rel="icon" href="~/Content/assets/images/favicon.ico" type="image/x-icon">
+
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Quicksand:500,700" rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" href="~/Content/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="~/Content/assets/pages/waves/css/waves.min.css" media="all">
+    <link rel="stylesheet" type="text/css" href="~/Content/assets/icon/feather/css/feather.css">
+    <link rel="stylesheet" type="text/css" href="~/Content/assets/css/font-awesome-n.min.css">
+    <link rel="stylesheet" type="text/css" href="~/Content/assets/sweetalert/css/sweetalert.css">
+    <link rel="stylesheet" type="text/css" href="~/Content/assets/icon/themify-icons/themify-icons.css">
+    <link rel="stylesheet" type="text/css" href="~/Content/assets/icon/icofont/css/icofont.css">
+
+    <link rel="stylesheet" type="text/css" href="~/Content/assets/css/component.css">
+
+    <link rel="stylesheet" type="text/css" href="~/Content/assets/css/style.css">
+    <link rel="stylesheet" type="text/css" href="~/Content/assets/css/pages.css">
+    <link rel="stylesheet" type="text/css" href="~/Content/assets/chartist/css/chartist.css" media="all">
+    <link rel="stylesheet" type="text/css" href="~/Content/assets/css/widget.css">
+    @RenderSection("styles", false)
+    <script type="text/javascript" src="~/Scripts/jquery-3.3.1.js"></script>
+    <script type="text/javascript" src="~/Scripts/jquery.signalR-2.4.1.min.js"></script>
+    <script type="text/javascript" src="~/signalr/hubs"></script>
+    <script type="text/javascript" src="~/Scripts/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/popper.js"></script>
+    <script type="text/javascript" src="~/Scripts/bootstrap.min.js"></script>
+    <!-- Syncfusion Essential JS 2 Styles -->
+    <link rel="stylesheet" type="text/css" href="~/Content/assets/sf/fabric.css">
+    <link rel="stylesheet" type="text/css" href="~/Content/assets/css/site.css">
+
+    <!-- Syncfusion Essential JS 2 Scripts -->
+    <script src="~/Content/assets/sf/ej2.min.js"></script>
+    @*<script src="~/Content/assets/sf/ej.culture.fr-FR.min.js"></script>
+        <script src="~/Content/assets/sf/ej.localetexts.fr-FR.min.js"></script>*@
+    <script>
+        function loadCultureFiles() {
+            var ajax = new ej.base.Ajax('@Url.Content("~/Content/assets/sf/fr.json")', 'GET', true);
+            ajax.send().then((e) => {
+                var culture = JSON.parse(e);
+                ej.base.L10n.load(
+                    culture
+                );
+                loadCldr('@Url.Content("~/Scripts/cldr-data/main/fr/ca-gregorian.json")');
+                loadCldr('@Url.Content("~/Scripts/cldr-data/main/fr/timeZoneNames.json")');
+                loadCldr('@Url.Content("~/Scripts/cldr-data/main/fr/numbers.json")');
+                loadCldr('@Url.Content("~/Scripts/cldr-data/supplemental/numberingSystems.json")');
+                loadCldr('@Url.Content("~/Scripts/cldr-data/main/fr/currencies.json")', function() {
+                    ej.base.setCulture('fr');                //Set the culture for the EJ2 components
+                });
+            });
+        }
+        function loadCldr(url, callback) {
+            $.get(url, function(culture) {
+                ej.base.loadCldr(culture);
+                if (callback)
+                    callback();
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            loadCultureFiles();
+        });
+    </script>
+
+</head>
+<body>
+
+    <div class="loader-bg">
+        <div class="loader-bar"></div>
+    </div>
+
+    <div id="pcoded" class="pcoded">
+        <div class="pcoded-overlay-box"></div>
+        <div class="pcoded-container navbar-wrapper">
+
+            <nav class="navbar header-navbar pcoded-header">
+                <div class="navbar-wrapper">
+                    <div class="navbar-logo" logo-theme="theme5">
+                        <a href="@Url.Action("Index", "Home")">
+                            <div class="navbar-brand">
+                                <svg role="presentation" class="logo img-fluid"><use xlink:href="~/Content/assets/images/sprite.svg#gefco_logo"></use></svg>
+                                <span class="logo-brand">CIP Quai</span>
+                            </div>
+
+                        </a>
+                        <a class="mobile-menu" id="mobile-collapse" href="#!">
+                            <i class="feather icon-menu icon-toggle-right"></i>
+                        </a>
+                        <a class="mobile-options waves-effect waves-light">
+                            <i class="feather icon-more-horizontal"></i>
+                        </a>
+                    </div>
+                    <div class="navbar-container container-fluid">
+                        <ul class="nav-left">
+                            <li>
+                                <a href="#!" onclick="javascript:toggleFullScreen();" class="waves-effect waves-light">
+                                    <i class="feather icon-maximize"></i>
+                                </a>
+                            </li>
+                        </ul>
+                        <ul class="nav-right">
+                            @*<li class="header-notification">
+                                    <div class="dropdown-primary dropdown">
+                                        <div class="dropdown-toggle" data-toggle="dropdown">
+                                            <i class="feather icon-bell"></i>
+                                            <span class="badge bg-c-red">5</span>
+                                        </div>
+                                        <ul class="show-notification dropdown-menu" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
+                                            <li>
+                                                <h6>Notifications</h6>
+                                                <label class="label label-danger">New</label>
+                                            </li>
+                                            <li>
+                                                <div class="media">
+                                                    <img class="img-radius" src="~/Content/assets/images/avatar-4.jpg" alt="Generic placeholder image">
+                                                    <div class="media-body">
+                                                        <h5 class="notification-user">John Doe</h5>
+                                                        <p class="notification-msg">Lorem ipsum dolor sit amet, consectetuer elit.</p>
+                                                        <span class="notification-time">30 minutes ago</span>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="media">
+                                                    <img class="img-radius" src="~/Content/assets/images/avatar-3.jpg" alt="Generic placeholder image">
+                                                    <div class="media-body">
+                                                        <h5 class="notification-user">Joseph William</h5>
+                                                        <p class="notification-msg">Lorem ipsum dolor sit amet, consectetuer elit.</p>
+                                                        <span class="notification-time">30 minutes ago</span>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="media">
+                                                    <img class="img-radius" src="~/Content/assets/images/avatar-4.jpg" alt="Generic placeholder image">
+                                                    <div class="media-body">
+                                                        <h5 class="notification-user">Sara Soudein</h5>
+                                                        <p class="notification-msg">Lorem ipsum dolor sit amet, consectetuer elit.</p>
+                                                        <span class="notification-time">30 minutes ago</span>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li class="header-notification">
+                                    <div class="dropdown-primary dropdown">
+                                        <div class="dropdown-toggle" data-toggle="dropdown">
+                                            <i class="feather icon-message-square"></i>
+                                            <span class="badge bg-c-green">3</span>
+                                        </div>
+                                    </div>
+                                </li>*@
+                            <li class="user-profile header-notification">
+                                <div class="dropdown-primary dropdown">
+                                    <div class="dropdown-toggle" data-toggle="dropdown">
+                                        @*<img src="~/Content/assets/images/avatar-4.jpg" class="img-radius" alt="User-Profile-Image">*@
+                                        <span>@ViewBag.UserName</span>
+                                        <i class="feather icon-chevron-down"></i>
+                                    </div>
+                                    <ul class="show-notification profile-notification dropdown-menu" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
+                                        @*<li>
+                                            <a href="#!">
+                                                <i class="feather icon-settings"></i> Settings
+                                            </a>
+                                        </li>*@
+                                        @*<li>
+                                            <a href="@Url.Action("Index", "Manage")">
+                                                <i class="feather icon-user"></i> Profile
+                                            </a>
+                                        </li>*@
+                                        @*<li>
+                                            <a href="auth-lock-screen.html">
+                                                <i class="feather icon-lock"></i> Lock Screen
+                                            </a>
+                                        </li>*@
+                                        <li>
+                                            @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+                                            {
+                                                @Html.AntiForgeryToken()
+                                                <a href="javascript:document.getElementById('logoutForm').submit()"><i class="feather icon-log-out"></i> Logout</a>
+                                            }
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+
+            <div class="pcoded-main-container">
+                <div class="pcoded-wrapper">
+
+                    <nav class="pcoded-navbar">
+                        <div class="nav-list">
+                            <div class="pcoded-inner-navbar main-menu">
+                                @if (User.IsInRole("Super Admin") || User.IsInRole("Admin") || User.IsInRole("National Users") || User.IsInRole("Regional Users") || User.IsInRole("Agence Users"))
+                                {
+                                    <div class="pcoded-navigation-label">Dashboards</div>
+                                    if (User.IsInRole("Super Admin") || User.IsInRole("Admin") || User.IsInRole("National Users"))
+                                    {
+                                        object filters = null;
+                                        if (ViewBag.FilterType != null)
+                                        {
+                                            filters = new
+                                            {
+                                                ViewBag.FilterType,
+                                                StartDate = ViewBag.StartDate.ToString("dd/MM/yyyy"),
+                                                EndDate = ViewBag.EndDate.ToString("dd/MM/yyyy")
+                                            };
+                                        }
+
+                                        <ul class="pcoded-item">
+                                            <li class=" " id="menu-dash-national">
+                                                <a href="@Url.Action("Index", "NationalDashboard", filters)" class="waves-effect waves-dark">
+                                                    <span class="pcoded-micon">
+                                                        <i class="feather icon-bar-chart-2"></i>
+                                                    </span>
+                                                    <span class="pcoded-mtext">National</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    }
+                                    if (User.IsInRole("Super Admin") || User.IsInRole("Admin") || User.IsInRole("National Users") || User.IsInRole("Regional Users"))
+                                    {
+                                        using (var db = new ApplicationDbContext())
+                                        {
+                                            var regions = db.Regions.ToList();
+                                            <ul class="pcoded-item">
+                                                <li class="pcoded-hasmenu" id="menu-dash-regional">
+                                                    <a href="javascript:void(0)" class="waves-effect waves-dark">
+                                                        <span class="pcoded-micon">
+                                                            <i class="feather icon-bar-chart-2"></i>
+                                                        </span>
+                                                        <span class="pcoded-mtext">Régional</span>
+                                                    </a>
+                                                    <ul class="pcoded-submenu">
+                                                        @foreach (var region in regions)
+                                                        {
+                                                            if (User.IsInRole("Super Admin") || User.IsInRole("Admin") || User.IsInRole("National Users") || region.Id == ViewBag.RegionId)
+                                                            {
+                                                                object filters = null;
+                                                                if (ViewBag.FilterType != null)
+                                                                {
+                                                                    filters = new
+                                                                    {
+                                                                        ViewBag.FilterType,
+                                                                        StartDate = ViewBag.StartDate.ToString("dd/MM/yyyy"),
+                                                                        EndDate = ViewBag.EndDate.ToString("dd/MM/yyyy"),
+                                                                        region.Id
+                                                                    };
+                                                                }
+                                                                else
+                                                                {
+                                                                    filters = new
+                                                                    {
+                                                                        region.Id
+                                                                    };
+                                                                }
+                                                                <li class=" " id="menu-dash-regional-@region.Id">
+                                                                    <a href="@Url.Action("Index", "RegionDashboard", filters)" class="waves-effect waves-dark">
+                                                                        <span class="pcoded-micon">
+                                                                            <i class="feather icon-bar-chart-2"></i>
+                                                                        </span>
+                                                                        <span class="pcoded-mtext">@region.Name</span>
+                                                                    </a>
+                                                                </li>
+                                                            }
+                                                        }
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        }
+                                    }
+                                    if (User.IsInRole("Super Admin") || User.IsInRole("Admin") || User.IsInRole("National Users") || User.IsInRole("Regional Users"))
+                                    {
+                                        using (var db = new ApplicationDbContext())
+                                        {
+                                            var regions = db.Regions.ToList();
+                                            <ul class="pcoded-item">
+                                                <li class="pcoded-hasmenu" id="menu-dash-agences">
+                                                    <a href="javascript:void(0)" class="waves-effect waves-dark">
+                                                        <span class="pcoded-micon">
+                                                            <i class="feather icon-bar-chart-2"></i>
+                                                        </span>
+                                                        <span class="pcoded-mtext">Agences</span>
+                                                    </a>
+                                                    <ul class="pcoded-submenu main">
+                                                        @foreach (var region in regions)
+                                                        {
+                                                            if (User.IsInRole("Super Admin") || User.IsInRole("Admin") || User.IsInRole("National Users") || region.Id == ViewBag.RegionId)
+                                                            {
+                                                                var agences = db.Agences.Where(p => p.Region_Id == region.Id);
+                                                                <li class="pcoded-hasmenu" id="menu-dash-agences-@region.Id">
+                                                                    <a href="javascript:void(0)" class="waves-effect waves-dark">
+                                                                        <span class="pcoded-micon">
+                                                                            <i class="feather icon-bar-chart-2"></i>
+                                                                        </span>
+                                                                        <span class="pcoded-mtext">@region.Name</span>
+                                                                    </a>
+                                                                    <ul class="pcoded-submenu" id="submenu-dash-agences-@region.Id">
+                                                                        @foreach (var agence in agences)
+                                                                        {
+                                                                            if (User.IsInRole("Super Admin") || User.IsInRole("Admin") || User.IsInRole("National Users") || region.Id == ViewBag.RegionId || agence.Id == ViewBag.AgenceId)
+                                                                            {
+                                                                                object filters = null;
+                                                                                if (ViewBag.FilterType != null)
+                                                                                {
+                                                                                    filters = new
+                                                                                    {
+                                                                                        ViewBag.FilterType,
+                                                                                        StartDate = ViewBag.StartDate.ToString("dd/MM/yyyy"),
+                                                                                        EndDate = ViewBag.EndDate.ToString("dd/MM/yyyy"),
+                                                                                        agence.Id
+                                                                                    };
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    filters = new
+                                                                                    {
+                                                                                        agence.Id
+                                                                                    };
+                                                                                }
+                                                                                <li class=" " id="menu-dash-agences-@agence.Id">
+                                                                                    <a href="@Url.Action("Index", "AgenceDashboard", filters)" class="waves-effect waves-dark">
+                                                                                        <span class="pcoded-micon">
+                                                                                            <i class="feather icon-bar-chart-2"></i>
+                                                                                        </span>
+                                                                                        <span class="pcoded-mtext">@agence.Name</span>
+                                                                                    </a>
+                                                                                </li>
+                                                                            }
+                                                                        }
+                                                                    </ul>
+                                                                </li>
+                                                            }
+                                                        }
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        }
+                                    }
+                                    else if (User.IsInRole("Agence Users"))
+                                    {
+                                        using (var db = new ApplicationDbContext())
+                                        {
+                                            string agenceId = ViewBag.AgenceId;
+                                            var agence = db.Agences.SingleOrDefault(p => p.Id == agenceId);
+                                            object filters = null;
+                                            if (ViewBag.FilterType != null)
+                                            {
+                                                filters = new
+                                                {
+                                                    ViewBag.FilterType,
+                                                    StartDate = ViewBag.StartDate.ToString("dd/MM/yyyy"),
+                                                    EndDate = ViewBag.EndDate.ToString("dd/MM/yyyy"),
+                                                    agence.Id
+                                                };
+                                            }
+                                            else
+                                            {
+                                                filters = new
+                                                {
+                                                    agence.Id
+                                                };
+                                            }
+                                            <ul class="pcoded-item">
+                                            <li class=" " id="menu-dash-agences-@agence.Id">
+                                                <a href="@Url.Action("Index", "AgenceDashboard", filters)" class="waves-effect waves-dark">
+                                                    <span class="pcoded-micon">
+                                                        <i class="feather icon-bar-chart-2"></i>
+                                                    </span>
+                                                    <span class="pcoded-mtext">@agence.Name</span>
+                                                </a>
+                                            </li>
+                                            </ul>                                        
+                                        }
+                                    }
+                                    if (!User.IsInRole("Agence Users"))
+                                    {
+                                        <div class="pcoded-navigation-label">Rapports</div>
+                                    }
+                                    if (User.IsInRole("Super Admin") || User.IsInRole("Admin") || User.IsInRole("National Users"))
+                                    {
+                                        object filters = null;
+                                        if (ViewBag.FilterType != null)
+                                        {
+                                            filters = new
+                                            {
+                                                ViewBag.FilterType,
+                                                StartDate = ViewBag.StartDate.ToString("dd/MM/yyyy"),
+                                                EndDate = ViewBag.EndDate.ToString("dd/MM/yyyy")
+                                            };
+                                        }
+
+                                        <ul class="pcoded-item">
+                                            <li class=" " id="menu-rapport-national">
+                                                <a href="@Url.Action("NCNational", "Rapports", filters)" class="waves-effect waves-dark">
+                                                    <span class="pcoded-micon">
+                                                        <i class="feather icon-bar-chart-2"></i>
+                                                    </span>
+                                                    <span class="pcoded-mtext">NC National</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    }
+                                    if (User.IsInRole("Super Admin") || User.IsInRole("Admin") || User.IsInRole("National Users") || User.IsInRole("Regional Users"))
+                                    {
+                                        using (var db = new ApplicationDbContext())
+                                        {
+                                            var regions = db.Regions.ToList();
+                                            <ul class="pcoded-item">
+                                                <li class="pcoded-hasmenu" id="menu-rapport-regional">
+                                                    <a href="javascript:void(0)" class="waves-effect waves-dark">
+                                                        <span class="pcoded-micon">
+                                                            <i class="feather icon-bar-chart-2"></i>
+                                                        </span>
+                                                        <span class="pcoded-mtext">NC Régional</span>
+                                                    </a>
+                                                    <ul class="pcoded-submenu main">
+                                                        @foreach (var region in regions)
+                                                        {
+                                                            if (User.IsInRole("Super Admin") || User.IsInRole("Admin") || User.IsInRole("National Users") || region.Id == ViewBag.RegionId)
+                                                            {
+                                                                object filters = null;
+                                                                if (ViewBag.FilterType != null)
+                                                                {
+                                                                    filters = new
+                                                                    {
+                                                                        ViewBag.FilterType,
+                                                                        StartDate = ViewBag.StartDate.ToString("dd/MM/yyyy"),
+                                                                        EndDate = ViewBag.EndDate.ToString("dd/MM/yyyy"),
+                                                                        region.Id
+                                                                    };
+                                                                }
+                                                                else
+                                                                {
+                                                                    filters = new
+                                                                    {
+                                                                        region.Id
+                                                                    };
+                                                                }
+
+                                                                <li class="pcoded-hasmenu" id="menu-rapport-regional-@region.Id">
+                                                                    <a href="javascript:void(0)" class="waves-effect waves-dark">
+                                                                        <span class="pcoded-micon">
+                                                                            <i class="feather icon-bar-chart-2"></i>
+                                                                        </span>
+                                                                        <span class="pcoded-mtext">@region.Name</span>
+                                                                    </a>
+                                                                    <ul class="pcoded-submenu" id="submenu-rapport-regional-@region.Id">
+                                                                        <li class=" " id="menu-rapport-regional-nc-@region.Id">
+                                                                            <a href="@Url.Action("NCRegional", "Rapports", filters)" class="waves-effect waves-dark">
+                                                                                <span class="pcoded-micon">
+                                                                                    <i class="feather icon-bar-chart-2"></i>
+                                                                                </span>
+                                                                                <span class="pcoded-mtext">Régional</span>
+                                                                            </a>
+                                                                        </li>
+                                                                        <li class=" " id="menu-rapport-regional-nc-emises-@region.Id">
+                                                                            <a href="@Url.Action("NCRegionalEmises", "Rapports", filters)" class="waves-effect waves-dark">
+                                                                                <span class="pcoded-micon">
+                                                                                    <i class="feather icon-bar-chart-2"></i>
+                                                                                </span>
+                                                                                <span class="pcoded-mtext">Émises</span>
+                                                                            </a>
+                                                                        </li>
+                                                                        <li class=" " id="menu-rapport-regional-nc-evolution-@region.Id">
+                                                                            <a href="@Url.Action("NCRegionalEvolution", "Rapports", filters)" class="waves-effect waves-dark">
+                                                                                <span class="pcoded-micon">
+                                                                                    <i class="feather icon-bar-chart-2"></i>
+                                                                                </span>
+                                                                                <span class="pcoded-mtext">Évolution</span>
+                                                                            </a>
+                                                                        </li>
+                                                                        <li class=" " id="menu-rapport-regional-nc-recues-@region.Id">
+                                                                            <a href="@Url.Action("NCRegionalRecues", "Rapports", filters)" class="waves-effect waves-dark">
+                                                                                <span class="pcoded-micon">
+                                                                                    <i class="feather icon-bar-chart-2"></i>
+                                                                                </span>
+                                                                                <span class="pcoded-mtext">Reçues</span>
+                                                                            </a>
+                                                                        </li>
+                                                                        <li class=" " id="menu-rapport-regional-nc-typoemises-@region.Id">
+                                                                            <a href="@Url.Action("NCRegionalTypoEmises", "Rapports", filters)" class="waves-effect waves-dark">
+                                                                                <span class="pcoded-micon">
+                                                                                    <i class="feather icon-bar-chart-2"></i>
+                                                                                </span>
+                                                                                <span class="pcoded-mtext">Typologies Émises</span>
+                                                                            </a>
+                                                                        </li>
+                                                                        <li class=" " id="menu-rapport-regional-nc-typorecues-@region.Id">
+                                                                            <a href="@Url.Action("NCRegionalTypoRecues", "Rapports", filters)" class="waves-effect waves-dark">
+                                                                                <span class="pcoded-micon">
+                                                                                    <i class="feather icon-bar-chart-2"></i>
+                                                                                </span>
+                                                                                <span class="pcoded-mtext">Typologies Reçues</span>
+                                                                            </a>
+                                                                        </li>
+                                                                    </ul>
+                                                                </li>
+                                                            }
+                                                        }
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        }
+                                    }
+                                }
+                                @if (User.IsInRole("Super Admin") || User.IsInRole("Admin"))
+                                {
+                                    using (var db = new ApplicationDbContext())
+                                    {
+                                        <div class="pcoded-navigation-label">Administration</div>
+                                        <ul class="pcoded-item pcoded-left-item">
+                                            <li class=" " id="menu-admin-users">
+                                                <a href="@Url.Action("Index","Users")" class="waves-effect waves-dark">
+                                                    <span class="pcoded-micon">
+                                                        <i class="feather icon-users"></i>
+                                                    </span>
+                                                    @if (User.IsInRole("Admin"))
+                                                    {
+                                                        var role = db.Roles.SingleOrDefault(p => p.Name == "Super Admin");
+                                                        var cnt = db.Users.Where(p => p.Roles.All(q => q.RoleId != role.Id)).Count();
+                                                        <span class="pcoded-mtext">Utilisateurs (@cnt)</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        var cnt = db.Users.Count();
+                                                        <span class="pcoded-mtext">Utilisateurs (@cnt)</span>
+                                                    }
+
+                                                </a>
+                                            </li>
+                                            <li class=" " id="menu-admin-agences">
+                                                <a href="@Url.Action("Index","Agences")" class="waves-effect waves-dark">
+                                                    <span class="pcoded-micon">
+                                                        <i class="feather icon-shield"></i>
+                                                    </span>
+                                                    <span class="pcoded-mtext">Agences (@db.Agences.Count())</span>
+                                                </a>
+                                            </li>
+                                            <li class=" " id="menu-admin-motifsDP">
+                                                <a href="@Url.Action("Index","MotifsDP")" class="waves-effect waves-dark">
+                                                    <span class="pcoded-micon">
+                                                        <i class="feather icon-menu"></i>
+                                                    </span>
+                                                    <span class="pcoded-mtext">Motifs DP (@db.MotifDPs.Count())</span>
+                                                </a>
+                                            </li>
+                                            <li class=" " id="menu-admin-motifsNC">
+                                                <a href="@Url.Action("Index","MotifsNC")" class="waves-effect waves-dark">
+                                                    <span class="pcoded-micon">
+                                                        <i class="feather icon-menu"></i>
+                                                    </span>
+                                                    <span class="pcoded-mtext">Motifs NC (@db.MotifNCs.Count())</span>
+                                                </a>
+                                            </li>
+                                            <li class=" " id="menu-admin-regions">
+                                                <a href="@Url.Action("Index","Regions")" class="waves-effect waves-dark">
+                                                    <span class="pcoded-micon">
+                                                        <i class="feather icon-menu"></i>
+                                                    </span>
+                                                    <span class="pcoded-mtext">Régions (@db.Regions.Count())</span>
+                                                </a>
+                                            </li>
+                                                <li class=" " id="menu-admin-userroles">
+                                                    <a href="@Url.Action("Index","UserRoles")" class="waves-effect waves-dark">
+                                                        <span class="pcoded-micon">
+                                                            <i class="feather icon-users"></i>
+                                                        </span>
+                                                        <span class="pcoded-mtext">Rôles Métier (@db.BusinessRoles.Count())</span>
+                                                    </a>
+                                                </li>
+                                            @if (User.IsInRole("Super Admin"))
+                                            {
+                                                <li class=" " id="menu-admin-roles">
+                                                    <a href="@Url.Action("Index","Roles")" class="waves-effect waves-dark">
+                                                        <span class="pcoded-micon">
+                                                            <i class="feather icon-menu"></i>
+                                                        </span>
+                                                        <span class="pcoded-mtext">Rôles Application (@db.Roles.Count())</span>
+                                                    </a>
+                                                </li>
+                                            }
+                                                <li class="" id="menu-admin-tractions">
+                                                    <a href="@Url.Action("Index","Tractions")" class="waves-effect waves-dark">
+                                                        <span class="pcoded-micon">
+                                                            <i class="feather icon-menu"></i>
+                                                        </span>
+                                                        <span class="pcoded-mtext">Tractions (@db.TractionDefinitions.Count())</span>
+                                                    </a>
+                                                </li>
+                                                <li class="" id="menu-admin-jf">
+                                                    <a href="@Url.Action("AnnulationTractions","Tractions")" class="waves-effect waves-dark">
+                                                        <span class="pcoded-micon">
+                                                            <i class="feather icon-clock"></i>
+                                                        </span>
+                                                        <span class="pcoded-mtext">Annulation tractions</span>
+                                                    </a>
+                                                </li>
+                                        </ul>
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </nav>
+
+
+                    <div class="pcoded-content">
+
+                        @if (ViewBag.ShowHeader ?? true)
+                        {
+                            <div class="page-header card">
+                                <div class="row align-items-end">
+                                    <div class="col-lg-8">
+                                        <div class="page-header-title">
+                                            <i class="@ViewBag.PageIcon bg-c-blue"></i>
+                                            <div class="d-inline">
+                                                <h5>@ViewBag.Title</h5>
+                                                <span>@ViewBag.PageStory</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="page-header-breadcrumb">
+                                            <ul class=" breadcrumb breadcrumb-title">
+                                                <li class="breadcrumb-item">
+                                                    <a href="@Url.Action("Index", "Home")"><i class="feather icon-home"></i></a>
+                                                </li>
+                                                @RenderSection("breadcrumb", false)
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+
+                        <div class="pcoded-inner-content">
+                            <div class="main-body">
+                                <div class="page-wrapper">
+                                    <div class="page-body">
+                                        @RenderBody()
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div id="styleSelector">
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!--[if lt IE 10]>
+        <div class="ie-warning">
+            <h1>Warning!!</h1>
+            <p>
+                You are using an outdated version of Internet Explorer, please upgrade
+                <br/>to any of the following web browsers to access this website.
+            </p>
+            <div class="iew-container">
+                <ul class="iew-download">
+                    <li>
+                        <a href="http://www.google.com/chrome/">
+                            <img src="~/Content/assets/images/browser/chrome.png" alt="Chrome">
+                            <div>Chrome</div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.mozilla.org/en-US/firefox/new/">
+                            <img src="~/Content/assets/images/browser/firefox.png" alt="Firefox">
+                            <div>Firefox</div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://www.opera.com">
+                            <img src="~/Content/assets/images/browser/opera.png" alt="Opera">
+                            <div>Opera</div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.apple.com/safari/">
+                            <img src="~/Content/assets/images/browser/safari.png" alt="Safari">
+                            <div>Safari</div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://windows.microsoft.com/en-us/internet-explorer/download-ie">
+                            <img src="~/Content/assets/images/browser/ie.png" alt="">
+                            <div>IE (9 & above)</div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <p>Sorry for the inconvenience!</p>
+        </div>
+    <![endif]-->
+
+
+
+    <script src="~/Content/assets/pages/waves/js/waves.min.js"></script>
+
+    <script type="text/javascript" src="~/Content/assets/js/jquery-slimscroll/js/jquery.slimscroll.js"></script>
+
+    <script src="~/Content/assets/js/pcoded.min.js"></script>
+    <script src="~/Content/assets/js/vertical/vertical-layout.min.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+    <script type="text/javascript" src="~/Content/assets/js/script.min.js"></script>
+
+    <script type="text/javascript" src="~/Content/assets/sweetalert/js/sweetalert.min.js"></script>
+    <!-- Syncfusion Essential JS 2 ScriptManager -->
+    @Html.EJS().ScriptManager()
+    @RenderSection("scripts", false)
+
+</body>
+</html>

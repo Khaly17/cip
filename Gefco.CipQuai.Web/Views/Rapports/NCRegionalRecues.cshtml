@@ -1,0 +1,340 @@
+﻿@using Gefco.CipQuai.Web.Models
+@using Gefco.CipQuai.Web.Views
+@using Microsoft.Ajax.Utilities
+@using Syncfusion.EJ2.DropDowns
+@using Syncfusion.EJ2.PivotView
+@model Gefco.CipQuai.Web.Views.NCStatListViewModel
+@{
+    ViewBag.PageIcon = "feather icon-home";
+    ViewBag.Title = "Rapport Régional - Non conformités reçues";
+    ViewBag.ShowHeader = false;
+    Layout = "~/Views/Shared/_AuthLayout.cshtml";
+
+    var nc1 = Tools.GenerateRandomString(8);
+
+    List<NCPivotData> data = new List<NCPivotData>();
+    var motifNcs = Model.Data.SelectMany(p => p.MotifNCs).DistinctBy(p => p.Id).ToList();
+    foreach(var motifNC in motifNcs)
+    {
+        foreach (var nonConformite in Model.Data)
+        {
+            var cnt = nonConformite.MotifNCs.Contains(motifNC);
+            data.Add(new NCPivotData(){ Agence = nonConformite.AgenceConcernée.Name, Motif = motifNC.Name, Count = cnt ? 1 : 0 });
+        }
+    }
+
+    List<NCPivotData> data2 = new List<NCPivotData>();
+    foreach (var nc in Model.Data.Where(p => p.AgenceId != null))
+    {
+        data2.Add(new NCPivotData(){ Agence = nc.AgenceConcernée.Name, Count = nc.MotifNCs.Count(), AgenceArrivée = nc.Agence.Name });
+    }
+
+    var StackedAgenceCategoriesData = new List<CategoryDataValue>();
+    var agenced = Model.Data.GroupBy(p => p.AgenceConcernée);
+    foreach (var items in agenced)
+    {
+        var ncs = items.SelectMany(p => p.MotifNCs).Select(p => p.Name).ToList();
+        //ncs.AddRange(items.Where(p => !p.AutreMotifNC.IsNullOrWhiteSpace()).Select(p => p.AutreMotifNC));
+        var values = ncs.GroupBy(p => p).Select(p => new DataValue(p.Key, p.Count())).ToList();
+        StackedAgenceCategoriesData.Add(new CategoryDataValue(items.Key.Name, values));
+    }
+    StackedAgenceCategoriesData.Sort((d1, d2) => d1.Values.Count > d2.Values.Count ? -1 : 1);
+
+    var Categories = motifNcs.ToList();
+
+}
+
+<script src="~/Content/assets/amcharts/core.js"></script>
+<script src="~/Content/assets/amcharts/charts.js"></script>
+<script src="~/Content/assets/amcharts/animated.js"></script>
+<style>
+    #pivotview {
+        width: 100%;
+        height: 100%;
+    }
+
+    #pivotview2_grid_content_table {
+        width: 100% !important;
+    }
+
+    .e-pivotview .e-valuescontent {
+        text-align: left !important;
+    }
+
+    @@media only screen and (max-width: 400px) {
+        #pivot-grid-section {
+            overflow: auto;
+        }
+    }
+</style>
+<script>
+    am4core.useTheme(am4themes_animated);
+</script>
+
+<div class="row dashboard">
+    @{
+        Html.RenderPartial("Filters", Model, new ViewDataDictionary
+                {
+                    {"Title", @ViewBag.Title}
+                });
+    }    <div class="col-xl-12 col-md-12 px-1 px-sm-3">
+        <div class="card product-progress-card">
+            <div class="card-block p-0">
+                <div class="pp-main row m-0">
+                    <div class="col-12 px-0">
+                        <div class="pp-cont">
+                            <div class="w-100">
+                                <div class="card sale-card">
+                                    <div class="card-header">
+                                        <span class="f-right" style="line-height: 30px;">
+                                            <a class="details" href="#grid">Accès à la grille</a>
+                                            <a class="details" href="#chart" style="display:none">Accès au graphique</a>
+                                        </span>
+                                        <h4>NC reçues par agences de la région / type de NC</h4>
+                                    </div>
+                                    <div class="card-block">
+                                        <div id="@nc1" style="height:55vh"></div>
+                                        @(Html.EJS().PivotView("pivotview").Height("400").HtmlAttributes(new Dictionary<string, object>() { { "style", "display:none" } }).Width("100%").AllowConditionalFormatting().DataSource(dataSource => dataSource.Data(data).ExpandAll(false).EnableSorting(true)
+                                                                    //.FormatSettings(formatsettings => { formatsettings.Name("Amount").Format("C0").MaximumSignificantDigits(10).MinimumSignificantDigits(1).UseGrouping(true).Add(); })
+                                                                    .Rows(rows => { rows.Name("Agence").Add(); })
+                                                                    .Columns(columns => { columns.Name("Motif").Add(); })
+                                                                    .Values(values => { values.Name("Count").Add(); })
+                                                              .ConditionalFormatSettings(format =>
+                                                              {
+                                                                  format.Conditions(Condition.LessThan).Measure("Count").Value1(1).Style(style => { style.Color("#00000000"); }).Add();
+                                                              }))
+                                                                    .Render())
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 px-0">
+                        <div>
+                            <div class="w-100">
+                                <div class="card sale-card">
+                                    <div class="card-header">
+                                        <h4>NC reçues par agences de la région / ligne de traction</h4>
+                                    </div>
+                                    <div class="card-block">
+                                        @(Html.EJS().PivotView("pivotview2").Width("100%").DataSource(dataSource => dataSource.Data(data2).ExpandAll(true).EnableSorting(true)
+                                                      .ValueSortSettings(p => p.SortOrder(Sorting.Descending))
+                                                      //.FormatSettings(formatsettings => { formatsettings.Name("Amount").Format("C0").MaximumSignificantDigits(10).MinimumSignificantDigits(1).UseGrouping(true).Add(); })
+                                                      .Rows(rows => { rows.Name("Agence").Add(); rows.Name("AgenceArrivée").Add(); })
+                                                      .Values(values => { values.Name("Count").Caption("Nb NC").Add(); }))
+                                                      .Render())
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts
+{
+
+<script>
+    $(function() {
+        $("#menu-rapport-regional").addClass("pcoded-trigger active").find(".pcoded-submenu.main").show()
+            .find("#menu-rapport-regional-@Model.Id").addClass("pcoded-trigger active").find(".pcoded-submenu")
+            .show().find("#menu-rapport-regional-nc-recues-@Model.Id").addClass("active");
+
+
+        const grid_button = $("a[href='#grid']");
+        const chart_button = $("a[href='#chart']");
+        grid_button.click((e) => {
+            chart_button.show();
+            grid_button.hide();
+            $("#@nc1").hide();
+            $("#pivotview").show();
+        });
+        chart_button.click((e) => {
+            chart_button.hide();
+            grid_button.show();
+            $("#@nc1").show();
+            $("#pivotview").hide();
+        });
+
+    });
+
+    function savePDF(type) {
+        
+            Promise.all([
+                @(nc1).exporting.pdfmake,
+                @(nc1).exporting.getImage("png")
+            ]).then(function(res) {
+
+                const pdfMake = res[0];
+
+                // pdfmake is ready
+                // Create document template
+                const doc = {
+                    pageSize: "A4",
+                    pageOrientation: "landscape",
+                    pageMargins: [30, 30, 30, 30],
+                    content: []
+                };
+
+                doc.content.push({
+                    text: "GEFCO CIP Quai",
+                    fontSize: 20,
+                    bold: true,
+                    margin: [0, -10, 0, 0]
+                });
+                doc.content.push({
+                    text: "Région @ViewBag.Region.Name",
+                    fontSize: 18,
+                    bold: false,
+                    margin: [0, 10, 0, 0]
+                });
+                doc.content.push({
+                    text: "NC reçues du @(ViewBag.StartDate.ToString("dd/MM/yyyy")) au @(ViewBag.EndDate.ToString("dd/MM/yyyy"))",
+                    fontSize: 16,
+                    bold: false,
+                    margin: [0, 10, 0, 30]
+                });
+
+                doc.content.push({
+                    stack: [
+                        {
+                            text: "NC reçues par agences de la région / type de NC",
+                            fontSize: 14,
+                            bold: true,
+                            margin: [0, 5, 0, 5]
+                        }, {
+                            image: res[1],
+                            width: 770,
+                            pageOrientation: 'portrait', pageBreak: 'after'
+                        }
+                    ],
+                    width: "*"
+                });
+                doc.content.push({
+                    stack: [
+                        {
+                            text: "NC reçues par agences de la région / ligne de traction",
+                            fontSize: 14,
+                            bold: true,
+                            margin: [0, 5, 0, 5]
+                        }, {
+                            table: {
+                                headerRows: 1,
+                                widths: [200, 50],
+                                body: [
+                                    [
+                                        { text: "" },
+                                        { text: "Nb NC", bold: true },
+                                    ],
+                                    @foreach (var dataItem in data2.GroupBy(p => p.Agence).OrderByDescending(p => p.Sum(q => q.Count)))
+                                    {
+                                        <text>[
+                                        { text: "@dataItem.Key", bold:true },
+                                        { text: "@dataItem.Sum(p => p.Count)", bold: true },
+                                    ],</text>
+                                        foreach (var pivotData in dataItem.GroupBy(p => p.AgenceArrivée).OrderByDescending(p => p.Sum(q => q.Count)))
+                                        {
+                                        <text>[
+                                                { text: "    @(Html.Raw("<--- "))@pivotData.Key", fontSize: 10 },
+                                        { text: "   @pivotData.Sum(p => p.Count)", bold: true, fontSize: 10, alignment: "right" },
+                                            ],</text>
+                                        }
+                                    }
+                                ]
+                            },
+                            width: 300
+                        }
+                    ],
+                    width: "*"
+                });
+
+                if (type === "print")
+                    pdfMake.createPdf(doc).print();
+                else
+                    pdfMake.createPdf(doc).download("@(DateTime.Now.ToString("yyyyMMdd-hhmmss")) - NC Régional Reçues - @(ViewBag.Region.Name).pdf");
+
+            });
+        }
+        function printPDF() {
+            savePDF("print");
+        }
+
+        function createSeries(chart, field, name, color) {
+
+            // Set up series
+            const series = chart.series.push(new am4charts.ColumnSeries());
+            series.name = name;
+            series.dataFields.valueY = field;
+            series.dataFields.categoryX = "CategoryName";
+            series.sequencedInterpolation = true;
+            series.fill = am4core.color(color);
+            series.stroke = am4core.color(color);
+
+            // Make it stacked
+            series.stacked = true;
+
+            // Configure columns
+            series.columns.template.width = am4core.percent(60);
+            series.columns.template.tooltipText = "[bold]{name}[/]\n[font-size:14px]{categoryX}: {valueY}";
+
+            // Add label
+            const labelBullet = series.bullets.push(new am4charts.LabelBullet());
+            labelBullet.label.text = "{valueY}";
+            labelBullet.label.fill = am4core.color(color).alternative;
+            labelBullet.locationY = 0.5;
+
+            return series;
+        }
+
+        var @nc1;
+        am4core.ready(function () {
+            @* NC / Agence *@
+            // Create chart instance
+            @nc1 = am4core.create("@nc1", am4charts.XYChart);
+            var chart = @nc1;
+            chart.logo.dispose();
+            chart.preloader.disabled = true;
+            // Add data
+            chart.data = [
+                @foreach (var dataValue in StackedAgenceCategoriesData)
+                {
+                    <text>{
+                    "CategoryName": "@Html.Raw(dataValue.CategoryName)",</text>
+                    foreach (var value in dataValue.Values)
+                    {
+                        <text> "@(Html.Raw(value.Name))": @(value.Value),</text>
+                    }
+                    <text>},</text>
+                }
+            ];
+
+            // Create axes
+            var categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
+            categoryAxis.dataFields.category = "CategoryName";
+            categoryAxis.renderer.grid.template.location = 0;
+
+
+            var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+            //valueAxis.renderer.inside = true;
+            //valueAxis.renderer.labels.template.disabled = true;
+            valueAxis.min = 0;
+            valueAxis.maxPrecision = 0;
+
+            // Create series
+            @foreach (var s in Categories)
+            {
+                <text>createSeries(chart, "@Html.Raw(s.Name)", "@Html.Raw(s.Name)", "@Html.Raw(s.Color)");</text>
+            }
+
+            // Legend
+            chart.legend = new am4charts.Legend();
+
+        }); // end am4core.ready()
+
+</script>
+
+}

@@ -1,0 +1,162 @@
+﻿@using System.Web.Mvc.Html
+@using Gefco.CipQuai.Web.Models
+@using Microsoft.AspNet.Identity.EntityFramework
+@using Syncfusion.EJ2.DropDowns
+@model Gefco.CipQuai.Web.Models.ApplicationUserViewModel
+
+@{
+    ViewBag.PageIcon = "feather icon-users";
+    ViewBag.Title = "Editer utilisateur [" + Model.UserName + "]";
+    ViewBag.ShowHeader = false;
+    var id = Tools.GenerateRandomString(8);
+}
+<div class="row dashboard" id="capture">
+    <div class="col-12 col-md-9 px-1 px-sm-3">
+        <div class="card product-progress-card">
+            <div class="card-header main-header">
+                <h4>Infos utilisateur - @Model.Email</h4>
+            </div>
+            <div class="card-block p-2">
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+
+                    <div class="form-horizontal">
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        @Html.HiddenFor(model => model.UserId)
+
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.MobileUserAgence, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EJS().DropDownListFor(p => p.MobileUserAgence_Id).DataSource(ViewData["MobileUserAgence_Id"]).Placeholder("Agence Utilisateur Mobile").Fields(f => f.Text("Text").Value("Value")).ShowClearButton().Render()
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.WebUserAgence, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EJS().DropDownListFor(p => p.WebUserAgence_Id).DataSource(ViewData["WebUserAgence_Id"]).Placeholder("Agence Utilisateur Web").Fields(f => f.Text("Text").Value("Value")).ShowClearButton().Render()
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.UserName, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.LastName, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.PhoneNumber, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.AccessFailedCount, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.AccessFailedCount, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.AccessFailedCount, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-md-2"></div>
+                            <div class="col-md-10">
+                                <button type="button" class="e-btn e-danger" onclick="javascript:window.location = '@Url.Action("Index")'">Retour à la liste</button>
+                                <input type="submit" value="Sauvegarder" class="e-btn e-primary" />
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                <div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12 col-xl-3">
+        <div class="card product-progress-card">
+            <div class="card-header main-header">
+                <h4>Rôles utilisateur</h4>
+            </div>
+            <div class="card-block p-2">
+                <div class="table-responsive">
+                    <table class="table">
+                        <tbody>
+                            @{
+                                using (var db = new ApplicationDbContext())
+                                {
+
+                                    List<IdentityRole> roles;
+                                    if (User.IsInRole("Super Admin"))
+                                    {
+                                        roles = db.Roles.ToList();
+                                    }
+                                    else
+                                    {
+                                        roles = db.Roles.Where(p => p.Name != "Super Admin").ToList();
+                                    }
+                                    foreach (var role in roles)
+                                    {
+                                        var isInRole = Model.Roles.Any(p => p == role.Id);
+                                        <tr>
+                                            <td class="pr-0">
+                                                <div class="checkbox-fade fade-in-primary">
+                                                    <label>
+                                                        <input type="checkbox" value="@role.Id" @(isInRole ? "checked" : "") onchange="toggleRole(this)">
+                                                        <span class="cr"><i class="cr-icon icofont icofont-verification-check txt-primary"></i></span>
+                                                        @role.Name
+                                                    </label>
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                    }
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts
+{
+    <script>
+        $("#menu-admin-users").addClass("active");
+        function toggleRole(e) {
+            let input = $(e);
+            $.post('@Url.Action("ToggleRole")', { roleId: input.val(), userId: '@Model.UserId', isInRole: input.prop('checked')});
+        }
+    </script>
+
+}

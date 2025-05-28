@@ -1,0 +1,9 @@
+{
+  "OutputFolder": ".",
+  "Namespace": "Gefco.CipQuai.ApiClient",
+  "LibraryName": null,
+  "SharedSourceFolders": [
+    "C:\\Users\\waxal\\.autorest\\@autorest_csharp@3.0.0-beta.20210918.1\\node_modules\\@autorest\\csharp\\Generator.Shared",
+    "C:\\Users\\waxal\\.autorest\\@autorest_csharp@3.0.0-beta.20210918.1\\node_modules\\@autorest\\csharp\\Azure.Core.Shared"
+  ]
+}

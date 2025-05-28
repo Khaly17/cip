@@ -1,0 +1,184 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<controls:ExtTakePicturePage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:buttons="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms"
+             xmlns:controls="clr-namespace:Gefco.CipQuai.Controls;assembly=Gefco.CipQuai"
+             xmlns:border="clr-namespace:Syncfusion.XForms.Border;assembly=Syncfusion.Core.XForms"
+             xmlns:cipQuai="clr-namespace:Gefco.CipQuai;assembly=Gefco.CipQuai"
+             xmlns:local="clr-namespace:Gefco.CipQuai.BestPracticePage;assembly=Gefco.CipQuai"
+             x:Class="Gefco.CipQuai.BestPracticePage.TakePicturesPage" NavigationPage.HasNavigationBar="False" IsLoading="{Binding IsLoading}">
+    <ContentPage.Content>
+        <Grid RowSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <Grid IsClippedToBounds="True" HeightRequest="200">
+                <controls:ExtImage Source="{Binding CurrentPicture}" HorizontalOptions="FillAndExpand" DownsampleHeight="200" HeightRequest="200" WidthRequest="{x:Static cipQuai:App.Width}" Aspect="AspectFill" DownsampleToViewSize="True" />
+            </Grid>
+            <Grid Grid.Row="0" HeightRequest="56" BackgroundColor="Transparent" VerticalOptions="Start">
+                <buttons:SfButton BackgroundColor="Transparent" Margin="4" WidthRequest="48" VerticalOptions="Center" HeightRequest="48" HorizontalOptions="Start" Command="{Binding GoBackCommand}">
+                    <controls:ExtImage Source="ic_arrow_backb.svg" DownsampleToViewSize="True" HorizontalOptions="Center" VerticalOptions="Center" WidthRequest="24" HeightRequest="24"></controls:ExtImage>
+                </buttons:SfButton>
+            </Grid>
+
+            <Grid Grid.Row="1" ColumnSpacing="20" Margin="20,10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="100" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <border:SfBorder Grid.Column="0" 
+                BorderColor="{Binding SelectedPicture, Converter={StaticResource PictureEnumSelectedConverter}, ConverterParameter={x:Static local:PictureEnum.Picture1}}"
+                HorizontalOptions="Center" 
+                VerticalOptions="Center"
+                             BorderWidth="2" Padding="5" CornerRadius="5">
+                        <controls:ExtImage LoadingPlaceholder="Camera.svg" Source="{Binding ViewModel.Picture1}" DownsampleWidth="200" WidthRequest="200" DownsampleToViewSize="True">
+                            <controls:ExtImage.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="SelectPictureAndShowMenu"></TapGestureRecognizer>
+                            </controls:ExtImage.GestureRecognizers>
+                            <controls:ExtImage.CommandParameter>
+                                <local:PictureEnum>Picture1</local:PictureEnum>
+                            </controls:ExtImage.CommandParameter>
+                        </controls:ExtImage>
+                    </border:SfBorder>
+                    <border:SfBorder Grid.Column="1" 
+                BorderColor="{Binding SelectedPicture, Converter={StaticResource PictureEnumSelectedConverter}, ConverterParameter={x:Static local:PictureEnum.Picture2}}"
+                HorizontalOptions="Center" 
+                VerticalOptions="Center"
+                BorderWidth="2" Padding="5" CornerRadius="5">
+                        <controls:ExtImage LoadingPlaceholder="Camera.svg" Source="{Binding ViewModel.Picture2}" DownsampleWidth="200" WidthRequest="200" DownsampleToViewSize="True">
+                            <controls:ExtImage.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="SelectPictureAndShowMenu"></TapGestureRecognizer>
+                            </controls:ExtImage.GestureRecognizers>
+                            <controls:ExtImage.CommandParameter>
+                                <local:PictureEnum>Picture2</local:PictureEnum>
+                            </controls:ExtImage.CommandParameter>
+                        </controls:ExtImage>
+                    </border:SfBorder>
+                    <border:SfBorder Grid.Column="2" 
+                BorderColor="{Binding SelectedPicture, Converter={StaticResource PictureEnumSelectedConverter}, ConverterParameter={x:Static local:PictureEnum.Picture3}}"
+                HorizontalOptions="Center" 
+                VerticalOptions="Center"
+                             BorderWidth="2" Padding="5" CornerRadius="5">
+                        <controls:ExtImage LoadingPlaceholder="Camera.svg" Source="{Binding ViewModel.Picture3}" DownsampleWidth="200" WidthRequest="200" DownsampleToViewSize="True">
+                            <controls:ExtImage.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="SelectPictureAndShowMenu"></TapGestureRecognizer>
+                            </controls:ExtImage.GestureRecognizers>
+                            <controls:ExtImage.CommandParameter>
+                                <local:PictureEnum>Picture3</local:PictureEnum>
+                            </controls:ExtImage.CommandParameter>
+                        </controls:ExtImage>
+                    </border:SfBorder>
+                </Grid>
+
+                <Grid Grid.Row="1" RowSpacing="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="2*" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="1.5*" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="2*" />
+                    </Grid.RowDefinitions>
+                    <buttons:SfButton Grid.Row="1" Grid.Column="0" Clicked="ShowPictureMenu" IsEnabled="{Binding CanRetakePicture}"
+                                  Text="{Binding ViewModel.RetakePictureInvite}" 
+                                  Style="{StaticResource SecondaryActionButtonStyle}">
+                    </buttons:SfButton>
+
+                    <buttons:SfButton Grid.Row="3" Grid.Column="0" Clicked="TakeNextPicture" IsEnabled="{Binding CanTakeNextPicture}"
+                                  Style="{StaticResource SecondaryActionButtonStyle}">
+                        <buttons:SfButton.Content>
+                            <Label Margin="0,5" Style="{StaticResource SecondaryActionButtonLabelStyle}" Text="{Binding ViewModel.TakeNextPictureInvite}" />
+                        </buttons:SfButton.Content>
+                    </buttons:SfButton>
+
+                    <buttons:SfButton Grid.Row="5" Grid.Column="0" Clicked="EndDeclaration"
+                                  Style="{StaticResource SecondaryActionButtonStyle}">
+                        <buttons:SfButton.Content>
+                            <Label Margin="0,5" Style="{StaticResource SecondaryActionButtonLabelStyle}" Text="{Binding ViewModel.EndImpossibleDeclarationInvite}" />
+                        </buttons:SfButton.Content>
+                    </buttons:SfButton>
+                </Grid>
+
+            </Grid>
+
+            <Grid Grid.Row="2" VerticalOptions="End" ColumnSpacing="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+
+                <buttons:SfButton Grid.Column="1" Text="{Binding NextButtonLabel}" CornerRadius="0" Clicked="EndDeclaration"
+                              Style="{StaticResource ActionButtonStyle}" />
+
+            </Grid>
+            <BoxView Grid.Row="3" HeightRequest="8" BackgroundColor="{StaticResource YellowColor}" />
+
+            <!-- Picture Menu -->
+            <ContentView Grid.Row="0" Grid.RowSpan="4" x:Name="BusyIndicator" BackgroundColor="{StaticResource BottomMenuOverlayColor}" Opacity="0" IsVisible="False">
+            </ContentView>
+
+            <StackLayout Grid.Row="0" Grid.RowSpan="4" VerticalOptions="End" Margin="5" x:Name="BottomButtonsFrame" TranslationY="250">
+                <Frame BackgroundColor="{StaticResource ColorFrameBackground}" HasShadow="True" Padding="5,0" CornerRadius="5">
+                    <StackLayout Spacing="0">
+                        <buttons:SfButton Clicked="TakePicture" Text="{Binding ViewModel.TakePictureButtonLabel}" CornerRadius="0" BorderWidth="0"
+                                      Style="{StaticResource SecondaryActionButtonStyle}" FontAttributes="None">
+                        </buttons:SfButton>
+                        <ContentView HeightRequest="1" BackgroundColor="{StaticResource BottomMenuSeparatorColor}" />
+                        <buttons:SfButton Clicked="ChoosePicture" Text="{Binding ViewModel.ChoosePictureButtonLabel}" CornerRadius="0" BorderWidth="0"
+                                      Style="{StaticResource SecondaryActionButtonStyle}" FontAttributes="None">
+                        </buttons:SfButton>
+                        <!--<buttons:SfButton Command="{Binding DeletePictureCommand}" Text="{Binding DeclarationImpossibleChoosePictureButtonLabel}"
+                                   Style="{StaticResource SecondaryActionButtonStyle}">
+                </buttons:SfButton>-->
+
+                    </StackLayout>
+                </Frame>
+                <Frame BackgroundColor="{StaticResource ColorFrameBackground}" HasShadow="True" Padding="5,0" CornerRadius="5">
+                    <StackLayout Spacing="0">
+                        <buttons:SfButton Clicked="CancelPictureMenu" Text="{Binding ViewModel.CancelInvite}" CornerRadius="0" BorderWidth="0"
+                                      Style="{StaticResource SecondaryActionButtonStyle}">
+                        </buttons:SfButton>
+                    </StackLayout>
+                </Frame>
+            </StackLayout>
+            <StackLayout Grid.Row="0" Grid.RowSpan="4" VerticalOptions="End" Margin="5" x:Name="CancelButtonsFrame" TranslationY="250">
+                <Frame BackgroundColor="{StaticResource ColorFrameBackground}" HasShadow="True" CornerRadius="5" Padding="0">
+                    <StackLayout Spacing="0">
+                        <Label Style="{StaticResource FrameTitleLabelStyle}" Text="{Binding ViewModel.CancelDeclarationInvite}" Margin="5,10"></Label>
+                        <ContentView HeightRequest="2" BackgroundColor="{StaticResource BottomMenuSeparatorColor}" Margin="0" />
+                        <buttons:SfButton Clicked="StopAndFreeDeclaration" Text="{Binding ViewModel.ContinueButtonInvite}" CornerRadius="0" BorderWidth="0"
+                    Style="{StaticResource SecondaryActionButtonStyle}" FontAttributes="None">
+                        </buttons:SfButton>
+                        <!--<buttons:SfButton Command="{Binding DeletePictureCommand}" Text="{Binding DeclarationImpossibleChoosePictureButtonLabel}"
+                                   Style="{StaticResource SecondaryActionButtonStyle}">
+                </buttons:SfButton>-->
+
+                    </StackLayout>
+                </Frame>
+                <Frame BackgroundColor="{StaticResource ColorFrameBackground}" HasShadow="True" Padding="5,0" CornerRadius="5">
+                    <StackLayout Spacing="0">
+                        <buttons:SfButton Clicked="CancelBottomMenu" Text="{Binding ViewModel.CancelInvite}" CornerRadius="0" BorderWidth="0"
+                    Style="{StaticResource SecondaryActionButtonStyle}">
+                        </buttons:SfButton>
+                    </StackLayout>
+                </Frame>
+            </StackLayout>
+
+        </Grid>
+
+    </ContentPage.Content>
+    <ContentPage.BindingContext>
+        <local:TakePicturesPageViewmodel />
+    </ContentPage.BindingContext>
+</controls:ExtTakePicturePage>

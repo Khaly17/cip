@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<controls:ExtContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:doubleDeckPage="clr-namespace:Gefco.CipQuai.DoubleDeckPage;assembly=Gefco.CipQuai"
+             xmlns:buttons="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms"
+             xmlns:controls="clr-namespace:Gefco.CipQuai.Controls;assembly=Gefco.CipQuai" 
+             x:Class="Gefco.CipQuai.DoubleDeckPage.SaisieAutreMotifDPPage" NavBarMainCommand="{Binding GoBackCommand}" PageIcon="ic_arrow_backy.svg" PageTitle="{Binding PageTitle}" ControlTemplate="{StaticResource GefcoPage}" NavigationPage.HasNavigationBar="False" ShowHome="True" Appearing="OnAppearing" IsLoading="{Binding IsLoading}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <Label Text="{Binding SaisieAutreMotifDPInvite}" Grid.Row="0" Margin="20" FontSize="18" Style="{StaticResource TitleLabelStyle}" />
+
+        <StackLayout Grid.Row="1" Spacing="0" >
+            <controls:ExtEntry Margin="20,0" HorizontalOptions="FillAndExpand" Placeholder="{Binding SaisieAutreMotifDPPlaceholder}" Text="{Binding AutreMotifDP, Mode=TwoWay}" x:Name="MyEntry" TextColor="{Binding IsValidAutreMotifDP, Converter={StaticResource BooleanValidConverter}}"  />
+            <ContentView Margin="20,0" HeightRequest="1" BackgroundColor="{Binding IsValidAutreMotifDP, Converter={StaticResource BooleanValidConverter}}" />
+            <controls:FloatingActionButtonView Command="{Binding ValidateAutreMotifDPCommand}" IsEnabled="{Binding IsValidAutreMotifDP}" Margin="20" />
+
+        </StackLayout>
+
+
+    </Grid>
+</controls:ExtContentPage>

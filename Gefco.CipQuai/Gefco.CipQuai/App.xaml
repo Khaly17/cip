@@ -1,0 +1,282 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Application xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:Gefco.CipQuai.Controls;assembly=Gefco.CipQuai"
+             xmlns:converters="clr-namespace:Gefco.CipQuai.Converters;assembly=Gefco.CipQuai"
+             xmlns:buttons="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms"
+             xmlns:system="clr-namespace:System;assembly=netstandard"
+             xmlns:xForms="clr-namespace:Syncfusion.SfBusyIndicator.XForms;assembly=Syncfusion.SfBusyIndicator.XForms"
+             x:Class="Gefco.CipQuai.App">
+    <Application.Resources>
+        <ResourceDictionary>
+            <Color x:Key="MenuSelectedColorForeground">#33FFFFFF</Color>
+            <Color x:Key="MenuSelectedColorBackground">Transparent</Color>
+            <Color x:Key="MenuNotselectedColorForeground">#FFFFFF</Color>
+            <Color x:Key="MenuNotselectedColorBackground">Transparent</Color>
+            <Color x:Key="BottomMenuOverlayColor">#55000000</Color>
+            <Color x:Key="BottomMenuSeparatorColor">#11000000</Color>
+            <Color x:Key="BottomMenuFrameBackground">Transparent</Color>
+            <Color x:Key="ProfileNavBarColor">Black</Color>
+            <Color x:Key="ColorAccent">#00538b</Color>
+            <Color x:Key="ColorAccentDark">#004472</Color>
+            <Color x:Key="ColorAccentLight">#0062a5</Color>
+            <Color x:Key="ColorNavbarBackground">#15213C</Color>
+            <Color x:Key="ColorNavbarForeground">#FFFFFF</Color>
+            <Color x:Key="ColorPageBackground">White</Color>
+            <Color x:Key="ColorFrameBackground">#F0F0F0</Color>
+            <Color x:Key="MediumBlueColor">#0B2850</Color>
+            <Color x:Key="LightBlueColor">#FFBBBBBB</Color>
+            <Color x:Key="LightColor">#FFFFFF</Color>
+            <Color x:Key="DarkTextColor">#FF444444</Color>
+            <Color x:Key="ColorHyperlinkForeground">#00538b</Color>
+            <Color x:Key="InvalidColor">Red</Color>
+            <Color x:Key="NullValidColor">Green</Color>
+            <Color x:Key="NullColor">Gray</Color>
+            <Color x:Key="ValidColor">Black</Color>
+            <Color x:Key="YellowColor">#ffcc00</Color>
+
+            <Color x:Key="MenuTopBackgroundColor">#0B2850</Color>
+            <Color x:Key="MenuBackgroundColor">#15213C</Color>
+            <Color x:Key="VersionColor">#4A69BD</Color>
+
+            <Style x:Key="PageTitleLabelStyle" TargetType="Label">
+                <Setter Property="TextColor" Value="{StaticResource ColorNavbarForeground}" />
+                <Setter Property="FontSize" Value="23" />
+                <Setter Property="HorizontalTextAlignment" Value="Center" />
+            </Style>
+            <Style x:Key="TitleLabelStyle" TargetType="Label">
+                <Setter Property="TextColor" Value="{StaticResource MediumBlueColor}" />
+                <Setter Property="FontSize" Value="14" />
+                <Setter Property="HorizontalTextAlignment" Value="Center" />
+                <Setter Property="Margin" Value="0,30" />
+            </Style>
+            <Style x:Key="FrameTitleLabelStyle" TargetType="Label">
+                <Setter Property="TextColor" Value="{StaticResource MediumBlueColor}" />
+                <Setter Property="FontSize" Value="16" />
+                <Setter Property="HorizontalTextAlignment" Value="Center" />
+                <Setter Property="Margin" Value="0,30" />
+            </Style>
+
+            <Style x:Key="NormalLabelStyle" TargetType="Label">
+                <Setter Property="TextColor" Value="{StaticResource MediumBlueColor}" />
+                <Setter Property="FontSize" Value="16" />
+                <Setter Property="VerticalTextAlignment" Value="Center" />
+            </Style>
+
+            <Style x:Key="InvalidLabelStyle" TargetType="Label">
+                <Setter Property="TextColor" Value="{StaticResource InvalidColor}" />
+                <Setter Property="FontSize" Value="14" />
+                <Setter Property="VerticalTextAlignment" Value="Center" />
+            </Style>
+
+            <Style x:Key="EntryLabelStyle" TargetType="Label">
+                <Setter Property="TextColor" Value="{StaticResource LightBlueColor}" />
+                <Setter Property="FontSize" Value="12" />
+                <Setter Property="VerticalTextAlignment" Value="Center" />
+            </Style>
+
+            <Style x:Key="LoginEntryStyle" TargetType="controls:ExtEntry">
+                <Setter Property="TextColor" Value="{StaticResource DarkTextColor}" />
+                <Setter Property="PlaceholderColor" Value="{StaticResource LightBlueColor}" />
+                <Setter Property="FontSize" Value="14" />
+                <Setter Property="Margin" Value="0,0,0,16" />
+                <Setter Property="VerticalOptions" Value="Center" />
+                <Setter Property="HorizontalOptions" Value="Fill" />
+            </Style>
+
+            <Style x:Key="ActionButtonStyle" TargetType="buttons:SfButton">
+                <Setter Property="TextColor" Value="{StaticResource LightColor}" />
+                <Setter Property="BackgroundColor" Value="{StaticResource MediumBlueColor}" />
+                <Setter Property="FontSize" Value="17" />
+                <Setter Property="HeightRequest" Value="48" />
+                <Setter Property="CornerRadius" Value="8" />
+                <Setter Property="ShadowColor" Value="#59000000" />
+                <Setter Property="HasShadow" Value="False" />
+            </Style>
+            <Style x:Key="SecondaryActionButtonLabelStyle" TargetType="Label">
+                <Setter Property="TextColor" Value="{StaticResource MediumBlueColor}" />
+                <Setter Property="FontSize" Value="14" />
+                <Setter Property="VerticalTextAlignment" Value="Center" />
+                <Setter Property="HorizontalTextAlignment" Value="Center" />
+                <Setter Property="VerticalOptions" Value="CenterAndExpand" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="HorizontalOptions" Value="CenterAndExpand" />
+            </Style>
+
+            <Style x:Key="SecondaryActionButtonStyle" TargetType="buttons:SfButton">
+                <Setter Property="TextColor" Value="{StaticResource MediumBlueColor}" />
+                <Setter Property="BackgroundColor" Value="Transparent" />
+                <Setter Property="BorderColor" Value="{StaticResource MediumBlueColor}" />
+                <Setter Property="BorderWidth" Value="1" />
+                <Setter Property="FontSize" Value="14" />
+                <Setter Property="HeightRequest" Value="48" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="CornerRadius" Value="5" />
+            </Style>
+
+            <Style x:Key="HyperLink" TargetType="controls:ExtHyperLink">
+                <Setter Property="VerticalOptions" Value="Center" />
+                <Setter Property="HorizontalOptions" Value="Center" />
+                <Setter Property="FontSize" Value="Small" />
+                <Setter Property="LineBreakMode" Value="TailTruncation" />
+                <Setter Property="TextColor" Value="{StaticResource MediumBlueColor}" />
+            </Style>
+            <Style TargetType="controls:ExtHyperLink" BasedOn="{StaticResource HyperLink}" />
+
+            <Style x:Key="ListView" TargetType="controls:ExtListView">
+                <Setter Property="SeparatorVisibility" Value="None" />
+                <Setter Property="VerticalOptions" Value="FillAndExpand" />
+                <Setter Property="HorizontalOptions" Value="FillAndExpand" />
+                <Setter Property="BackgroundColor" Value="Transparent" />
+            </Style>
+
+            <Style x:Key="FloatingActionButtonView" TargetType="controls:FloatingActionButtonView">
+                <Setter Property="ColorNormal" Value="{StaticResource MediumBlueColor}" />
+                <Setter Property="ColorRipple" Value="{StaticResource ColorAccentDark}" />
+                <Setter Property="ColorPressed" Value="{StaticResource ColorAccentLight}" />
+                <Setter Property="Size" Value="Normal" />
+                <Setter Property="HorizontalOptions" Value="End" />
+                <Setter Property="ImageName" Value="ic_arrow_forward" />
+            </Style>
+            <Style x:Key="BindablePicker" TargetType="controls:BindablePicker">
+                <Setter Property="VerticalOptions" Value="Center" />
+                <Setter Property="HorizontalOptions" Value="Fill" />
+                <!--<Setter Property="BackgroundColor" Value="{StaticResource COLOR_ENTRY_BACKGROUND}" />-->
+                <Setter Property="TextColor" Value="{StaticResource DarkTextColor}" />
+                <Setter Property="PlaceholderColor" Value="{StaticResource LightBlueColor}" />
+            </Style>
+
+            <Style x:Key="ButtonFrameStyle" TargetType="Frame">
+                <Setter Property="BackgroundColor" Value="{StaticResource ColorFrameBackground}" />
+                <Setter Property="HasShadow" Value="True" />
+                <Setter Property="Padding" Value="5,0" />
+                <Setter Property="CornerRadius" Value="5" />
+            </Style>
+            <Style x:Key="FrameBase" TargetType="controls:ContentButton">
+                <Setter Property="BackgroundColor" Value="Transparent" />
+                <Setter Property="BorderColor" Value="Transparent" />
+                <Setter Property="Margin" Value="0" />
+                <Setter Property="Padding" Value="0" />
+            </Style>
+            <Style TargetType="controls:ContentButton" BasedOn="{StaticResource FrameBase}" />
+
+            <Style TargetType="controls:ExtListView" BasedOn="{StaticResource ListView}" />
+            <Style TargetType="controls:FloatingActionButtonView" BasedOn="{StaticResource FloatingActionButtonView}" />
+            <Style TargetType="controls:BindablePicker" BasedOn="{StaticResource BindablePicker}" />
+
+            <converters:BooleanInverterConverter x:Key="BooleanInverterConverter" />
+            <converters:BooleanValidConverter x:Key="BooleanValidConverter" />
+            <converters:ErrorPictureEnumSelectedConverter x:Key="ErrorPictureEnumSelectedConverter" />
+            <converters:PictureEnumSelectedConverter x:Key="PictureEnumSelectedConverter" />
+            <converters:BooleanInvalidConverter x:Key="BooleanInvalidConverter" />
+            <converters:SyncValidConverter x:Key="SyncValidConverter" />
+
+            <controls:StringValue x:Key="CancelInvite" Value="Annuler"></controls:StringValue>
+
+            <Style x:Key="SfBusyIndicatorBase" TargetType="xForms:SfBusyIndicator">
+                <Setter Property="TextColor" Value="{StaticResource MediumBlueColor}" />
+            </Style>
+            <Style TargetType="xForms:SfBusyIndicator" BasedOn="{StaticResource SfBusyIndicatorBase}" />
+
+            <ControlTemplate x:Key="PictureAndCancelPage">
+                <Grid RowSpacing="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <Label Text="{TemplateBinding PageInvite}" Grid.Row="0" Margin="20" FontSize="18" Style="{StaticResource TitleLabelStyle}" />
+
+                    <ContentView Grid.Row="1">
+                        <ContentPresenter Content="{TemplateBinding MainContent}" />
+                    </ContentView>
+
+                    <Grid Grid.Row="2" VerticalOptions="End" ColumnSpacing="0">
+                        <ContentPresenter Content="{TemplateBinding BottomContent}" />
+                    </Grid>
+
+                    <ContentView Grid.Row="0" Grid.RowSpan="3">
+                        <ContentPresenter Content="{TemplateBinding OverlayContent}" />
+                    </ContentView>
+                </Grid>
+            </ControlTemplate>
+            <ControlTemplate x:Key="GefcoPage">
+                <Grid RowSpacing="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <Grid BackgroundColor="{StaticResource ColorNavbarBackground}" HeightRequest="56">
+                        <Label HeightRequest="48" VerticalTextAlignment="Center" Text="{TemplateBinding PageTitle}" FontSize="20" Style="{StaticResource PageTitleLabelStyle}" />
+
+                        <controls:ContentButton WidthRequest="48" HorizontalOptions="Start" Margin="4" Command="{TemplateBinding NavBarMainCommand}" IsVisible="{TemplateBinding ShowBackOrClose}">
+                            <controls:ExtImage Source="{TemplateBinding PageIcon}" HorizontalOptions="Center" HeightRequest="24" WidthRequest="24" VerticalOptions="Center" Command="{TemplateBinding NavBarMainCommand}" />
+                        </controls:ContentButton>
+
+
+                        <controls:ContentButton WidthRequest="48" HorizontalOptions="End" Command="{TemplateBinding NavBarHomeCommand}" IsVisible="{TemplateBinding ShowHome}" Tapped="HomeButton_Tapped">
+                            <controls:ExtImage Source="Home.svg" HorizontalOptions="Center" HeightRequest="24" WidthRequest="24" VerticalOptions="Center" Command="{TemplateBinding NavBarHomeCommand}">
+                                <controls:ExtImage.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="HomeButton_Tapped"></TapGestureRecognizer>
+                                </controls:ExtImage.GestureRecognizers>
+                            </controls:ExtImage>
+                        </controls:ContentButton>
+                    </Grid>
+                    <BoxView Grid.Row="1" HeightRequest="3" BackgroundColor="{StaticResource YellowColor}" />
+
+
+                    <ContentPresenter Grid.Row="2" Content="{TemplateBinding Content}" />
+
+                    <BoxView Grid.Row="3" HeightRequest="8" BackgroundColor="{StaticResource YellowColor}" />
+                    <xForms:SfBusyIndicator Grid.Row="0" Grid.RowSpan="4" AnimationType="SingleCircle" ViewBoxHeight="100" ViewBoxWidth="100"
+                                             IsVisible="{TemplateBinding IsLoading}"
+                                             IsBusy="{TemplateBinding IsLoading}">
+                    </xForms:SfBusyIndicator>
+
+                </Grid>
+            </ControlTemplate>
+            <ControlTemplate x:Key="GefcoStartPage">
+                <Grid RowSpacing="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <Grid BackgroundColor="{StaticResource ColorNavbarBackground}" HeightRequest="56">
+                        <Label HeightRequest="48" VerticalTextAlignment="Center" Text="{TemplateBinding PageTitle}" FontSize="20" Style="{StaticResource PageTitleLabelStyle}" />
+
+                        <controls:ContentButton WidthRequest="48" HorizontalOptions="Start" Margin="4" Command="{TemplateBinding NavBarMainCommand}" IsVisible="{TemplateBinding ShowBackOrClose}">
+                            <controls:ExtImage Source="{TemplateBinding PageIcon}" HorizontalOptions="Center" HeightRequest="24" WidthRequest="24" VerticalOptions="Center" Command="{TemplateBinding NavBarMainCommand}" />
+                        </controls:ContentButton>
+
+
+                        <controls:ContentButton WidthRequest="48" HorizontalOptions="End" Command="{TemplateBinding NavBarHomeCommand}" IsVisible="{TemplateBinding ShowHome}" Tapped="HomeButton_Tapped">
+                            <controls:ExtImage Source="ic_refresh" HorizontalOptions="Center" HeightRequest="24" WidthRequest="24" VerticalOptions="Center" Command="{TemplateBinding NavBarHomeCommand}">
+                                <controls:ExtImage.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="HomeButton_Tapped"></TapGestureRecognizer>
+                                </controls:ExtImage.GestureRecognizers>
+                            </controls:ExtImage>
+                        </controls:ContentButton>
+                    </Grid>
+                    <BoxView Grid.Row="1" HeightRequest="3" BackgroundColor="{StaticResource YellowColor}" />
+
+
+                    <ContentPresenter Grid.Row="2" Content="{TemplateBinding Content}" />
+
+                    <BoxView Grid.Row="3" HeightRequest="8" BackgroundColor="{StaticResource YellowColor}" />
+                    <xForms:SfBusyIndicator Grid.Row="0" Grid.RowSpan="4" AnimationType="SingleCircle" ViewBoxHeight="100" ViewBoxWidth="100"
+                                             IsVisible="{TemplateBinding IsLoading}"
+                                             IsBusy="{TemplateBinding IsLoading}">
+                    </xForms:SfBusyIndicator>
+
+                </Grid>
+            </ControlTemplate>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

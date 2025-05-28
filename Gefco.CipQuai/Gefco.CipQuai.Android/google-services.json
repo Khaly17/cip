@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "246015371895",
+    "firebase_url": "https://cipquai.firebaseio.com",
+    "project_id": "cipquai",
+    "storage_bucket": "cipquai.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:246015371895:android:ca43c47198fd13b2",
+        "android_client_info": {
+          "package_name": "com.sensor6ty.cipquai"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "246015371895-3gjhgp3p46fg4niqoif3bv6g5jmgkcb4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyATTsKxMhhvwFQy-EcY8-ui5pJOqJhFtdM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

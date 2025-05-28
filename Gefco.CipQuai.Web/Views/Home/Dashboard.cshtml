@@ -1,0 +1,429 @@
+﻿@{
+    ViewBag.PageIcon = "feather icon-home";
+    ViewBag.Title = "Dashboard";
+    ViewBag.PageStory = "lorem ipsum dolor sit amet, consectetur adipisicing elit";
+    Layout = "~/Views/Shared/_AuthLayout.cshtml";
+
+}
+
+@section breadcrumb
+{
+    <li class="breadcrumb-item"><a href="#!">@ViewBag.Title</a> </li>
+}
+
+<div class="row">
+
+    <div class="col-md-12 col-xl-8">
+        <div class="card sale-card">
+            <div class="card-header">
+                <h5>Deals Analytics</h5>
+            </div>
+            <div class="card-block">
+                <div id="sales-analytics" class="chart-shadow" style="height: 380px; overflow: hidden; text-align: left;"><div class="amcharts-main-div" style="position: relative;"><div class="amcharts-chart-div" style="overflow: hidden; position: relative; text-align: left; width: 1007px; height: 380px; padding: 0px; cursor: default; touch-action: auto;"><svg version="1.1" style="position: absolute; width: 1007px; height: 380px; top: -0.40625px; left: 0px;"><desc>JavaScript chart by amCharts 3.21.5</desc><g><path cs="100,100" d="M0.5,0.5 L1006.5,0.5 L1006.5,379.5 L0.5,379.5 Z" fill="#FFFFFF" stroke="#000000" fill-opacity="0" stroke-width="1" stroke-opacity="0"></path><path cs="100,100" d="M0.5,0.5 L951.5,0.5 L951.5,279.5 L0.5,279.5 L0.5,0.5 Z" fill="#FFFFFF" stroke="#000000" fill-opacity="0" stroke-width="1" stroke-opacity="0" transform="translate(40,60)"></path></g><g><g transform="translate(40,0)" visibility="hidden"></g><g transform="translate(40,60)"><g><path cs="100,100" d="M0.5,279.5 L0.5,279.5 L0.5,0.5" fill="none" stroke-width="1" stroke-dasharray="1" stroke-opacity="0.07" stroke="#000000"></path></g><g><path cs="100,100" d="M33.5,279.5 L33.5,279.5 L33.5,0.5" fill="none" stroke-width="1" stroke-dasharray="1" stroke-opacity="0.07" stroke="#000000"></path></g><g><path cs="100,100" d="M65.5,0.5 L65.5,5.5" fill="none" stroke-width="1" stroke-opacity="0.3" stroke="#000000" transform="translate(0,279)"></path><path cs="100,100" d="M65.5,279.5 L65.5,279.5 L65.5,0.5" fill="none" stroke-width="1" stroke-dasharray="1" stroke-opacity="0.1" stroke="#000000"></path></g><g><path cs="100,100" d="M98.5,279.5 L98.5,279.5 L98.5,0.5" fill="none" stroke-width="1" stroke-dasharray="1" stroke-opacity="0.07" stroke="#000000"></path></g><g><path cs="100,100" d="M131.5,279.5 L131.5,279.5 L131.5,0.5" fill="none" stroke-width="1" stroke-dasharray="1" stroke-opacity="0.07" stroke="#000000"></path></g><g><path cs="100,100" d="M164.5,0.5 L164.5,5.5" fill="none" stroke-width="1" stroke-opacity="0.3" stroke="#000000" transform="translate(0,279)"></path><path cs="100,100" d="M164.5,279.5 L164.5,279.5 L164.5,0.5" fill="none" stroke-width="1" stroke-dasharray="1" stroke-opacity="0.1" stroke="#000000"></path></g><g><path cs="100,100" d="M196.5,279.5 L196.5,279.5 L196.5,0.5" fill="none" stroke-width="1" stroke-dasharray="1" stroke-opacity="0.07" stroke="#000000"></path></g><g><path cs="100,100" d="M229.5,279.5 L229.5,279.5 L229.5,0.5" fill="none" stroke-width="1" stroke-dasharray="1" stroke-opacity="0.07" stroke="#000000"></path></g><g><path cs="100,100" d="M262.5,0.5 L262.5,5.5" fill="none" stroke-width="1" stroke-opacity="0.3" stroke="#000000" transform="translate(0,279)"></path><path cs="100,100" d="M262.5,279.5 L262.5,279.5 L262.5,0.5" fill="none" stroke-width="1" stroke-dasharray="1" stroke-opacity="0.1" stroke="#000000"></path></g><g><path cs="100,100" d="M296.5,279.5 L296.5,279.5 L296.5,0.5" fill="none" stroke-width="1" stroke-dasharray="1" stroke-opacity="0.07" stroke="#000000"></path></g><g><path cs="100,100" d="M329.5,279.5 L329.5,279.5 L329.5,0.5" fill="none" stroke-width="1" stroke-dasharray="1" stroke-opacity="0.07" stroke="#000000"></path></g><g><path cs="100,100" d="M362.5,0.5 L362.5,5.5" fill="none" stroke-width="1" stroke-opacity="0.3" stroke="#000000" transform="translate(0,279)"></path><path cs="100,100" d="M362.5,279.5 L362.5,279.5 L362.5,0.5" fill="none" stroke-width="1" stroke-dasharray="1" stroke-opacity="0.1" stroke="#000000"></path></g><g><path cs="100,100" d="M394.5,279.5 L394.5,279.5 L394.5,0.5" fill="none" stroke-width="1" stroke-dasharray="1" stroke-opacity="0.07" stroke="#000000"></path></g><g><path cs="100,100" d="M427.5,279.5 L427.5,279.5 L427.5,0.5" fill="none" stroke-width="1" stroke-dasharray="1" stroke-opacity="0.07" stroke="#000000"></path></g><g><path cs="100,100" d="M460.5,0.5 L460.5,5.5" fill="none" stroke-width="1" stroke-opacity="0.3" stroke="#000000" transform="translate(0,279)"></path><path cs="100,100" d="M460.5,279.5 L460.5,279.5 L460.5,0.5" fill="none" stroke-width="1" stroke-dasharray="1" stroke-opacity="0.1" stroke="#000000"></path></g><g><path cs="100,100" d="M493.5,279.5 L493.5,279.5 L493.5,0.5" fill="none" stroke-width="1" stroke-dasharray="1" stroke-opacity="0.07" stroke="#000000"></path></g><g><path cs="100,100" d="M525.5,279.5 L525.5,279.5 L525.5,0.5" fill="none" stroke-width="1" stroke-dasharray="1" stroke-opacity="0.07" stroke="#000000"></path></g><g><path cs="100,100" d="M558.5,0.5 L558.5,5.5" fill="none" stroke-width="1" stroke-opacity="0.3" stroke="#000000" transform="translate(0,279)"></path><path cs="100,100" d="M558.5,279.5 L558.5,279.5 L558.5,0.5" fill="none" stroke-width="1" stroke-dasharray="1" stroke-opacity="0.1" stroke="#000000"></path></g><g><path cs="100,100" d="M591.5,279.5 L591.5,279.5 L591.5,0.5" fill="none" stroke-width="1" stroke-dasharray="1" stroke-opacity="0.07" stroke="#000000"></path></g><g><path cs="100,100" d="M624.5,279.5 L624.5,279.5 L624.5,0.5" fill="none" stroke-width="1" stroke-dasharray="1" stroke-opacity="0.07" stroke="#000000"></path></g><g><path cs="100,100" d="M656.5,0.5 L656.5,5.5" fill="none" stroke-width="1" stroke-opacity="0.3" stroke="#000000" transform="translate(0,279)"></path><path cs="100,100" d="M656.5,279.5 L656.5,279.5 L656.5,0.5" fill="none" stroke-width="1" stroke-dasharray="1" stroke-opacity="0.1" stroke="#000000"></path></g><g><path cs="100,100" d="M689.5,279.5 L689.5,279.5 L689.5,0.5" fill="none" stroke-width="1" stroke-dasharray="1" stroke-opacity="0.07" stroke="#000000"></path></g><g><path cs="100,100" d="M722.5,279.5 L722.5,279.5 L722.5,0.5" fill="none" stroke-width="1" stroke-dasharray="1" stroke-opacity="0.07" stroke="#000000"></path></g><g><path cs="100,100" d="M755.5,0.5 L755.5,5.5" fill="none" stroke-width="1" stroke-opacity="0.3" stroke="#000000" transform="translate(0,279)"></path><path cs="100,100" d="M755.5,279.5 L755.5,279.5 L755.5,0.5" fill="none" stroke-width="1" stroke-dasharray="1" stroke-opacity="0.1" stroke="#000000"></path></g><g><path cs="100,100" d="M787.5,279.5 L787.5,279.5 L787.5,0.5" fill="none" stroke-width="1" stroke-dasharray="1" stroke-opacity="0.07" stroke="#000000"></path></g><g><path cs="100,100" d="M820.5,279.5 L820.5,279.5 L820.5,0.5" fill="none" stroke-width="1" stroke-dasharray="1" stroke-opacity="0.07" stroke="#000000"></path></g><g><path cs="100,100" d="M853.5,0.5 L853.5,5.5" fill="none" stroke-width="1" stroke-opacity="0.3" stroke="#000000" transform="translate(0,279)"></path><path cs="100,100" d="M853.5,279.5 L853.5,279.5 L853.5,0.5" fill="none" stroke-width="1" stroke-dasharray="1" stroke-opacity="0.1" stroke="#000000"></path></g><g><path cs="100,100" d="M886.5,279.5 L886.5,279.5 L886.5,0.5" fill="none" stroke-width="1" stroke-dasharray="1" stroke-opacity="0.07" stroke="#000000"></path></g><g><path cs="100,100" d="M918.5,279.5 L918.5,279.5 L918.5,0.5" fill="none" stroke-width="1" stroke-dasharray="1" stroke-opacity="0.07" stroke="#000000"></path></g><g><path cs="100,100" d="M951.5,0.5 L951.5,5.5" fill="none" stroke-width="1" stroke-opacity="0.3" stroke="#000000" transform="translate(0,279)"></path><path cs="100,100" d="M951.5,279.5 L951.5,279.5 L951.5,0.5" fill="none" stroke-width="1" stroke-dasharray="1" stroke-opacity="0.1" stroke="#000000"></path></g></g><g transform="translate(40,60)" visibility="visible"><g><path cs="100,100" d="M0.5,279.5 L0.5,279.5 L951.5,279.5" fill="none" stroke-width="1" stroke-opacity="0.1" stroke="#000000"></path></g><g><path cs="100,100" d="M0.5,244.5 L0.5,244.5 L951.5,244.5" fill="none" stroke-width="1" stroke-opacity="0.1" stroke="#000000"></path></g><g><path cs="100,100" d="M0.5,209.5 L0.5,209.5 L951.5,209.5" fill="none" stroke-width="1" stroke-opacity="0.1" stroke="#000000"></path></g><g><path cs="100,100" d="M0.5,174.5 L0.5,174.5 L951.5,174.5" fill="none" stroke-width="1" stroke-opacity="0.1" stroke="#000000"></path></g><g><path cs="100,100" d="M0.5,140.5 L0.5,140.5 L951.5,140.5" fill="none" stroke-width="1" stroke-opacity="0.1" stroke="#000000"></path></g><g><path cs="100,100" d="M0.5,105.5 L0.5,105.5 L951.5,105.5" fill="none" stroke-width="1" stroke-opacity="0.1" stroke="#000000"></path></g><g><path cs="100,100" d="M0.5,70.5 L0.5,70.5 L951.5,70.5" fill="none" stroke-width="1" stroke-opacity="0.1" stroke="#000000"></path></g><g><path cs="100,100" d="M0.5,35.5 L0.5,35.5 L951.5,35.5" fill="none" stroke-width="1" stroke-opacity="0.1" stroke="#000000"></path></g><g><path cs="100,100" d="M0.5,0.5 L0.5,0.5 L951.5,0.5" fill="none" stroke-width="1" stroke-opacity="0.1" stroke="#000000"></path></g></g></g><g transform="translate(40,60)" clip-path="url(#AmChartsEl-3)"><g visibility="hidden"></g></g><g></g><g></g><g></g><g><g transform="translate(40,60)"><g></g><g clip-path="url(#AmChartsEl-7)"><path cs="100,100" d="M-16,258 C-8,257,0,233,16,230 C32,228,33,211,49,209 C66,208,66,205,82,202 C99,199,99,149,115,146 C131,144,131,161,147,160 C163,159,164,129,180,126 C197,122,197,92,213,91 C230,90,230,102,246,105 C262,107,262,138,278,140 C295,141,295,126,312,126 C329,126,329,140,345,140 C362,140,362,127,378,126 C395,125,395,117,411,119 C427,120,427,159,443,160 C459,162,460,153,476,153 C493,154,493,175,509,174 C526,173,526,136,542,133 C558,129,558,106,574,105 C590,104,591,110,607,112 C624,113,624,133,640,133 C657,132,657,100,673,98 C689,96,689,92,705,91 C721,89,722,65,738,63 C755,61,755,48,771,49 C788,49,788,69,804,70 C820,70,820,65,836,63 C852,60,853,21,869,21 C886,21,886,55,902,56 C919,56,919,27,935,28 C951,29,951,70,967,70 C983,69,984,22,1000,21 C1017,20,1025,47,1033,49 M0,0 L0,0" fill="none" fill-opacity="0" stroke-width="3" stroke-opacity="0.9" stroke="#00538b"></path><path cs="100,100" d="M-16,258 C-8,257,0,233,16,230 C32,228,33,211,49,209 C66,208,66,205,82,202 C99,199,99,149,115,146 C131,144,131,161,147,160 C163,159,164,129,180,126 C197,122,197,92,213,91 C230,90,230,102,246,105 C262,107,262,138,278,140 C295,141,295,126,312,126 C329,126,329,140,345,140 C362,140,362,127,378,126 C395,125,395,117,411,119 C427,120,427,159,443,160 C459,162,460,153,476,153 C493,154,493,175,509,174 C526,173,526,136,542,133 C558,129,558,106,574,105 C590,104,591,110,607,112 C624,113,624,133,640,133 C657,132,657,100,673,98 C689,96,689,92,705,91 C721,89,722,65,738,63 C755,61,755,48,771,49 C788,49,788,69,804,70 C820,70,820,65,836,63 C852,60,853,21,869,21 C886,21,886,55,902,56 C919,56,919,27,935,28 C951,29,951,70,967,70 C983,69,984,22,1000,21 C1017,20,1025,47,1033,49  L1033,279 L-16,279 L-16,258.075" fill="#00538b" fill-opacity="0.3" stroke-width="0" stroke-opacity="0"></path></g><clipPath id="AmChartsEl-7"><rect x="0" y="0" width="951" height="279" rx="0" ry="0" stroke-width="0"></rect></clipPath><g></g></g></g><g></g><g><path cs="100,100" d="M0.5,40.5 L952.5,40.5 L952.5,40.5" fill="none" stroke-width="1" stroke-opacity="0" stroke="#000000" transform="translate(40,0)"></path><g><path cs="100,100" d="M0.5,0.5 L951.5,0.5" fill="none" stroke-width="1" stroke-opacity="0" stroke="#000000" transform="translate(0,40)"></path></g><g><path cs="100,100" d="M0.5,0.5 L0.5,40.5" fill="none" stroke-width="1" stroke-opacity="0" stroke="#000000" transform="translate(40,0)" visibility="hidden"></path></g><g><path cs="100,100" d="M0.5,0.5 L951.5,0.5" fill="none" stroke-width="1" stroke-opacity="0.3" stroke="#000000" transform="translate(40,339)"></path></g><g><path cs="100,100" d="M0.5,0.5 L0.5,279.5" fill="none" stroke-width="1" stroke-opacity="0" stroke="#000000" transform="translate(40,60)" visibility="visible"></path></g></g><g><g transform="translate(40,60)" clip-path="url(#AmChartsEl-4)" style="pointer-events: none;"><path cs="100,100" d="M0.5,0.5 L0.5,0.5 L0.5,279.5" fill="none" stroke-width="1" stroke-opacity="0" stroke="#000000" visibility="hidden" transform="translate(16,0)"></path><path cs="100,100" d="M0.5,0.5 L951.5,0.5 L951.5,0.5" fill="none" stroke-width="1" stroke-opacity="0.5" stroke="#000000" visibility="hidden" transform="translate(0,29)"></path></g><clipPath id="AmChartsEl-4"><rect x="0" y="0" width="951" height="279" rx="0" ry="0" stroke-width="0"></rect></clipPath></g><g><g visibility="visible" transform="translate(40,20)" style="touch-action: none;"><rect x="0.5" y="0.5" width="952" height="40" rx="0" ry="0" stroke-width="1" fill="#000000" stroke="#000000" fill-opacity="0.12" stroke-opacity="0.12"></rect><rect x="0.5" y="0.5" width="147" height="41" rx="0" ry="0" stroke-width="0" fill="#FFFFFF" stroke="#FFFFFF" fill-opacity="0.4" stroke-opacity="0.4" transform="translate(430,0)"></rect><g transform="translate(0,0)"><g></g><g><path cs="100,100" d="M3,35 C4,35,6,36,8,36 C11,36,11,34,13,34 C16,34,16,34,18,34 C21,34,21,33,23,33 C26,33,26,35,28,35 C31,35,31,31,33,31 C36,31,36,31,38,31 C41,31,41,32,43,32 C46,32,46,33,48,33 C51,33,51,34,53,34 C56,34,56,33,58,33 C61,33,61,32,63,32 C66,31,66,30,68,30 C71,30,71,30,73,30 C76,30,76,29,78,28 C81,28,80,27,83,27 C86,27,86,33,89,33 C92,33,92,30,94,30 C97,30,97,31,99,31 C102,31,102,33,104,33 C107,33,107,32,109,32 C112,32,112,34,114,34 C117,34,117,34,119,34 C122,34,122,35,124,35 C127,35,127,37,129,37 C132,37,132,36,134,36 C137,36,137,37,139,37 C142,37,142,37,144,37 C147,37,147,38,149,38 C152,38,152,36,154,36 C157,35,157,35,159,35 C162,35,162,33,164,33 C167,33,167,32,169,32 C172,32,171,29,174,28 C177,28,177,27,180,27 C183,27,183,23,185,23 C188,23,188,26,190,26 C193,26,193,28,195,28 C198,27,198,22,200,21 C203,21,203,19,205,19 C208,19,208,21,210,22 C213,22,213,24,215,24 C218,24,218,23,220,23 C223,23,223,24,225,24 C228,24,228,24,230,24 C233,25,233,26,235,26 C238,27,238,28,240,28 C243,28,243,27,245,26 C248,26,248,25,250,25 C253,25,253,23,255,23 C258,23,257,20,260,20 C263,20,263,22,266,22 C269,22,269,21,271,21 C274,21,274,18,276,18 C279,18,279,16,281,16 C284,16,284,17,286,17 C289,17,289,17,291,17 C294,17,294,16,296,16 C299,16,299,17,301,16 C304,16,304,13,306,13 C309,13,309,14,311,14 C314,14,314,16,316,16 C319,16,319,14,321,14 C324,13,324,12,326,12 C329,12,329,12,331,12 C334,12,334,13,336,13 C339,13,339,14,341,15 C344,15,344,21,346,22 C349,22,348,27,351,27 C354,28,354,31,357,32 C360,32,360,33,362,33 C365,33,365,32,367,32 C370,31,370,29,372,29 C375,29,375,29,377,29 C380,29,380,26,382,26 C385,25,385,27,387,27 C390,27,390,28,392,28 C395,28,395,28,397,28 C400,28,400,27,402,26 C405,26,405,25,407,25 C410,25,410,25,412,25 C415,25,415,23,417,22 C420,22,420,21,422,20 C425,20,425,19,427,19 C430,19,430,17,432,17 C435,17,434,16,437,16 C440,16,440,16,443,16 C446,15,446,13,448,12 C451,12,451,13,453,13 C456,13,456,11,458,11 C461,11,461,9,463,9 C466,9,466,10,468,10 C471,10,471,12,473,12 C476,12,476,11,478,11 C481,11,481,12,483,12 C486,12,486,11,488,11 C491,11,491,11,493,11 C496,11,496,13,498,13 C501,13,501,13,503,13 C506,13,505,14,508,14 C511,14,511,12,514,12 C517,11,517,10,519,10 C522,10,522,10,524,10 C527,10,527,12,529,12 C532,12,532,10,534,10 C537,9,537,9,539,9 C542,9,542,8,544,8 C547,7,547,7,549,7 C552,7,552,8,554,8 C557,8,557,8,559,8 C562,7,562,5,564,5 C567,5,567,7,569,7 C572,7,572,6,574,6 C577,6,577,8,579,8 C582,8,582,5,584,5 C587,5,587,7,589,7 C592,7,591,6,594,6 C597,6,597,6,600,6 C603,6,603,7,605,7 C608,7,608,11,610,11 C613,11,613,12,615,12 C618,12,618,10,620,10 C623,10,623,8,625,8 C628,8,628,12,630,12 C633,12,633,11,635,11 C638,11,638,15,640,16 C643,16,643,15,645,15 C648,15,648,14,650,14 C653,14,653,14,655,14 C658,14,658,11,660,11 C663,11,663,8,665,8 C668,8,668,9,670,9 C673,9,673,9,675,9 C678,9,678,9,680,9 C683,9,682,10,685,10 C688,11,688,11,691,11 C694,11,694,10,696,10 C699,10,699,12,701,12 C704,12,704,9,706,9 C709,9,709,13,711,13 C714,14,714,15,716,15 C719,15,719,14,721,14 C724,14,724,15,726,16 C729,16,729,16,731,16 C734,17,734,19,736,19 C739,19,739,18,741,18 C744,18,744,18,746,18 C749,17,749,16,751,16 C754,16,754,17,756,17 C759,17,759,18,761,18 C764,18,764,19,766,19 C769,19,768,18,771,18 C774,18,774,20,777,20 C780,20,780,20,782,20 C785,20,785,20,787,20 C790,20,790,19,792,19 C795,19,795,17,797,17 C800,17,800,16,802,16 C805,16,805,13,807,13 C810,13,810,14,812,14 C815,14,815,14,817,14 C820,14,820,16,822,16 C825,16,825,15,827,15 C830,15,830,16,832,16 C835,16,835,16,837,16 C840,16,840,14,842,14 C845,14,845,10,847,10 C850,10,850,9,852,9 C855,9,855,9,857,9 C860,9,859,12,862,12 C865,12,865,12,868,12 C871,12,871,11,873,11 C876,11,876,12,878,12 C881,12,881,11,883,10 C886,10,886,9,888,9 C891,9,891,6,893,6 C896,6,896,7,898,7 C901,7,901,7,903,7 C906,7,906,5,908,5 C911,5,911,6,913,6 C916,6,916,6,918,6 C921,6,921,8,923,8 C926,8,926,5,928,5 C931,5,931,6,933,6 C936,6,936,7,938,7 C941,7,941,6,943,6 C946,6,947,8,948,8 M0,0 L0,0" fill="none" fill-opacity="0" stroke-width="1" stroke-opacity="0" stroke="#BBBBBB"></path><path cs="100,100" d="M3,35 C4,35,6,36,8,36 C11,36,11,34,13,34 C16,34,16,34,18,34 C21,34,21,33,23,33 C26,33,26,35,28,35 C31,35,31,31,33,31 C36,31,36,31,38,31 C41,31,41,32,43,32 C46,32,46,33,48,33 C51,33,51,34,53,34 C56,34,56,33,58,33 C61,33,61,32,63,32 C66,31,66,30,68,30 C71,30,71,30,73,30 C76,30,76,29,78,28 C81,28,80,27,83,27 C86,27,86,33,89,33 C92,33,92,30,94,30 C97,30,97,31,99,31 C102,31,102,33,104,33 C107,33,107,32,109,32 C112,32,112,34,114,34 C117,34,117,34,119,34 C122,34,122,35,124,35 C127,35,127,37,129,37 C132,37,132,36,134,36 C137,36,137,37,139,37 C142,37,142,37,144,37 C147,37,147,38,149,38 C152,38,152,36,154,36 C157,35,157,35,159,35 C162,35,162,33,164,33 C167,33,167,32,169,32 C172,32,171,29,174,28 C177,28,177,27,180,27 C183,27,183,23,185,23 C188,23,188,26,190,26 C193,26,193,28,195,28 C198,27,198,22,200,21 C203,21,203,19,205,19 C208,19,208,21,210,22 C213,22,213,24,215,24 C218,24,218,23,220,23 C223,23,223,24,225,24 C228,24,228,24,230,24 C233,25,233,26,235,26 C238,27,238,28,240,28 C243,28,243,27,245,26 C248,26,248,25,250,25 C253,25,253,23,255,23 C258,23,257,20,260,20 C263,20,263,22,266,22 C269,22,269,21,271,21 C274,21,274,18,276,18 C279,18,279,16,281,16 C284,16,284,17,286,17 C289,17,289,17,291,17 C294,17,294,16,296,16 C299,16,299,17,301,16 C304,16,304,13,306,13 C309,13,309,14,311,14 C314,14,314,16,316,16 C319,16,319,14,321,14 C324,13,324,12,326,12 C329,12,329,12,331,12 C334,12,334,13,336,13 C339,13,339,14,341,15 C344,15,344,21,346,22 C349,22,348,27,351,27 C354,28,354,31,357,32 C360,32,360,33,362,33 C365,33,365,32,367,32 C370,31,370,29,372,29 C375,29,375,29,377,29 C380,29,380,26,382,26 C385,25,385,27,387,27 C390,27,390,28,392,28 C395,28,395,28,397,28 C400,28,400,27,402,26 C405,26,405,25,407,25 C410,25,410,25,412,25 C415,25,415,23,417,22 C420,22,420,21,422,20 C425,20,425,19,427,19 C430,19,430,17,432,17 C435,17,434,16,437,16 C440,16,440,16,443,16 C446,15,446,13,448,12 C451,12,451,13,453,13 C456,13,456,11,458,11 C461,11,461,9,463,9 C466,9,466,10,468,10 C471,10,471,12,473,12 C476,12,476,11,478,11 C481,11,481,12,483,12 C486,12,486,11,488,11 C491,11,491,11,493,11 C496,11,496,13,498,13 C501,13,501,13,503,13 C506,13,505,14,508,14 C511,14,511,12,514,12 C517,11,517,10,519,10 C522,10,522,10,524,10 C527,10,527,12,529,12 C532,12,532,10,534,10 C537,9,537,9,539,9 C542,9,542,8,544,8 C547,7,547,7,549,7 C552,7,552,8,554,8 C557,8,557,8,559,8 C562,7,562,5,564,5 C567,5,567,7,569,7 C572,7,572,6,574,6 C577,6,577,8,579,8 C582,8,582,5,584,5 C587,5,587,7,589,7 C592,7,591,6,594,6 C597,6,597,6,600,6 C603,6,603,7,605,7 C608,7,608,11,610,11 C613,11,613,12,615,12 C618,12,618,10,620,10 C623,10,623,8,625,8 C628,8,628,12,630,12 C633,12,633,11,635,11 C638,11,638,15,640,16 C643,16,643,15,645,15 C648,15,648,14,650,14 C653,14,653,14,655,14 C658,14,658,11,660,11 C663,11,663,8,665,8 C668,8,668,9,670,9 C673,9,673,9,675,9 C678,9,678,9,680,9 C683,9,682,10,685,10 C688,11,688,11,691,11 C694,11,694,10,696,10 C699,10,699,12,701,12 C704,12,704,9,706,9 C709,9,709,13,711,13 C714,14,714,15,716,15 C719,15,719,14,721,14 C724,14,724,15,726,16 C729,16,729,16,731,16 C734,17,734,19,736,19 C739,19,739,18,741,18 C744,18,744,18,746,18 C749,17,749,16,751,16 C754,16,754,17,756,17 C759,17,759,18,761,18 C764,18,764,19,766,19 C769,19,768,18,771,18 C774,18,774,20,777,20 C780,20,780,20,782,20 C785,20,785,20,787,20 C790,20,790,19,792,19 C795,19,795,17,797,17 C800,17,800,16,802,16 C805,16,805,13,807,13 C810,13,810,14,812,14 C815,14,815,14,817,14 C820,14,820,16,822,16 C825,16,825,15,827,15 C830,15,830,16,832,16 C835,16,835,16,837,16 C840,16,840,14,842,14 C845,14,845,10,847,10 C850,10,850,9,852,9 C855,9,855,9,857,9 C860,9,859,12,862,12 C865,12,865,12,868,12 C871,12,871,11,873,11 C876,11,876,12,878,12 C881,12,881,11,883,10 C886,10,886,9,888,9 C891,9,891,6,893,6 C896,6,896,7,898,7 C901,7,901,7,903,7 C906,7,906,5,908,5 C911,5,911,6,913,6 C916,6,916,6,918,6 C921,6,921,8,923,8 C926,8,926,5,928,5 C931,5,931,6,933,6 C936,6,936,7,938,7 C941,7,941,6,943,6 C946,6,947,8,948,8  L948,40 L3,40 L3,34.8" fill="#BBBBBB" fill-opacity="0.5" stroke-width="0" stroke-opacity="0"></path></g><g></g></g><g transform="translate(0,0)" clip-path="url(#AmChartsEl-8)"><g></g><g><path cs="100,100" d="M3,35 C4,35,6,36,8,36 C11,36,11,34,13,34 C16,34,16,34,18,34 C21,34,21,33,23,33 C26,33,26,35,28,35 C31,35,31,31,33,31 C36,31,36,31,38,31 C41,31,41,32,43,32 C46,32,46,33,48,33 C51,33,51,34,53,34 C56,34,56,33,58,33 C61,33,61,32,63,32 C66,31,66,30,68,30 C71,30,71,30,73,30 C76,30,76,29,78,28 C81,28,80,27,83,27 C86,27,86,33,89,33 C92,33,92,30,94,30 C97,30,97,31,99,31 C102,31,102,33,104,33 C107,33,107,32,109,32 C112,32,112,34,114,34 C117,34,117,34,119,34 C122,34,122,35,124,35 C127,35,127,37,129,37 C132,37,132,36,134,36 C137,36,137,37,139,37 C142,37,142,37,144,37 C147,37,147,38,149,38 C152,38,152,36,154,36 C157,35,157,35,159,35 C162,35,162,33,164,33 C167,33,167,32,169,32 C172,32,171,29,174,28 C177,28,177,27,180,27 C183,27,183,23,185,23 C188,23,188,26,190,26 C193,26,193,28,195,28 C198,27,198,22,200,21 C203,21,203,19,205,19 C208,19,208,21,210,22 C213,22,213,24,215,24 C218,24,218,23,220,23 C223,23,223,24,225,24 C228,24,228,24,230,24 C233,25,233,26,235,26 C238,27,238,28,240,28 C243,28,243,27,245,26 C248,26,248,25,250,25 C253,25,253,23,255,23 C258,23,257,20,260,20 C263,20,263,22,266,22 C269,22,269,21,271,21 C274,21,274,18,276,18 C279,18,279,16,281,16 C284,16,284,17,286,17 C289,17,289,17,291,17 C294,17,294,16,296,16 C299,16,299,17,301,16 C304,16,304,13,306,13 C309,13,309,14,311,14 C314,14,314,16,316,16 C319,16,319,14,321,14 C324,13,324,12,326,12 C329,12,329,12,331,12 C334,12,334,13,336,13 C339,13,339,14,341,15 C344,15,344,21,346,22 C349,22,348,27,351,27 C354,28,354,31,357,32 C360,32,360,33,362,33 C365,33,365,32,367,32 C370,31,370,29,372,29 C375,29,375,29,377,29 C380,29,380,26,382,26 C385,25,385,27,387,27 C390,27,390,28,392,28 C395,28,395,28,397,28 C400,28,400,27,402,26 C405,26,405,25,407,25 C410,25,410,25,412,25 C415,25,415,23,417,22 C420,22,420,21,422,20 C425,20,425,19,427,19 C430,19,430,17,432,17 C435,17,434,16,437,16 C440,16,440,16,443,16 C446,15,446,13,448,12 C451,12,451,13,453,13 C456,13,456,11,458,11 C461,11,461,9,463,9 C466,9,466,10,468,10 C471,10,471,12,473,12 C476,12,476,11,478,11 C481,11,481,12,483,12 C486,12,486,11,488,11 C491,11,491,11,493,11 C496,11,496,13,498,13 C501,13,501,13,503,13 C506,13,505,14,508,14 C511,14,511,12,514,12 C517,11,517,10,519,10 C522,10,522,10,524,10 C527,10,527,12,529,12 C532,12,532,10,534,10 C537,9,537,9,539,9 C542,9,542,8,544,8 C547,7,547,7,549,7 C552,7,552,8,554,8 C557,8,557,8,559,8 C562,7,562,5,564,5 C567,5,567,7,569,7 C572,7,572,6,574,6 C577,6,577,8,579,8 C582,8,582,5,584,5 C587,5,587,7,589,7 C592,7,591,6,594,6 C597,6,597,6,600,6 C603,6,603,7,605,7 C608,7,608,11,610,11 C613,11,613,12,615,12 C618,12,618,10,620,10 C623,10,623,8,625,8 C628,8,628,12,630,12 C633,12,633,11,635,11 C638,11,638,15,640,16 C643,16,643,15,645,15 C648,15,648,14,650,14 C653,14,653,14,655,14 C658,14,658,11,660,11 C663,11,663,8,665,8 C668,8,668,9,670,9 C673,9,673,9,675,9 C678,9,678,9,680,9 C683,9,682,10,685,10 C688,11,688,11,691,11 C694,11,694,10,696,10 C699,10,699,12,701,12 C704,12,704,9,706,9 C709,9,709,13,711,13 C714,14,714,15,716,15 C719,15,719,14,721,14 C724,14,724,15,726,16 C729,16,729,16,731,16 C734,17,734,19,736,19 C739,19,739,18,741,18 C744,18,744,18,746,18 C749,17,749,16,751,16 C754,16,754,17,756,17 C759,17,759,18,761,18 C764,18,764,19,766,19 C769,19,768,18,771,18 C774,18,774,20,777,20 C780,20,780,20,782,20 C785,20,785,20,787,20 C790,20,790,19,792,19 C795,19,795,17,797,17 C800,17,800,16,802,16 C805,16,805,13,807,13 C810,13,810,14,812,14 C815,14,815,14,817,14 C820,14,820,16,822,16 C825,16,825,15,827,15 C830,15,830,16,832,16 C835,16,835,16,837,16 C840,16,840,14,842,14 C845,14,845,10,847,10 C850,10,850,9,852,9 C855,9,855,9,857,9 C860,9,859,12,862,12 C865,12,865,12,868,12 C871,12,871,11,873,11 C876,11,876,12,878,12 C881,12,881,11,883,10 C886,10,886,9,888,9 C891,9,891,6,893,6 C896,6,896,7,898,7 C901,7,901,7,903,7 C906,7,906,5,908,5 C911,5,911,6,913,6 C916,6,916,6,918,6 C921,6,921,8,923,8 C926,8,926,5,928,5 C931,5,931,6,933,6 C936,6,936,7,938,7 C941,7,941,6,943,6 C946,6,947,8,948,8 M0,0 L0,0" fill="none" fill-opacity="0" stroke-width="1" stroke-opacity="0" stroke="#888888"></path><path cs="100,100" d="M3,35 C4,35,6,36,8,36 C11,36,11,34,13,34 C16,34,16,34,18,34 C21,34,21,33,23,33 C26,33,26,35,28,35 C31,35,31,31,33,31 C36,31,36,31,38,31 C41,31,41,32,43,32 C46,32,46,33,48,33 C51,33,51,34,53,34 C56,34,56,33,58,33 C61,33,61,32,63,32 C66,31,66,30,68,30 C71,30,71,30,73,30 C76,30,76,29,78,28 C81,28,80,27,83,27 C86,27,86,33,89,33 C92,33,92,30,94,30 C97,30,97,31,99,31 C102,31,102,33,104,33 C107,33,107,32,109,32 C112,32,112,34,114,34 C117,34,117,34,119,34 C122,34,122,35,124,35 C127,35,127,37,129,37 C132,37,132,36,134,36 C137,36,137,37,139,37 C142,37,142,37,144,37 C147,37,147,38,149,38 C152,38,152,36,154,36 C157,35,157,35,159,35 C162,35,162,33,164,33 C167,33,167,32,169,32 C172,32,171,29,174,28 C177,28,177,27,180,27 C183,27,183,23,185,23 C188,23,188,26,190,26 C193,26,193,28,195,28 C198,27,198,22,200,21 C203,21,203,19,205,19 C208,19,208,21,210,22 C213,22,213,24,215,24 C218,24,218,23,220,23 C223,23,223,24,225,24 C228,24,228,24,230,24 C233,25,233,26,235,26 C238,27,238,28,240,28 C243,28,243,27,245,26 C248,26,248,25,250,25 C253,25,253,23,255,23 C258,23,257,20,260,20 C263,20,263,22,266,22 C269,22,269,21,271,21 C274,21,274,18,276,18 C279,18,279,16,281,16 C284,16,284,17,286,17 C289,17,289,17,291,17 C294,17,294,16,296,16 C299,16,299,17,301,16 C304,16,304,13,306,13 C309,13,309,14,311,14 C314,14,314,16,316,16 C319,16,319,14,321,14 C324,13,324,12,326,12 C329,12,329,12,331,12 C334,12,334,13,336,13 C339,13,339,14,341,15 C344,15,344,21,346,22 C349,22,348,27,351,27 C354,28,354,31,357,32 C360,32,360,33,362,33 C365,33,365,32,367,32 C370,31,370,29,372,29 C375,29,375,29,377,29 C380,29,380,26,382,26 C385,25,385,27,387,27 C390,27,390,28,392,28 C395,28,395,28,397,28 C400,28,400,27,402,26 C405,26,405,25,407,25 C410,25,410,25,412,25 C415,25,415,23,417,22 C420,22,420,21,422,20 C425,20,425,19,427,19 C430,19,430,17,432,17 C435,17,434,16,437,16 C440,16,440,16,443,16 C446,15,446,13,448,12 C451,12,451,13,453,13 C456,13,456,11,458,11 C461,11,461,9,463,9 C466,9,466,10,468,10 C471,10,471,12,473,12 C476,12,476,11,478,11 C481,11,481,12,483,12 C486,12,486,11,488,11 C491,11,491,11,493,11 C496,11,496,13,498,13 C501,13,501,13,503,13 C506,13,505,14,508,14 C511,14,511,12,514,12 C517,11,517,10,519,10 C522,10,522,10,524,10 C527,10,527,12,529,12 C532,12,532,10,534,10 C537,9,537,9,539,9 C542,9,542,8,544,8 C547,7,547,7,549,7 C552,7,552,8,554,8 C557,8,557,8,559,8 C562,7,562,5,564,5 C567,5,567,7,569,7 C572,7,572,6,574,6 C577,6,577,8,579,8 C582,8,582,5,584,5 C587,5,587,7,589,7 C592,7,591,6,594,6 C597,6,597,6,600,6 C603,6,603,7,605,7 C608,7,608,11,610,11 C613,11,613,12,615,12 C618,12,618,10,620,10 C623,10,623,8,625,8 C628,8,628,12,630,12 C633,12,633,11,635,11 C638,11,638,15,640,16 C643,16,643,15,645,15 C648,15,648,14,650,14 C653,14,653,14,655,14 C658,14,658,11,660,11 C663,11,663,8,665,8 C668,8,668,9,670,9 C673,9,673,9,675,9 C678,9,678,9,680,9 C683,9,682,10,685,10 C688,11,688,11,691,11 C694,11,694,10,696,10 C699,10,699,12,701,12 C704,12,704,9,706,9 C709,9,709,13,711,13 C714,14,714,15,716,15 C719,15,719,14,721,14 C724,14,724,15,726,16 C729,16,729,16,731,16 C734,17,734,19,736,19 C739,19,739,18,741,18 C744,18,744,18,746,18 C749,17,749,16,751,16 C754,16,754,17,756,17 C759,17,759,18,761,18 C764,18,764,19,766,19 C769,19,768,18,771,18 C774,18,774,20,777,20 C780,20,780,20,782,20 C785,20,785,20,787,20 C790,20,790,19,792,19 C795,19,795,17,797,17 C800,17,800,16,802,16 C805,16,805,13,807,13 C810,13,810,14,812,14 C815,14,815,14,817,14 C820,14,820,16,822,16 C825,16,825,15,827,15 C830,15,830,16,832,16 C835,16,835,16,837,16 C840,16,840,14,842,14 C845,14,845,10,847,10 C850,10,850,9,852,9 C855,9,855,9,857,9 C860,9,859,12,862,12 C865,12,865,12,868,12 C871,12,871,11,873,11 C876,11,876,12,878,12 C881,12,881,11,883,10 C886,10,886,9,888,9 C891,9,891,6,893,6 C896,6,896,7,898,7 C901,7,901,7,903,7 C906,7,906,5,908,5 C911,5,911,6,913,6 C916,6,916,6,918,6 C921,6,921,8,923,8 C926,8,926,5,928,5 C931,5,931,6,933,6 C936,6,936,7,938,7 C941,7,941,6,943,6 C946,6,947,8,948,8  L948,40 L3,40 L3,34.8" fill="#888888" fill-opacity="1" stroke-width="0" stroke-opacity="0"></path></g><g></g></g><g transform="translate(0,0)"><g><path cs="100,100" d="M25.5,40.5 L25.5,40.5 L25.5,0.5" fill="none" stroke-width="1" stroke-opacity="0.15" stroke="#FFFFFF"></path></g><g><path cs="100,100" d="M182.5,40.5 L182.5,40.5 L182.5,0.5" fill="none" stroke-width="1" stroke-opacity="0.15" stroke="#FFFFFF"></path></g><g><path cs="100,100" d="M334.5,40.5 L334.5,40.5 L334.5,0.5" fill="none" stroke-width="1" stroke-opacity="0.15" stroke="#FFFFFF"></path></g><g><path cs="100,100" d="M491.5,40.5 L491.5,40.5 L491.5,0.5" fill="none" stroke-width="1" stroke-opacity="0.15" stroke="#FFFFFF"></path></g><g><path cs="100,100" d="M642.5,40.5 L642.5,40.5 L642.5,0.5" fill="none" stroke-width="1" stroke-opacity="0.15" stroke="#FFFFFF"></path></g><g><path cs="100,100" d="M799.5,40.5 L799.5,40.5 L799.5,0.5" fill="none" stroke-width="1" stroke-opacity="0.15" stroke="#FFFFFF"></path></g></g><g transform="translate(0,0)" visibility="visible"><text y="6" fill="#FFFFFF" font-family="Verdana" font-size="11px" opacity="1" text-anchor="middle" transform="translate(103.38954132988586,28.5)"><tspan y="6" x="0">Aug</tspan></text><text y="6" fill="#FFFFFF" font-family="Verdana" font-size="11px" opacity="1" text-anchor="middle" transform="translate(260.38954132988584,28.5)"><tspan y="6" x="0">Sep</tspan></text><text y="6" fill="#FFFFFF" font-family="Verdana" font-size="11px" opacity="1" text-anchor="middle" transform="translate(412.38954132988584,28.5)"><tspan y="6" x="0">Oct</tspan></text><text y="6" fill="#FFFFFF" font-family="Verdana" font-size="11px" opacity="1" text-anchor="middle" transform="translate(569.3895413298859,28.5)"><tspan y="6" x="0">Nov</tspan></text><text y="6" fill="#FFFFFF" font-family="Verdana" font-size="11px" opacity="1" text-anchor="middle" transform="translate(720.3895413298859,28.5)"><tspan y="6" x="0">Dec</tspan></text><text y="6" fill="#FFFFFF" font-family="Verdana" font-size="11px" opacity="1" font-weight="bold" text-anchor="middle" transform="translate(877.3895413298859,28.5)"><tspan y="6" x="0">2013</tspan></text></g><rect x="0.5" y="0.5" width="952" height="40" rx="0" ry="0" stroke-width="0" fill="#000" stroke="#000" fill-opacity="0.005" stroke-opacity="0.005"></rect><rect x="430" y="0.5" width="147" height="40" rx="0" ry="0" stroke-width="0" fill="#000" stroke="#000" fill-opacity="0.005" stroke-opacity="0.005" aria-label="Zoom chart using cursor arrows" role="menuitem"></rect><g aria-label="Zoom chart using cursor arrows" role="menuitem" transform="translate(413,3)"><image x="0" y="0" width="35" height="35" xlink:href="https://colorlib.com//polygon/admindek/files/assets/pages/widget/amchart/images/dragIconRoundBig.svg"></image><rect x="0.5" y="0.5" width="25" height="40" rx="0" ry="0" stroke-width="0" fill="#000" stroke="#000" fill-opacity="0.005" stroke-opacity="0.005" transform="translate(5,-2)"></rect></g><g aria-label="Zoom chart using cursor arrows" role="menuitem" transform="translate(560,3)"><image x="0" y="0" width="35" height="35" xlink:href="https://colorlib.com//polygon/admindek/files/assets/pages/widget/amchart/images/dragIconRoundBig.svg"></image><rect x="0.5" y="0.5" width="25" height="40" rx="0" ry="0" stroke-width="0" fill="#000" stroke="#000" fill-opacity="0.005" stroke-opacity="0.005" transform="translate(5,-2)"></rect></g><clipPath id="AmChartsEl-8"><rect x="430" y="0" width="147" height="41" rx="0" ry="0" stroke-width="0"></rect></clipPath></g></g><g><g transform="translate(0,0)"></g><g transform="translate(0,0)"></g><g transform="translate(40,60)"><circle r="2.5" cx="0" cy="0" fill="#FFFFFF" stroke="#00538b" fill-opacity="1" stroke-width="2" stroke-opacity="1" transform="translate(16,230) scale(1)" aria-label="red line Oct 20, 2012 57"></circle><circle r="2.5" cx="0" cy="0" fill="#FFFFFF" stroke="#00538b" fill-opacity="1" stroke-width="2" stroke-opacity="1" transform="translate(49,209) scale(1)" aria-label="red line Oct 21, 2012 60"></circle><circle r="2.5" cx="0" cy="0" fill="#FFFFFF" stroke="#00538b" fill-opacity="1" stroke-width="2" stroke-opacity="1" transform="translate(82,202) scale(1)" aria-label="red line Oct 22, 2012 61"></circle><circle r="2.5" cx="0" cy="0" fill="#FFFFFF" stroke="#00538b" fill-opacity="1" stroke-width="2" stroke-opacity="1" transform="translate(115,146) scale(1)" aria-label="red line Oct 23, 2012 69"></circle><circle r="2.5" cx="0" cy="0" fill="#FFFFFF" stroke="#00538b" fill-opacity="1" stroke-width="2" stroke-opacity="1" transform="translate(147,160)" aria-label="red line Oct 24, 2012 67"></circle><circle r="2.5" cx="0" cy="0" fill="#FFFFFF" stroke="#00538b" fill-opacity="1" stroke-width="2" stroke-opacity="1" transform="translate(180,126)" aria-label="red line Oct 25, 2012 72"></circle><circle r="2.5" cx="0" cy="0" fill="#FFFFFF" stroke="#00538b" fill-opacity="1" stroke-width="2" stroke-opacity="1" transform="translate(213,91)" aria-label="red line Oct 26, 2012 77"></circle><circle r="2.5" cx="0" cy="0" fill="#FFFFFF" stroke="#00538b" fill-opacity="1" stroke-width="2" stroke-opacity="1" transform="translate(246,105)" aria-label="red line Oct 27, 2012 75"></circle><circle r="2.5" cx="0" cy="0" fill="#FFFFFF" stroke="#00538b" fill-opacity="1" stroke-width="2" stroke-opacity="1" transform="translate(278,140)" aria-label="red line Oct 28, 2012 70"></circle><circle r="2.5" cx="0" cy="0" fill="#FFFFFF" stroke="#00538b" fill-opacity="1" stroke-width="2" stroke-opacity="1" transform="translate(312,126)" aria-label="red line Oct 29, 2012 72"></circle><circle r="2.5" cx="0" cy="0" fill="#FFFFFF" stroke="#00538b" fill-opacity="1" stroke-width="2" stroke-opacity="1" transform="translate(345,140)" aria-label="red line Oct 30, 2012 70"></circle><circle r="2.5" cx="0" cy="0" fill="#FFFFFF" stroke="#00538b" fill-opacity="1" stroke-width="2" stroke-opacity="1" transform="translate(378,126)" aria-label="red line Oct 31, 2012 72"></circle><circle r="2.5" cx="0" cy="0" fill="#FFFFFF" stroke="#00538b" fill-opacity="1" stroke-width="2" stroke-opacity="1" transform="translate(411,119)" aria-label="red line Nov 01, 2012 73"></circle><circle r="2.5" cx="0" cy="0" fill="#FFFFFF" stroke="#00538b" fill-opacity="1" stroke-width="2" stroke-opacity="1" transform="translate(443,160)" aria-label="red line Nov 02, 2012 67"></circle><circle r="2.5" cx="0" cy="0" fill="#FFFFFF" stroke="#00538b" fill-opacity="1" stroke-width="2" stroke-opacity="1" transform="translate(476,153)" aria-label="red line Nov 03, 2012 68"></circle><circle r="2.5" cx="0" cy="0" fill="#FFFFFF" stroke="#00538b" fill-opacity="1" stroke-width="2" stroke-opacity="1" transform="translate(509,174)" aria-label="red line Nov 04, 2012 65"></circle><circle r="2.5" cx="0" cy="0" fill="#FFFFFF" stroke="#00538b" fill-opacity="1" stroke-width="2" stroke-opacity="1" transform="translate(542,133)" aria-label="red line Nov 05, 2012 71"></circle><circle r="2.5" cx="0" cy="0" fill="#FFFFFF" stroke="#00538b" fill-opacity="1" stroke-width="2" stroke-opacity="1" transform="translate(574,105)" aria-label="red line Nov 06, 2012 75"></circle><circle r="2.5" cx="0" cy="0" fill="#FFFFFF" stroke="#00538b" fill-opacity="1" stroke-width="2" stroke-opacity="1" transform="translate(607,112)" aria-label="red line Nov 07, 2012 74"></circle><circle r="2.5" cx="0" cy="0" fill="#FFFFFF" stroke="#00538b" fill-opacity="1" stroke-width="2" stroke-opacity="1" transform="translate(640,133)" aria-label="red line Nov 08, 2012 71"></circle><circle r="2.5" cx="0" cy="0" fill="#FFFFFF" stroke="#00538b" fill-opacity="1" stroke-width="2" stroke-opacity="1" transform="translate(673,98)" aria-label="red line Nov 09, 2012 76"></circle><circle r="2.5" cx="0" cy="0" fill="#FFFFFF" stroke="#00538b" fill-opacity="1" stroke-width="2" stroke-opacity="1" transform="translate(705,91)" aria-label="red line Nov 10, 2012 77"></circle><circle r="2.5" cx="0" cy="0" fill="#FFFFFF" stroke="#00538b" fill-opacity="1" stroke-width="2" stroke-opacity="1" transform="translate(738,63)" aria-label="red line Nov 11, 2012 81"></circle><circle r="2.5" cx="0" cy="0" fill="#FFFFFF" stroke="#00538b" fill-opacity="1" stroke-width="2" stroke-opacity="1" transform="translate(771,49)" aria-label="red line Nov 12, 2012 83"></circle><circle r="2.5" cx="0" cy="0" fill="#FFFFFF" stroke="#00538b" fill-opacity="1" stroke-width="2" stroke-opacity="1" transform="translate(804,70)" aria-label="red line Nov 13, 2012 80"></circle><circle r="2.5" cx="0" cy="0" fill="#FFFFFF" stroke="#00538b" fill-opacity="1" stroke-width="2" stroke-opacity="1" transform="translate(836,63)" aria-label="red line Nov 14, 2012 81"></circle><circle r="2.5" cx="0" cy="0" fill="#FFFFFF" stroke="#00538b" fill-opacity="1" stroke-width="2" stroke-opacity="1" transform="translate(869,21)" aria-label="red line Nov 15, 2012 87"></circle><circle r="2.5" cx="0" cy="0" fill="#FFFFFF" stroke="#00538b" fill-opacity="1" stroke-width="2" stroke-opacity="1" transform="translate(902,56)" aria-label="red line Nov 16, 2012 82"></circle><circle r="2.5" cx="0" cy="0" fill="#FFFFFF" stroke="#00538b" fill-opacity="1" stroke-width="2" stroke-opacity="1" transform="translate(935,28)" aria-label="red line Nov 17, 2012 86"></circle></g></g><g><g></g></g><g><g transform="translate(40,0)" visibility="hidden"></g><g transform="translate(40,60)" visibility="visible"><text y="6" fill="#000000" font-family="Verdana" font-size="11px" opacity="1" text-anchor="start" transform="translate(68,291.5)"><tspan y="6" x="0">Oct 22</tspan></text><text y="6" fill="#000000" font-family="Verdana" font-size="11px" opacity="1" text-anchor="start" transform="translate(167,291.5)"><tspan y="6" x="0">Oct 25</tspan></text><text y="6" fill="#000000" font-family="Verdana" font-size="11px" opacity="1" text-anchor="start" transform="translate(265,291.5)"><tspan y="6" x="0">Oct 28</tspan></text><text y="6" fill="#000000" font-family="Verdana" font-size="11px" opacity="1" text-anchor="start" transform="translate(365,291.5)"><tspan y="6" x="0">Oct 31</tspan></text><text y="6" fill="#000000" font-family="Verdana" font-size="11px" opacity="1" font-weight="bold" text-anchor="start" transform="translate(463,291.5)"><tspan y="6" x="0">Nov</tspan></text><text y="6" fill="#000000" font-family="Verdana" font-size="11px" opacity="1" text-anchor="start" transform="translate(561,291.5)"><tspan y="6" x="0">Nov 06</tspan></text><text y="6" fill="#000000" font-family="Verdana" font-size="11px" opacity="1" text-anchor="start" transform="translate(659,291.5)"><tspan y="6" x="0">Nov 09</tspan></text><text y="6" fill="#000000" font-family="Verdana" font-size="11px" opacity="1" text-anchor="start" transform="translate(758,291.5)"><tspan y="6" x="0">Nov 12</tspan></text><text y="6" fill="#000000" font-family="Verdana" font-size="11px" opacity="1" text-anchor="start" transform="translate(856,291.5)"><tspan y="6" x="0">Nov 15</tspan></text></g><g transform="translate(40,60)" visibility="visible"><text y="6" fill="#000000" font-family="Verdana" font-size="11px" opacity="1" text-anchor="end" transform="translate(-12,278)"><tspan y="6" x="0">50</tspan></text><text y="6" fill="#000000" font-family="Verdana" font-size="11px" opacity="1" text-anchor="end" transform="translate(-12,243)"><tspan y="6" x="0">55</tspan></text><text y="6" fill="#000000" font-family="Verdana" font-size="11px" opacity="1" text-anchor="end" transform="translate(-12,208)"><tspan y="6" x="0">60</tspan></text><text y="6" fill="#000000" font-family="Verdana" font-size="11px" opacity="1" text-anchor="end" transform="translate(-12,173)"><tspan y="6" x="0">65</tspan></text><text y="6" fill="#000000" font-family="Verdana" font-size="11px" opacity="1" text-anchor="end" transform="translate(-12,139)"><tspan y="6" x="0">70</tspan></text><text y="6" fill="#000000" font-family="Verdana" font-size="11px" opacity="1" text-anchor="end" transform="translate(-12,104)"><tspan y="6" x="0">75</tspan></text><text y="6" fill="#000000" font-family="Verdana" font-size="11px" opacity="1" text-anchor="end" transform="translate(-12,69)"><tspan y="6" x="0">80</tspan></text><text y="6" fill="#000000" font-family="Verdana" font-size="11px" opacity="1" text-anchor="end" transform="translate(-12,34)"><tspan y="6" x="0">85</tspan></text><text y="6" fill="#000000" font-family="Verdana" font-size="11px" opacity="1" text-anchor="end" transform="translate(-12,-1)"><tspan y="6" x="0">90</tspan></text></g></g><g></g><g transform="translate(40,60)"></g><g><g transform="translate(908,68)" visibility="visible"><rect x="0.5" y="0.5" width="92" height="33" rx="0" ry="0" stroke-width="1" fill="#000000" stroke="#000000" fill-opacity="1" stroke-opacity="1" opacity="0" transform="translate(-8,-8)"></rect><image x="0" y="0" width="19" height="19" xlink:href="https://colorlib.com//polygon/admindek/files/assets/pages/widget/amchart/images/lens.svg"></image><text y="6" fill="#000000" font-family="Verdana" font-size="11px" opacity="1" text-anchor="start" transform="translate(24,7)"><tspan y="6" x="0">Show all</tspan></text></g></g><g></g><clipPath id="AmChartsEl-3"><rect x="-1" y="-1" width="953" height="281" rx="0" ry="0" stroke-width="0"></rect></clipPath></svg><a href="http://www.amcharts.com/javascript-charts/" title="JavaScript charts" style="position: absolute; text-decoration: none; color: rgb(0, 0, 0); font-family: Verdana; font-size: 11px; opacity: 0.7; display: block; left: 45px; top: 65px;">JS chart by amCharts</a></div></div></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12 col-xl-4">
+        <div class="card comp-card">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <h6 class="m-b-25">Impressions</h6>
+                        <h3 class="f-w-700 text-c-blue">1,563</h3>
+                        <p class="m-b-0">May 23 - June 01 (2017)</p>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-eye bg-c-blue"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card comp-card">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <h6 class="m-b-25">Goal</h6>
+                        <h3 class="f-w-700 text-c-green">30,564</h3>
+                        <p class="m-b-0">May 23 - June 01 (2017)</p>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-bullseye bg-c-green"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card comp-card">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <h6 class="m-b-25">Impact</h6>
+                        <h3 class="f-w-700 text-c-yellow">42.6%</h3>
+                        <p class="m-b-0">May 23 - June 01 (2017)</p>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-hand-paper bg-c-yellow"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-xl-12">
+        <div class="card proj-progress-card">
+            <div class="card-block">
+                <div class="row">
+                    <div class="col-xl-3 col-md-6">
+                        <h6>Published Project</h6>
+                        <h5 class="m-b-30 f-w-700">532<span class="text-c-green m-l-10">+1.69%</span></h5>
+                        <div class="progress">
+                            <div class="progress-bar bg-c-red" style="width:25%"></div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-md-6">
+                        <h6>Completed Task</h6>
+                        <h5 class="m-b-30 f-w-700">4,569<span class="text-c-red m-l-10">-0.5%</span></h5>
+                        <div class="progress">
+                            <div class="progress-bar bg-c-blue" style="width:65%"></div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-md-6">
+                        <h6>Successfull Task</h6>
+                        <h5 class="m-b-30 f-w-700">89%<span class="text-c-green m-l-10">+0.99%</span></h5>
+                        <div class="progress">
+                            <div class="progress-bar bg-c-green" style="width:85%"></div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-md-6">
+                        <h6>Ongoing Project</h6>
+                        <h5 class="m-b-30 f-w-700">365<span class="text-c-green m-l-10">+0.35%</span></h5>
+                        <div class="progress">
+                            <div class="progress-bar bg-c-yellow" style="width:45%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-md-12 col-xl-4">
+        <div class="card card-blue text-white">
+            <div class="card-block p-b-0">
+                <div class="row m-b-50">
+                    <div class="col">
+                        <h6 class="m-b-5">Sales In July</h6>
+                        <h5 class="m-b-0 f-w-700">$2665.00</h5>
+                    </div>
+                    <div class="col-auto text-center">
+                        <p class="m-b-5">Direct Sale</p>
+                        <h6 class="m-b-0">$1768</h6>
+                    </div>
+                    <div class="col-auto text-center">
+                        <p class="m-b-5">Referal</p>
+                        <h6 class="m-b-0">$897</h6>
+                    </div>
+                </div>
+                <div id="sec-ecommerce-chart-line" class="" style="height: 60px; padding: 0px; position: relative;"><canvas class="flot-base" width="468" height="60" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 468.328px; height: 60px;"></canvas><div class="flot-text" style="position: absolute; top: 0px; left: 0px; bottom: 0px; right: 0px; font-size: smaller; color: rgb(84, 84, 84);"><div class="flot-x-axis flot-x1-axis xAxis x1Axis" style="position: absolute; top: 0px; left: 0px; bottom: 0px; right: 0px;"><div style="position: absolute; max-width: 58px; top: 60px; font: 400 0px/0px &quot;open sans&quot;, sans-serif; color: transparent; left: 8px; text-align: center;">0</div><div style="position: absolute; max-width: 58px; top: 60px; font: 400 0px/0px &quot;open sans&quot;, sans-serif; color: transparent; left: 73px; text-align: center;">2</div><div style="position: absolute; max-width: 58px; top: 60px; font: 400 0px/0px &quot;open sans&quot;, sans-serif; color: transparent; left: 137px; text-align: center;">4</div><div style="position: absolute; max-width: 58px; top: 60px; font: 400 0px/0px &quot;open sans&quot;, sans-serif; color: transparent; left: 202px; text-align: center;">6</div><div style="position: absolute; max-width: 58px; top: 60px; font: 400 0px/0px &quot;open sans&quot;, sans-serif; color: transparent; left: 266px; text-align: center;">8</div><div style="position: absolute; max-width: 58px; top: 60px; font: 400 0px/0px &quot;open sans&quot;, sans-serif; color: transparent; left: 331px; text-align: center;">10</div><div style="position: absolute; max-width: 58px; top: 60px; font: 400 0px/0px &quot;open sans&quot;, sans-serif; color: transparent; left: 396px; text-align: center;">12</div><div style="position: absolute; max-width: 58px; top: 60px; font: 400 0px/0px &quot;open sans&quot;, sans-serif; color: transparent; left: 460px; text-align: center;">14</div></div><div class="flot-y-axis flot-y1-axis yAxis y1Axis" style="position: absolute; top: 0px; left: 0px; bottom: 0px; right: 0px;"><div style="position: absolute; top: 52px; font: 400 0px/0px &quot;open sans&quot;, sans-serif; color: transparent; left: 0px; text-align: right;">0</div><div style="position: absolute; top: 37px; font: 400 0px/0px &quot;open sans&quot;, sans-serif; color: transparent; left: 0px; text-align: right;">10</div><div style="position: absolute; top: 23px; font: 400 0px/0px &quot;open sans&quot;, sans-serif; color: transparent; left: 0px; text-align: right;">20</div><div style="position: absolute; top: 8px; font: 400 0px/0px &quot;open sans&quot;, sans-serif; color: transparent; left: 0px; text-align: right;">30</div></div></div><canvas class="flot-overlay" width="468" height="60" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 468.328px; height: 60px;"></canvas></div>
+                <div id="sec-ecommerce-chart-bar" style="height: 195px; padding: 0px; position: relative;"><canvas class="flot-base" width="468" height="195" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 468.328px; height: 195px;"></canvas><div class="flot-text" style="position: absolute; top: 0px; left: 0px; bottom: 0px; right: 0px; font-size: smaller; color: rgb(84, 84, 84);"><div class="flot-x-axis flot-x1-axis xAxis x1Axis" style="position: absolute; top: 0px; left: 0px; bottom: 0px; right: 0px;"><div style="position: absolute; max-width: 46px; top: 195px; font: 400 0px/0px &quot;open sans&quot;, sans-serif; color: transparent; left: 10px; text-align: center;">0</div><div style="position: absolute; max-width: 46px; top: 195px; font: 400 0px/0px &quot;open sans&quot;, sans-serif; color: transparent; left: 74px; text-align: center;">2</div><div style="position: absolute; max-width: 46px; top: 195px; font: 400 0px/0px &quot;open sans&quot;, sans-serif; color: transparent; left: 138px; text-align: center;">4</div><div style="position: absolute; max-width: 46px; top: 195px; font: 400 0px/0px &quot;open sans&quot;, sans-serif; color: transparent; left: 202px; text-align: center;">6</div><div style="position: absolute; max-width: 46px; top: 195px; font: 400 0px/0px &quot;open sans&quot;, sans-serif; color: transparent; left: 266px; text-align: center;">8</div><div style="position: absolute; max-width: 46px; top: 195px; font: 400 0px/0px &quot;open sans&quot;, sans-serif; color: transparent; left: 330px; text-align: center;">10</div><div style="position: absolute; max-width: 46px; top: 195px; font: 400 0px/0px &quot;open sans&quot;, sans-serif; color: transparent; left: 395px; text-align: center;">12</div><div style="position: absolute; max-width: 46px; top: 195px; font: 400 0px/0px &quot;open sans&quot;, sans-serif; color: transparent; left: 459px; text-align: center;">14</div></div><div class="flot-y-axis flot-y1-axis yAxis y1Axis" style="position: absolute; top: 0px; left: 0px; bottom: 0px; right: 0px;"><div style="position: absolute; top: 195px; font: 400 0px/0px &quot;open sans&quot;, sans-serif; color: transparent; left: 0px; text-align: right;">0</div><div style="position: absolute; top: 163px; font: 400 0px/0px &quot;open sans&quot;, sans-serif; color: transparent; left: 0px; text-align: right;">5</div><div style="position: absolute; top: 130px; font: 400 0px/0px &quot;open sans&quot;, sans-serif; color: transparent; left: 0px; text-align: right;">10</div><div style="position: absolute; top: 98px; font: 400 0px/0px &quot;open sans&quot;, sans-serif; color: transparent; left: 0px; text-align: right;">15</div><div style="position: absolute; top: 65px; font: 400 0px/0px &quot;open sans&quot;, sans-serif; color: transparent; left: 0px; text-align: right;">20</div><div style="position: absolute; top: 33px; font: 400 0px/0px &quot;open sans&quot;, sans-serif; color: transparent; left: 0px; text-align: right;">25</div><div style="position: absolute; top: 0px; font: 400 0px/0px &quot;open sans&quot;, sans-serif; color: transparent; left: 0px; text-align: right;">30</div></div></div><canvas class="flot-overlay" width="468" height="195" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 468.328px; height: 195px;"></canvas></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-4 col-md-12">
+        <div class="card latest-update-card">
+            <div class="card-header">
+                <h5>What’s New</h5>
+                <div class="card-header-right">
+                    <ul class="list-unstyled card-option">
+                        <li class="first-opt"><i class="feather icon-chevron-left open-card-option"></i></li>
+                        <li><i class="feather icon-maximize full-card"></i></li>
+                        <li><i class="feather icon-minus minimize-card"></i></li>
+                        <li><i class="feather icon-refresh-cw reload-card"></i></li>
+                        <li><i class="feather icon-trash close-card"></i></li>
+                        <li><i class="feather icon-chevron-left open-card-option"></i></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card-block">
+                <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 290px;">
+                    <div class="scroll-widget" style="overflow: hidden; width: auto; height: 290px;">
+                        <div class="latest-update-box">
+                            <div class="row p-t-20 p-b-30">
+                                <div class="col-auto text-right update-meta p-r-0">
+                                    <img src="~/Content/assets/images/avatar-4.jpg" alt="user image" class="img-radius img-40 align-top m-r-15 update-icon">
+                                </div>
+                                <div class="col p-l-5">
+                                    <a href="#!"><h6>Your Manager Posted.</h6></a>
+                                    <p class="text-muted m-b-0">Jonny michel</p>
+                                </div>
+                            </div>
+                            <div class="row p-b-30">
+                                <div class="col-auto text-right update-meta p-r-0">
+                                    <i class="feather icon-briefcase bg-c-red update-icon"></i>
+                                </div>
+                                <div class="col p-l-5">
+                                    <a href="#!"><h6>You have 3 pending Task.</h6></a>
+                                    <p class="text-muted m-b-0">Hemilton</p>
+                                </div>
+                            </div>
+                            <div class="row p-b-30">
+                                <div class="col-auto text-right update-meta p-r-0">
+                                    <i class="feather icon-check f-w-600 bg-c-green update-icon"></i>
+                                </div>
+                                <div class="col p-l-5">
+                                    <a href="#!"><h6>New Order Received.</h6></a>
+                                    <p class="text-muted m-b-0">Hemilton</p>
+                                </div>
+                            </div>
+                            <div class="row p-b-30">
+                                <div class="col-auto text-right update-meta p-r-0">
+                                    <img src="~/Content/assets/images/avatar-4.jpg" alt="user image" class="img-radius img-40 align-top m-r-15 update-icon">
+                                </div>
+                                <div class="col p-l-5">
+                                    <a href="#!"><h6>Your Manager Posted.</h6></a>
+                                    <p class="text-muted m-b-0">Jonny michel</p>
+                                </div>
+                            </div>
+                            <div class="row p-b-30">
+                                <div class="col-auto text-right update-meta p-r-0">
+                                    <i class="feather icon-briefcase bg-c-red update-icon"></i>
+                                </div>
+                                <div class="col p-l-5">
+                                    <a href="#!"><h6>You have 3 pending Task.</h6></a>
+                                    <p class="text-muted m-b-0">Hemilton</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-auto text-right update-meta p-r-0">
+                                    <i class="feather icon-check f-w-600 bg-c-green update-icon"></i>
+                                </div>
+                                <div class="col p-l-5">
+                                    <a href="#!"><h6>New Order Received.</h6></a>
+                                    <p class="text-muted m-b-0">Hemilton</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div><div class="slimScrollBar" style="background: rgb(0, 0, 0); width: 5px; position: absolute; top: 0px; opacity: 0.4; display: block; border-radius: 7px; z-index: 99; right: 1px; height: 188.565px;"></div><div class="slimScrollRail" style="width: 5px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-4 col-md-6">
+        <div class="card latest-update-card">
+            <div class="card-header">
+                <h5>Latest Activity</h5>
+                <div class="card-header-right">
+                    <ul class="list-unstyled card-option">
+                        <li class="first-opt"><i class="feather icon-chevron-left open-card-option"></i></li>
+                        <li><i class="feather icon-maximize full-card"></i></li>
+                        <li><i class="feather icon-minus minimize-card"></i></li>
+                        <li><i class="feather icon-refresh-cw reload-card"></i></li>
+                        <li><i class="feather icon-trash close-card"></i></li>
+                        <li><i class="feather icon-chevron-left open-card-option"></i></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card-block">
+                <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 290px;">
+                    <div class="scroll-widget" style="overflow: hidden; width: auto; height: 290px;">
+                        <div class="latest-update-box">
+                            <div class="row p-t-20 p-b-30">
+                                <div class="col-auto text-right update-meta p-r-0">
+                                    <i class="b-primary update-icon ring"></i>
+                                </div>
+                                <div class="col p-l-5">
+                                    <a href="#!"><h6>Devlopment &amp; Update</h6></a>
+                                    <p class="text-muted m-b-0">Lorem ipsum dolor sit amet, <a href="#!" class="text-c-blue"> More</a></p>
+                                </div>
+                            </div>
+                            <div class="row p-b-30">
+                                <div class="col-auto text-right update-meta p-r-0">
+                                    <i class="b-primary update-icon ring"></i>
+                                </div>
+                                <div class="col p-l-5">
+                                    <a href="#!"><h6>Showcases</h6></a>
+                                    <p class="text-muted m-b-0">Lorem dolor sit amet, <a href="#!" class="text-c-blue"> More</a></p>
+                                </div>
+                            </div>
+                            <div class="row p-b-30">
+                                <div class="col-auto text-right update-meta p-r-0">
+                                    <i class="b-success update-icon ring"></i>
+                                </div>
+                                <div class="col p-l-5">
+                                    <a href="#!"><h6>Miscellaneous</h6></a>
+                                    <p class="text-muted m-b-0">Lorem ipsum dolor sit ipsum amet, <a href="#!" class="text-c-green"> More</a></p>
+                                </div>
+                            </div>
+                            <div class="row p-b-30">
+                                <div class="col-auto text-right update-meta p-r-0">
+                                    <i class="b-danger update-icon ring"></i>
+                                </div>
+                                <div class="col p-l-5">
+                                    <a href="#!"><h6>Your Manager Posted.</h6></a>
+                                    <p class="text-muted m-b-0">Lorem ipsum dolor sit amet, <a href="#!" class="text-c-red"> More</a></p>
+                                </div>
+                            </div>
+                            <div class="row p-b-30">
+                                <div class="col-auto text-right update-meta p-r-0">
+                                    <i class="b-primary update-icon ring"></i>
+                                </div>
+                                <div class="col p-l-5">
+                                    <a href="#!"><h6>Showcases</h6></a>
+                                    <p class="text-muted m-b-0">Lorem dolor sit amet, <a href="#!" class="text-c-blue"> More</a></p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-auto text-right update-meta p-r-0">
+                                    <i class="b-success update-icon ring"></i>
+                                </div>
+                                <div class="col p-l-5">
+                                    <a href="#!"><h6>Miscellaneous</h6></a>
+                                    <p class="text-muted m-b-0">Lorem ipsum dolor sit ipsum amet, <a href="#!" class="text-c-green"> More</a></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div><div class="slimScrollBar" style="background: rgb(0, 0, 0); width: 5px; position: absolute; top: 0px; opacity: 0.4; display: block; border-radius: 7px; z-index: 99; right: 1px; height: 188.565px;"></div><div class="slimScrollRail" style="width: 5px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-md-12">
+        <div class="card table-card">
+            <div class="card-header">
+                <h5>New Products</h5>
+                <div class="card-header-right">
+                    <ul class="list-unstyled card-option">
+                        <li class="first-opt"><i class="feather icon-chevron-left open-card-option"></i></li>
+                        <li><i class="feather icon-maximize full-card"></i></li>
+                        <li><i class="feather icon-minus minimize-card"></i></li>
+                        <li><i class="feather icon-refresh-cw reload-card"></i></li>
+                        <li><i class="feather icon-trash close-card"></i></li>
+                        <li><i class="feather icon-chevron-left open-card-option"></i></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card-block p-b-0">
+                <div class="table-responsive">
+                    <table class="table table-hover m-b-0">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Product Code</th>
+                                <th>Customer</th>
+                                <th>Status</th>
+                                <th>Rating</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Sofa</td>
+                                <td>#PHD001</td>
+                                <td>abc@gmail.com</td>
+                                <td><label class="label label-danger">Out Stock</label></td>
+                                <td>
+                                    <a href="#!"><i class="fa fa-star f-12 text-c-yellow"></i></a>
+                                    <a href="#!"><i class="fa fa-star f-12 text-c-yellow"></i></a>
+                                    <a href="#!"><i class="fa fa-star f-12 text-c-yellow"></i></a>
+                                    <a href="#!"><i class="fa fa-star f-12 text-default"></i></a>
+                                    <a href="#!"><i class="fa fa-star f-12 text-default"></i></a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Computer</td>
+                                <td>#PHD002</td>
+                                <td>cdc@gmail.com</td>
+                                <td><label class="label label-success">In Stock</label></td>
+                                <td>
+                                    <a href="#!"><i class="fa fa-star f-12 text-c-yellow"></i></a>
+                                    <a href="#!"><i class="fa fa-star f-12 text-c-yellow"></i></a>
+                                    <a href="#!"><i class="fa fa-star f-12 text-default"></i></a>
+                                    <a href="#!"><i class="fa fa-star f-12 text-default"></i></a>
+                                    <a href="#!"><i class="fa fa-star f-12 text-default"></i></a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Mobile</td>
+                                <td>#PHD003</td>
+                                <td>pqr@gmail.com</td>
+                                <td><label class="label label-danger">Out Stock</label></td>
+                                <td>
+                                    <a href="#!"><i class="fa fa-star f-12 text-c-yellow"></i></a>
+                                    <a href="#!"><i class="fa fa-star f-12 text-c-yellow"></i></a>
+                                    <a href="#!"><i class="fa fa-star f-12 text-c-yellow"></i></a>
+                                    <a href="#!"><i class="fa fa-star f-12 text-c-yellow"></i></a>
+                                    <a href="#!"><i class="fa fa-star f-12 text-default"></i></a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Coat</td>
+                                <td>#PHD004</td>
+                                <td>bcs@gmail.com</td>
+                                <td><label class="label label-success">In Stock</label></td>
+                                <td>
+                                    <a href="#!"><i class="fa fa-star f-12 text-c-yellow"></i></a>
+                                    <a href="#!"><i class="fa fa-star f-12 text-c-yellow"></i></a>
+                                    <a href="#!"><i class="fa fa-star f-12 text-c-yellow"></i></a>
+                                    <a href="#!"><i class="fa fa-star f-12 text-default"></i></a>
+                                    <a href="#!"><i class="fa fa-star f-12 text-default"></i></a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Watch</td>
+                                <td>#PHD005</td>
+                                <td>cdc@gmail.com</td>
+                                <td><label class="label label-success">In Stock</label></td>
+                                <td>
+                                    <a href="#!"><i class="fa fa-star f-12 text-c-yellow"></i></a>
+                                    <a href="#!"><i class="fa fa-star f-12 text-c-yellow"></i></a>
+                                    <a href="#!"><i class="fa fa-star f-12 text-default"></i></a>
+                                    <a href="#!"><i class="fa fa-star f-12 text-default"></i></a>
+                                    <a href="#!"><i class="fa fa-star f-12 text-default"></i></a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Shoes</td>
+                                <td>#PHD006</td>
+                                <td>pqr@gmail.com</td>
+                                <td><label class="label label-danger">Out Stock</label></td>
+                                <td>
+                                    <a href="#!"><i class="fa fa-star f-12 text-c-yellow"></i></a>
+                                    <a href="#!"><i class="fa fa-star f-12 text-c-yellow"></i></a>
+                                    <a href="#!"><i class="fa fa-star f-12 text-c-yellow"></i></a>
+                                    <a href="#!"><i class="fa fa-star f-12 text-c-yellow"></i></a>
+                                    <a href="#!"><i class="fa fa-star f-12 text-default"></i></a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+</div>
+
+@section scripts
+{
+
+    <script src="~/Content/assets/pages/chart/float/jquery.flot.js"></script>
+    <script src="~/Content/assets/pages/chart/float/jquery.flot.categories.js"></script>
+    <script src="~/Content/assets/pages/chart/float/curvedLines.js"></script>
+    <script src="~/Content/assets/pages/chart/float/jquery.flot.tooltip.min.js"></script>
+
+    <script src="~/Content/assets/chartist/js/chartist.js"></script>
+
+    <script src="~/Content/assets/pages/widget/amchart/amcharts.js"></script>
+    <script src="~/Content/assets/pages/widget/amchart/serial.js"></script>
+    <script src="~/Content/assets/pages/widget/amchart/light.js"></script>
+    <script src="~/Content/assets/pages/dashboard/custom-dashboard.min.js"></script>
+    
+    <script>
+        $("#menu-dash").addClass("active pcoded-trigger");
+        $("#menu-dash-default").addClass("active");
+    </script>
+
+}

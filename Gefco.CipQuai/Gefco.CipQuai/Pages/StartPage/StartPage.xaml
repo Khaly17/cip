@@ -1,0 +1,101 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<controls:ExtContentPage
+    xmlns:controls="clr-namespace:Gefco.CipQuai.Controls" xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:buttons="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms"
+    xmlns:progressBar="clr-namespace:Syncfusion.XForms.ProgressBar;assembly=Syncfusion.SfProgressBar.XForms"
+             xmlns:local="clr-namespace:Gefco.CipQuai.StartPage"
+             x:Class="Gefco.CipQuai.StartPage.StartPage" NavBarMainCommand="{Binding OpenMenuCommand}" PageIcon="ic_menu" PageTitle="Accueil" ShowBackOrClose="True" ShowHome="{Binding HasDebug2}" ControlTemplate="{StaticResource GefcoStartPage}" NavigationPage.HasNavigationBar="False">
+    <ContentPage.BindingContext>
+        <local:StartPageViewModel />
+    </ContentPage.BindingContext>
+    <controls:ExtContentPage.Content>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <Label Text="{Binding StartPageInvite}" Grid.Row="0"
+                   Style="{StaticResource TitleLabelStyle}" />
+            <Grid Grid.Row="1" Padding="40,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="0.4*" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="0.1*" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="0.1*" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="0.8*" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="0.1*" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="0.4*" />
+                </Grid.RowDefinitions>
+                <buttons:SfButton Text="Contrôle arrivage" Grid.Row="5" Command="{Binding ControleReceptionCommand}" 
+                                 Style="{StaticResource ActionButtonStyle}" FontSize="17" />
+                <buttons:SfButton Text="Chargement en DP" Grid.Row="1" Command="{Binding DoubleDeckCommand}" 
+                                 Style="{StaticResource ActionButtonStyle}" FontSize="17" />
+                <buttons:SfButton Text="Non-conformité" Grid.Row="7" Command="{Binding NonConformityCommand}"
+                                 Style="{StaticResource ActionButtonStyle}" FontSize="17" />
+                <buttons:SfButton Text="Bonne pratique" Grid.Row="9" Command="{Binding BestPracticeCommand}"
+                                 Style="{StaticResource ActionButtonStyle}" FontSize="17" />
+                <buttons:SfButton Text="Chargement SP" Grid.Row="3" Command="{Binding SimpleDeckCommand}"
+                                 Style="{StaticResource ActionButtonStyle}" FontSize="17" />
+
+            </Grid>
+
+                  <!-- Bottom Menus -->
+      <ContentView Grid.Row="0" Grid.RowSpan="2" x:Name="BusyIndicator" BackgroundColor="{StaticResource BottomMenuOverlayColor}" Opacity="0" IsVisible="False">
+          <ContentView.GestureRecognizers>
+              <TapGestureRecognizer Tapped="TapGestureRecognizer_OnTapped"></TapGestureRecognizer>
+          </ContentView.GestureRecognizers>
+      </ContentView>
+
+      <StackLayout Grid.Row="0" Grid.RowSpan="2" VerticalOptions="End" Margin="5" x:Name="DebugFrame" TranslationY="2500">
+        <Frame BackgroundColor="{StaticResource ColorFrameBackground}" HasShadow="True" CornerRadius="5" Padding="0">
+          <StackLayout Spacing="0">
+            <Label Style="{StaticResource FrameTitleLabelStyle}" Text="Eléments en attente de synchronisation" Margin="5,10"></Label>
+            <ContentView HeightRequest="1" BackgroundColor="{StaticResource BottomMenuSeparatorColor}" Margin="0" />
+            <controls:RepeaterView Orientation="Vertical" ItemsSource="{Binding Items}" Spacing="0" ItemClickCommand="{Binding ItemClickCommand}">
+                <controls:RepeaterView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout Orientation="Vertical">
+                            <Grid ColumnSpacing="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <StackLayout Orientation="Vertical" Spacing="0" >
+                                    <ContentView HeightRequest="1" BackgroundColor="{StaticResource BottomMenuSeparatorColor}" Margin="5,0" />
+                                    <buttons:SfButton Text="{Binding Name}" CornerRadius="0" BorderWidth="0" Clicked="SfButton_OnClicked"
+                                                      Style="{StaticResource SecondaryActionButtonStyle}" FontAttributes="None">
+                                    </buttons:SfButton>
+                                </StackLayout>
+                                <progressBar:SfCircularProgressBar Grid.Column="1" Progress="{Binding Current}" ProgressColor="{Binding HasError, Converter={StaticResource SyncValidConverter}}" IndicatorInnerRadius="0.5" HeightRequest="36" WidthRequest="36" Minimum="0" Maximum="{Binding Count}" Margin="0" AnimationDuration="200">
+                                    <progressBar:SfCircularProgressBar.Content>
+                                        <Label Text="{Binding Current}" FontSize="10"></Label>
+                                    </progressBar:SfCircularProgressBar.Content>
+                                    <progressBar:SfCircularProgressBar.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding ErrorCommand}"></TapGestureRecognizer>
+                                    </progressBar:SfCircularProgressBar.GestureRecognizers>
+                                </progressBar:SfCircularProgressBar>
+                            </Grid>
+                        </StackLayout>
+                    </DataTemplate>
+                </controls:RepeaterView.ItemTemplate>
+            </controls:RepeaterView>
+          </StackLayout>
+        </Frame>
+        <Frame BackgroundColor="{StaticResource ColorFrameBackground}" HasShadow="True" Padding="5,0" CornerRadius="5">
+          <StackLayout Spacing="0">
+                    <buttons:SfButton Clicked="CancelBottomMenu" Text="Réduire" CornerRadius="0" BorderWidth="0"
+                    Style="{StaticResource SecondaryActionButtonStyle}">
+            </buttons:SfButton>
+          </StackLayout>
+        </Frame>
+      </StackLayout>
+
+        </Grid>
+    </controls:ExtContentPage.Content>
+</controls:ExtContentPage>

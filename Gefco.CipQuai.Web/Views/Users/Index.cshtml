@@ -1,0 +1,145 @@
+﻿@using Gefco.CipQuai.Web.Models
+@model IEnumerable<Gefco.CipQuai.Web.Models.ApplicationUserViewModel>
+
+@{
+    ViewBag.PageIcon = "feather icon-users";
+    ViewBag.Title = "Users";
+    ViewBag.ShowHeader = false;
+    Layout = "~/Views/Shared/_AuthLayout.cshtml";
+    var id = Tools.GenerateRandomString(8);
+
+}
+<div class="row dashboard" id="capture">
+    <div class="col-sm-12">
+        <div class="card product-progress-card">
+            <div class="card-header main-header">
+                <button type="button" class="f-right e-btn e-primary" onclick="addTraction()">Ajouter un utilisateur</button>
+                <h4>@ViewBag.Title</h4>
+            </div>
+            @(Html.EJS().Grid("Grid").DataSource(Model)
+                    .DataSource(ds => ds.Url(Url.Action("IndexData")).Adaptor("UrlAdaptor")).DataBound("postLoad")
+                    .AllowExcelExport().ExcelExportComplete("showColumns")
+                        .AllowSorting().Columns(col =>
+                    {
+
+                        col.Field(nameof(ApplicationUserViewModel.UserName)).HeaderText("Numéro FGU").Width(80).Add();
+                        col.Field(nameof(ApplicationUserViewModel.FirstName)).HeaderText("Prénom").Width(80).Add();
+                        col.Field(nameof(ApplicationUserViewModel.LastName)).HeaderText("Nom").Width(80).Add();
+                        //col.Field(nameof(ApplicationUserViewModel.Email)).HeaderText("Email").Width(130).Add();
+                        col.Field(nameof(ApplicationUserViewModel.AppVersion)).HeaderText("Version").Width(50).Add();
+                        col.AllowFiltering(false).AllowSorting(false).Template("#template").Width(150).Add();
+
+                    }).Toolbar(new List<string>()
+                    {
+                    "Search"
+                    }).AllowPaging().PageSettings(page => page.PageCount(3).PageSize(10)).SortSettings(sort => sort.AllowUnsort(false).Columns(new[]
+                    {
+                    new
+                    {
+                        field = nameof(ApplicationUserViewModel.UserName),
+                        direction = "Ascending"
+                    }
+                    })).Render())
+        </div>
+    </div>
+</div>
+
+<script id="template" type="text/x-template">
+    <a class="e-btn e-primary" href="/Users/Edit/${UserId}">Editer</a>
+    <a class="e-btn e-primary ml-2" data-type="reset-pass" data-id="${UserId}" href="/Users/ResetPassword/${UserId}">Redéfinir code</a>
+    <a class="e-btn e-danger mx-2" data_id="${UserId}" href="/Users/Delete/${UserId}">Supprimer</a>
+</script>
+
+@section scripts
+{
+    <script>
+        $("#menu-admin-users").addClass("active");
+    </script>
+
+}
+<script>
+
+    function postLoad() {
+
+        $("table a[data-type='reset-pass']").click(function(e) {
+            e.preventDefault();
+            var id = $(this).data().id;
+            swal({
+                    title: "Êtes-vous sûr ?",
+                    text: "Souhaitez-vous réinitialiser le code PIN de cet utilisateur ?",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonClass: "btn-danger",
+                    confirmButtonText: "Envoyer email",
+                    closeOnConfirm: false
+                },
+                () => {
+                    $.post('@Url.Action("ResetPassword")/' + id, null, function (result) {
+                        if (result.isSuccess)
+                            swal({
+                                title: "Email envoyé", text: "L'email de redéfinition de code PIN a été envoyé", type:"success"
+                            });
+                        else
+                            swal({
+                                title: "Erreur d'envoi", text: "Une erreur s'est produite", type:"error"
+                            });
+                    });
+                });
+        });
+        $("table a.e-danger").click(
+            function (e) {
+                e.preventDefault();
+                var id = this.attributes.data_id.value;
+                swal({
+                        title: "Êtes-vous sûr ?",
+                        text: "Vous ne pouvez pas annuler cette action !",
+                        type: "warning",
+                        showCancelButton: true,
+                        confirmButtonClass: "btn-danger",
+                        confirmButtonText: "Supprimer",
+                        closeOnConfirm: false
+                    },
+                    () => {
+                        $.post('@Url.Action("Delete")/' + id, null, function(result) {
+                            swal({
+                                title: "Suppression confirmée", text: "Utilisateur supprimé", type:"success"
+                            }, () => {
+                                var grid = document.getElementById("Grid").ej2_instances[0];
+                                grid.refresh(); // refresh the Grid.
+                            });
+                        });
+                    });
+            });
+    }
+
+    function showColumns(args) {
+        this.columns[3].visible = true;
+        document.getElementById('Grid').ej2_instances[0].hideSpinner();
+        return false;
+    }
+    function addTraction() {
+        swal({
+            title: "Ajout Utilisateur",
+            text: "Saisissez l'email :",
+            type: "input",
+            showCancelButton: true,
+            closeOnConfirm: false,
+            inputPlaceholder: "Email..."
+        }, function(inputValue) {
+            if (inputValue === false)
+                return false;
+            if (inputValue === "") {
+                swal.showInputError("Saisie obligatoire !");
+                return false;
+            }
+                $.post('@Url.Action("Create")', { Email: inputValue, UserName: inputValue }, function (result) {
+                swal({
+                    title: "Succès", text: "Élément ajouté avec succès", type: "success"
+                }, () => {
+                    window.location = "@Url.Action("Edit")/" + result;
+                });
+            });
+        });
+        return false;
+    }
+</script>

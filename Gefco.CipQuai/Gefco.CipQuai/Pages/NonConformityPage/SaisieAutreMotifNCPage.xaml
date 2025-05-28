@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<controls:ExtContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:Gefco.CipQuai.Controls;assembly=Gefco.CipQuai" 
+             x:Class="Gefco.CipQuai.NonConformityPage.SaisieAutreMotifNCPage" NavBarMainCommand="{Binding GoBackCommand}" PageIcon="ic_arrow_backy.svg" PageTitle="{Binding PageTitle}" ControlTemplate="{StaticResource GefcoPage}" ShowHome="True" NavigationPage.HasNavigationBar="False" Appearing="OnAppearing" IsLoading="{Binding IsLoading}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <Label Text="{Binding SaisieAutreMotifNCInvite}" Grid.Row="0" Margin="20" FontSize="18" Style="{StaticResource TitleLabelStyle}" />
+
+        <StackLayout Grid.Row="1" Spacing="0" >
+            <controls:ExtEntry Margin="20,0" HorizontalOptions="FillAndExpand" Text="{Binding AutreMotifNC, Mode=TwoWay}" x:Name="MyEntry" Placeholder="{Binding SaisieAutreMotifNCPlaholder}" TextColor="{Binding IsValidAutreMotifNC, Converter={StaticResource BooleanValidConverter}}"  />
+            <ContentView Margin="20,0" HeightRequest="1" BackgroundColor="{Binding IsValidAutreMotifNC, Converter={StaticResource BooleanValidConverter}}" />
+            <controls:FloatingActionButtonView Command="{Binding ValidateAutreMotifNCCommand}" IsEnabled="{Binding IsValidAutreMotifNC}" Margin="20" />
+
+        </StackLayout>
+
+
+    </Grid>
+</controls:ExtContentPage>

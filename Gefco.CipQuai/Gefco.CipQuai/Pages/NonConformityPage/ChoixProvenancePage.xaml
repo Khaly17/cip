@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<controls:ExtContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:Gefco.CipQuai.Controls;assembly=Gefco.CipQuai"
+             xmlns:nonConformity="clr-namespace:Gefco.CipQuai.NonConformityPage;assembly=Gefco.CipQuai"
+             xmlns:xForms="clr-namespace:Syncfusion.SfAutoComplete.XForms;assembly=Syncfusion.SfAutoComplete.XForms"
+             xmlns:buttons="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms"
+             xmlns:xForms1="clr-namespace:Syncfusion.SfBusyIndicator.XForms;assembly=Syncfusion.SfBusyIndicator.XForms"
+                         NavBarMainCommand="{Binding GoBackCommand}" NavBarHomeCommand="{Binding GoHomeCommand}" PageIcon="ic_arrow_backy.svg" PageTitle="{Binding ViewModel.PageTitle}" ControlTemplate="{StaticResource GefcoPage}" ShowHome="True" NavigationPage.HasNavigationBar="False" IsLoading="{Binding IsLoading}"
+             x:Class="Gefco.CipQuai.NonConformityPage.ChoixProvenancePage">
+    <controls:ExtContentPage.BindingContext>
+        <nonConformity:ChoixProvenancePageViewModel />
+    </controls:ExtContentPage.BindingContext>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+          <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Label Text="{Binding StartPageInvite}" Grid.Row="0" Margin="20"
+               Style="{StaticResource TitleLabelStyle}" />
+
+        <StackLayout Grid.Row="1" Spacing="0">
+            <xForms:SfAutoComplete x:Name="AutoComplete" DataSource="{Binding Provenances}" NoResultsFoundText="{Binding ViewModel.NoResultsMessage}" Margin="20,0" 
+                                   AutoCompleteMode="Suggest" SuggestionMode="Contains" Watermark="{Binding ViewModel.ProvenanceInviteLabel}" Completed="AutoComplete_OnCompleted" MaximumDropDownHeight="160"
+                                   BorderColor="{Binding ViewModel.IsInvalid, Converter={StaticResource BooleanInvalidConverter}}" TextColor="{Binding ViewModel.IsInvalid, Converter={StaticResource BooleanInvalidConverter}}" 
+                                   SelectedItem="{Binding ViewModel.SelectedProvenance, Mode=TwoWay}" SelectedValuePath="Id" DisplayMemberPath="Name" />
+            <Label Style="{StaticResource InvalidLabelStyle}" Text="{Binding ViewModel.ErrorMessage}" Margin="20,0" />
+            <controls:FloatingActionButtonView Command="{Binding ViewModel.ValidateProvenanceCommand}" Margin="20" />
+        </StackLayout>
+
+        <Grid Grid.Row="2" VerticalOptions="End" ColumnSpacing="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+
+            <buttons:SfButton Grid.Column="1" Text="{Binding ViewModel.NextButtonLabel}" CornerRadius="0" IsVisible="{Binding ViewModel.IsInvalid, Converter={StaticResource BooleanInverterConverter}}" Command="{Binding ViewModel.ValidateProvenanceCommand}" Style="{StaticResource ActionButtonStyle}" />
+        </Grid>
+
+        <xForms1:SfBusyIndicator Grid.Row="0" Grid.RowSpan="3" x:Name="BusyIndicator" AnimationType="SingleCircle"
+                                IsVisible="{Binding IsLoading}"
+                                IsBusy="{Binding IsLoading}">
+        </xForms1:SfBusyIndicator>
+
+    </Grid>
+
+</controls:ExtContentPage>

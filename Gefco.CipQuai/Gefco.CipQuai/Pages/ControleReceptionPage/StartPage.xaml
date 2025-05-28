@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<controls:ExtContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:buttons="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms"
+             xmlns:local="clr-namespace:Gefco.CipQuai.SimpleDeckPage;assembly=Gefco.CipQuai"
+             xmlns:xForms="clr-namespace:Syncfusion.SfBusyIndicator.XForms;assembly=Syncfusion.SfBusyIndicator.XForms"
+             xmlns:controls="clr-namespace:Gefco.CipQuai.Controls;assembly=Gefco.CipQuai"
+             xmlns:xForms1="clr-namespace:Syncfusion.SfAutoComplete.XForms;assembly=Syncfusion.SfAutoComplete.XForms"
+             xmlns:controleReceptionPage="clr-namespace:Gefco.CipQuai.ControleReceptionPage;assembly=Gefco.CipQuai"
+             xmlns:xForms2="clr-namespace:Syncfusion.ListView.XForms;assembly=Syncfusion.SfListView.XForms"
+             NavBarMainCommand="{Binding GoBackCommand}" PageIcon="ic_arrow_backy.svg" PageTitle="{Binding PageTitle}" ControlTemplate="{StaticResource GefcoPage}" NavigationPage.HasNavigationBar="False" ShowHome="True" NavBarHomeCommand="{Binding GoBackCommand}" IsLoading="{Binding IsLoading}"
+                         x:Class="Gefco.CipQuai.ControleReceptionPage.StartPage">
+    <controls:ExtContentPage.BindingContext>
+        <controleReceptionPage:CRViewModel />
+    </controls:ExtContentPage.BindingContext>
+    <ContentPage.Content>
+        <Grid RowSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <xForms1:SfAutoComplete x:Name="OldAutoComplete" Margin="20,0" 
+                                    Watermark="{Binding DestinationInviteLabel}" MinimumPrefixCharacters="1000" BorderColor="{StaticResource MediumBlueColor}" Text="{Binding AgenceDestination}"
+                                    ValueChanged="OldAutoComplete_OnValueChanged" TextColor="{Binding IsInvalid, Converter={StaticResource BooleanInvalidConverter}}" 
+                                     />
+            <xForms2:SfListView Grid.Row="1" x:Name="AutoComplete" ItemsSource="{Binding Destinations}" SelectionBackgroundColor="#ECECEC" GroupHeaderSize="40"
+                                SelectedItem="{Binding SelectedDestination, Mode=TwoWay}" AllowGroupExpandCollapse="True" IsStickyGroupHeader="True" ItemSize="50" FocusBorderThickness="0" SelectionMode="Single" >
+                <xForms2:SfListView.GroupHeaderTemplate>
+                    <DataTemplate x:Name="GroupHeaderTemplate">
+                        <ViewCell>
+                            <ViewCell.View>
+                                <Grid BackgroundColor="#E4E4E4">
+                                    <Label Text="{Binding Key}" FontSize="22" FontAttributes="Bold" VerticalOptions="Center" Margin="20,0,0,0" />
+                                </Grid>
+                            </ViewCell.View>
+                        </ViewCell>
+                    </DataTemplate>
+                </xForms2:SfListView.GroupHeaderTemplate>
+                <xForms2:SfListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <ViewCell.View>
+                                <Grid RowSpacing="0">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <Label LineBreakMode="NoWrap" Text="{Binding Name}" VerticalOptions="Center" Padding="10"/>
+                                    <StackLayout Grid.Row="1" BackgroundColor="#E4E4E4"></StackLayout>
+                                </Grid>
+                            </ViewCell.View>
+                        </ViewCell>
+                    </DataTemplate>
+                </xForms2:SfListView.ItemTemplate>
+            </xForms2:SfListView>
+            <Grid Grid.Row="2" VerticalOptions="End" ColumnSpacing="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+
+                <buttons:SfButton Grid.Column="1" Text="{Binding NextButtonLabel}" CornerRadius="0" Command="{Binding ValidateDestinationCommand}"
+                                  Style="{StaticResource ActionButtonStyle}" />
+
+            </Grid>
+        </Grid>
+    </ContentPage.Content>
+</controls:ExtContentPage>
